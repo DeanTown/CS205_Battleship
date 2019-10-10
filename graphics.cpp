@@ -24,7 +24,7 @@ void init() {
 /* Initialize OpenGL Graphics */
 void initGL() {
     // Set "clearing" or background color
-    glClearColor(0.7f, 0.2f, 0.2f, 0.0f); // Black and opaque
+    glClearColor(0.0f, 0.0f, 0.2f, 0.0f); // Black and opaque
 }
 
 /* Handler for window-repaint event. Call back when the window first appears and
