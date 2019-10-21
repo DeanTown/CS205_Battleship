@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.8)
 project(CS205-FinalProject)
 
-add_executable(main main.cpp Cell.cpp)
+add_executable(main main.cpp Cell.cpp Board.cpp)
 
 if (WIN32)
     set(FREEGLUT_INCLUDE_DIRS "C:/Program\ Files/Common\ Files/freeglut/include")

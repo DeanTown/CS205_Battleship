@@ -1,4 +1,0 @@
-/Users/oliver/UVM/fall 2019/cs205/CS205_final_project/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/oliver/UVM/fall 2019/cs205/CS205_final_project/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/oliver/UVM/fall 2019/cs205/CS205_final_project/cmake-build-debug/CMakeFiles/graphics.dir
-/Users/oliver/UVM/fall 2019/cs205/CS205_final_project/cmake-build-debug/CMakeFiles/main.dir
