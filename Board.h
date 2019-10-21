@@ -11,8 +11,11 @@
 class Board {
 private:
     std::vector<std::vector<Cell>> board;
+    int cols;
+    int rows;
 public:
-    /* Constructors */
+    /* Constructor */
+    Board();
 };
 
 
