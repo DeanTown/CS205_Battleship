@@ -11,8 +11,11 @@ enum cellStatus {empty, occupied, adjacent};
 
 class Cell {
 private:
+    // Holds whether the tile has been selected before
     bool selected;
+    // A vector that contains the cells position on the board
     std::vector<int> position;
+    // The status of the tile
     cellStatus status;
 public:
     /* Constructors */
@@ -23,7 +26,7 @@ public:
     cellStatus getStatus();
     /* Setters */
     void setSelected(bool selection);
-    void setPosition(std::vector<int> &position);
+    void setPosition(int row, int col);
     void setStatus(cellStatus status);
 };
 

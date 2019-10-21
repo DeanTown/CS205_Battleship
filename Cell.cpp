@@ -8,6 +8,7 @@ using namespace std;
 /* Constructors */
 Cell::Cell() {
     selected = false;
+    position.resize(2);
     status = empty;
 }
 
@@ -26,8 +27,9 @@ cellStatus Cell::getStatus() {
 void Cell::setSelected(bool sel) {
     this->selected = sel;
 }
-void Cell::setPosition(vector<int> &pos) {
-    this->position = pos;
+void Cell::setPosition(int row, int col) {
+    position[0] = row;
+    position[1] = col;
 }
 void Cell::setStatus(cellStatus stat) {
     this->status = stat;

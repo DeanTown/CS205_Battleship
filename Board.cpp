@@ -14,6 +14,7 @@ Board::Board() {
     for (int i = 0; i < rows; i ++) {
         temp.clear();
         for (int j = 0; j < cols; j++) {
+            cell.setPosition(i, j);
             temp.push_back(cell);
         }
         board.push_back(temp);
