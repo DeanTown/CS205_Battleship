@@ -3,3 +3,21 @@
 //
 
 #include "Game.h"
+
+Game();
+
+//To Begin and end games
+void startGame(){
+
+}
+
+void resetGame(){
+
+}
+void endGame(){
+
+}
+
+void playGame(){
+
+}

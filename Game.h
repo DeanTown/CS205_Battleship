@@ -8,11 +8,21 @@
 
 class Game {
 public:
-    //Player player1;
-    //Player player2;
+    Player player1;
+    Player player2;
     Board gameBoard;
+    bool p1Turn;
+    bool p2Turn;
 
 private:
+    Game();
+
+    //To Begin and end games
+    void startGame();
+    void resetGame();
+    void endGame();
+
+    void playGame();
 
 };
 
