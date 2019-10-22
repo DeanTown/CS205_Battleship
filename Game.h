@@ -7,6 +7,12 @@
 
 
 class Game {
+public:
+    //Player player1;
+    //Player player2;
+    Board gameBoard;
+
+private:
 
 };
 

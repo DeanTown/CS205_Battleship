@@ -7,6 +7,7 @@
 #include "ctime"
 #include "Cell.h"
 #include "Board.h"
+#include "Game.h"
 
 
 using namespace std;
@@ -112,6 +113,7 @@ void timer(int dummy) {
 
 /* Main function: GLUT runs as a console application starting at main()  */
 int main(int argc, char** argv) {
+
 
 //    init();
 //
