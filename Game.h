@@ -4,6 +4,8 @@
 
 #ifndef CS205_FINALPROJECT_GAME_H
 #define CS205_FINALPROJECT_GAME_H
+#include "Player.h"
+#include "Board.h"
 
 
 class Game {

@@ -4,20 +4,22 @@
 
 #include "Game.h"
 
-Game();
+Game::Game(){
+
+}
 
 //To Begin and end games
-void startGame(){
+void Game::startGame(){
 
 }
 
-void resetGame(){
+void Game::resetGame(){
 
 }
-void endGame(){
+void Game::endGame(){
 
 }
 
-void playGame(){
+void Game::playGame(){
 
 }
