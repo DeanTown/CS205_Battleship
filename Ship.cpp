@@ -17,7 +17,7 @@ int Ship::getSize() {
 bool Ship::getDestroyed() {
     return destroyed;
 }
-vector<vector<int>> Shop::getCoords() {
+vector<vector<int>> Ship::getCoords() {
     return coords;
 }
 

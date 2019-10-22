@@ -27,7 +27,7 @@ file(GLOB SOURCE_FILES
         *.cpp
         *.h
         )
-add_executable(graphics ${SOURCE_FILES} )
+add_executable(graphics ${SOURCE_FILES} Ship.cpp)
 
 if (WIN32)
     target_link_libraries (graphics ${OPENGL_LIBRARIES} freeglut)
