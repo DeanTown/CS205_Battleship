@@ -7,6 +7,8 @@
 #include "ctime"
 #include "Cell.h"
 #include "Board.h"
+#include "Player.h"
+#include "Ship.h"
 
 
 using namespace std;

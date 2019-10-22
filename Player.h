@@ -8,6 +8,12 @@
 
 class Player {
 
+/*
+ * virtual functions:
+ * move (override with playermove and computermove)
+ *
+ *
+ */
 };
 
 
