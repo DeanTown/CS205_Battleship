@@ -6,13 +6,20 @@
 #define CS205_FINALPROJECT_BOARD_H
 
 #include "Cell.h"
+#include "Ship.h"
 #include <vector>
+
+using namespace std;
 
 class Board {
 private:
     std::vector<std::vector<Cell>> board;
     int cols;
     int rows;
+    vector<Ship> p1Ships;
+    vector<Ship> p2Ships;
+
+
 public:
     /* Constructor */
     Board();
