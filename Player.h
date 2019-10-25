@@ -5,15 +5,18 @@
 #ifndef CS205_FINALPROJECT_PLAYER_H
 #define CS205_FINALPROJECT_PLAYER_H
 
+#include "Ship.h"
+#include <vector>
 
 class Player {
-
-/*
- * virtual functions:
- * move (override with playermove and computermove)
- *
- *
- */
+private:
+    std::vector<Ship> ships;
+public:
+    /* Constructor */
+    Player();
+    /* Player move function
+     * virtual function (overridden in child classes) */
+    virtual void move();
 };
 
 
