@@ -18,7 +18,7 @@ private:
     bool p2Turn;
 public:
     /* Constructor */
-    Game();
+    Game(Player p1, Player p2);
     //To Begin and end games
     void startGame();
     void resetGame();
