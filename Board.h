@@ -18,6 +18,7 @@ private:
     int cols;
     int rows;
     Fleet fleet;
+
 public:
     /* Constructor */
     Board();
