@@ -25,6 +25,11 @@ enum cellStatus {Destroyer, DestroyerHit, DestroyerSunk,
                 Battleship, BattleshipHit, BattleshipSunk,
                 Nothing, NothingHit};
 
+struct position {
+    int row;
+    int col;
+};
+
 class Board {
 protected:
     vector<vector<cellStatus>> board;
@@ -34,7 +39,7 @@ protected:
 public:
     /* Constructor */
     Board();
-
+    string cellStatusToString(cellStatus c);
     void printBoard();
 };
 

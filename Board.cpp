@@ -16,6 +16,10 @@ Board::Board() {
     }
 }
 
+string Board::cellStatusToString(cellStatus c) {
+    return "bet";
+}
+
 void printBoard(){
 
 }
