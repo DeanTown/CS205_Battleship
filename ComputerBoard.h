@@ -5,12 +5,14 @@
 #ifndef CS205_FINAL_PROJECT_COMPUTERBOARD_H
 #define CS205_FINAL_PROJECT_COMPUTERBOARD_H
 
+#include "Board.h"
 
 class ComputerBoard : public Board {
 private:
 public:
     bool userMove(int row, int col);
     void placePieces();
+    void printBoard();
 };
 
 

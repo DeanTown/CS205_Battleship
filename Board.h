@@ -26,7 +26,7 @@ enum cellStatus {Destroyer, DestroyerHit, DestroyerSunk,
                 Nothing, NothingHit};
 
 class Board {
-private:
+protected:
     vector<vector<cellStatus>> board;
     int cols;
     int rows;

@@ -3,6 +3,7 @@
 //
 
 #include "ComputerBoard.h"
+#include <iostream>
 
 /*
  * This method handles the user move on the computers board.
@@ -75,5 +76,13 @@ void ComputerBoard::placePieces() {
 
         }
         placed++;
+    }
+}
+
+void ComputerBoard::printBoard() {
+    for (vector<cellStatus> row : board) {
+        for (cellStatus col : row) {
+            cout << " | " << col << " | " << endl;
+        }
     }
 }
