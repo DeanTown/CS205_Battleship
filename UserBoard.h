@@ -5,8 +5,17 @@
 #ifndef CS205_FINAL_PROJECT_USERBOARD_H
 #define CS205_FINAL_PROJECT_USERBOARD_H
 
+#include "Board.h"
 
-class UserBoard {
+
+class UserBoard : public Board{
+private:
+public:
+    UserBoard();
+    void placePieces();
+    bool compMove();
+
+
 
 };
 

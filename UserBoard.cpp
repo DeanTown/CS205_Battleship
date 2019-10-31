@@ -3,3 +3,15 @@
 //
 
 #include "UserBoard.h"
+
+UserBoard::UserBoard() : Board(){
+
+}
+
+
+void placePieces(){
+
+}
+bool compMove(){
+    return true;
+}

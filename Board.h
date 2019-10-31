@@ -34,6 +34,8 @@ protected:
 public:
     /* Constructor */
     Board();
+
+    void printBoard();
 };
 
 
