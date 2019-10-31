@@ -9,6 +9,7 @@
 #include "graphics.h"
 #include "Fleet.h"
 #include <vector>
+#include "string"
 using namespace std;
 
 /*
@@ -25,6 +26,11 @@ enum cellStatus {Destroyer, DestroyerHit, DestroyerSunk,
                 Battleship, BattleshipHit, BattleshipSunk,
                 Nothing, NothingHit};
 
+struct position {
+    int row;
+    int col;
+};
+
 class Board {
 protected:
     vector<vector<cellStatus>> board;
@@ -34,7 +40,8 @@ protected:
 public:
     /* Constructor */
     Board();
-
+    Fleet getFleet();
+    string cellStatusToString(cellStatus c);
     void printBoard();
 };
 

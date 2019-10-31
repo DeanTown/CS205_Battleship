@@ -6,17 +6,17 @@
 #define CS205_FINAL_PROJECT_USERBOARD_H
 
 #include "Board.h"
-
+#include <regex>
 
 class UserBoard : public Board{
 private:
+    vector<position> hits;
+    vector<position> attempts;
 public:
     UserBoard();
-    void placePieces();
     bool compMove();
-
-
-
+    void placePieces();
+    void printBoard();
 };
 
 

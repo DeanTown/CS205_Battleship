@@ -10,6 +10,7 @@
 class ComputerBoard : public Board {
 private:
 public:
+    ComputerBoard();
     bool userMove(int row, int col);
     void placePieces();
     void printBoard();

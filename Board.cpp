@@ -16,6 +16,14 @@ Board::Board() {
     }
 }
 
+Fleet Board::getFleet() {
+    return fleet;
+}
+
+string Board::cellStatusToString(cellStatus c) {
+    return "";
+}
+
 void printBoard(){
 
 }
