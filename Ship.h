@@ -10,19 +10,17 @@
 class Ship {
 private:
     int size;
+    int hits;
     bool destroyed;
-    std::vector<std::vector<int>> coords;
 public:
     /* Constructor */
-    Ship();
+    Ship(int size);
     /* Getters */
     int getSize();
     bool getDestroyed();
-    std::vector<std::vector<int>> getCoords();
     /* Setters */
     void setSize(int s);
     void setDestroyed(bool d);
-    void setCoords(std::vector<std::vector<int>> c);
 };
 
 

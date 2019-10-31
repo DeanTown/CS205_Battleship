@@ -6,8 +6,8 @@
 using namespace std;
 
 /* Constructor */
-Ship::Ship() {
-    coords.resize(size);
+Ship::Ship(int size) {
+    this->size = size;
 }
 
 /* Getters */
@@ -17,9 +17,6 @@ int Ship::getSize() {
 bool Ship::getDestroyed() {
     return destroyed;
 }
-vector<vector<int>> Ship::getCoords() {
-    return coords;
-}
 
 /* Setters */
 void Ship::setSize(int s) {
@@ -27,7 +24,4 @@ void Ship::setSize(int s) {
 }
 void Ship::setDestroyed(bool d) {
     destroyed = d;
-}
-void Ship::setCoords(vector<vector<int>> c) {
-    coords = c;
 }
