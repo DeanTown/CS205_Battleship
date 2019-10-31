@@ -7,12 +7,9 @@
 Fleet::Fleet() {}
 
 bool Fleet::sunk() {
-    if (carrier.getDestroyed() &&
-        battleship.getDestroyed() &&
-        destroyer.getDestroyed() &&
-        sub.getDestroyed() &&
-        cruiser.getDestroyed()) {
-        return true;
-    }
-    return false;
+    return carrier.getDestroyed() &&
+           battleship.getDestroyed() &&
+           destroyer.getDestroyed() &&
+           sub.getDestroyed() &&
+           cruiser.getDestroyed();
 }
