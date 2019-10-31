@@ -7,22 +7,26 @@
 
 #include "Ship.h"
 #include "graphics.h"
+#include "Fleet.h"
 #include <vector>
 using namespace std;
 
-enum cellStatus {Destroyer, DestroyerHit, DestroyerSunk};
+enum cellStatus {Destroyer, DestroyerHit, DestroyerSunk,
+                Sub, SubHit, SubSunk,
+                Carrier, CarrierHit, CarrierSunk,
+                Cruiser, CruiserHit, CruiserSunk,
+                Battleship, BattleshipHit, BattleshipSunk,
+                Nothing, NothingHit};
 
 class Board {
 private:
-    std::vector<std::vector<cellStatus>> board;
+    vector<vector<cellStatus>> board;
     int cols;
     int rows;
     Fleet fleet;
-
 public:
     /* Constructor */
     Board();
-//    void draw_board();
 };
 
 

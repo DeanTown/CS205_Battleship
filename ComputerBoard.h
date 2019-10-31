@@ -6,8 +6,12 @@
 #define CS205_FINAL_PROJECT_COMPUTERBOARD_H
 
 
-class ComputerBoard {
-
+class ComputerBoard : public Board {
+private:
+    cellStatus previousMove;
+public:
+    bool userMove(int row, int col);
+    void placePieces();
 };
 
 
