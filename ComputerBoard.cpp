@@ -4,6 +4,12 @@
 
 #include "ComputerBoard.h"
 
+/*
+ * This method handles the user move on the computers board.
+ * The basic logic which is repeated is to check if the cell clicked contains something.
+ * If it does, then it marks it as hit. If it has already been hit, it rejects the move
+ * and returns false.
+ */
 bool ComputerBoard::userMove(int row, int col) {
     // get cell status
     cellStatus c = board[row][col];
@@ -45,4 +51,11 @@ bool ComputerBoard::userMove(int row, int col) {
         return false;
     }
     return true;
+}
+
+void ComputerBoard::placePieces() {
+    int placed = 0;
+    while (placed < 5) {
+        placed++;
+    }
 }
