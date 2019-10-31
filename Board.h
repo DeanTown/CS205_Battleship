@@ -5,28 +5,23 @@
 #ifndef CS205_FINALPROJECT_BOARD_H
 #define CS205_FINALPROJECT_BOARD_H
 
-#include "Cell.h"
 #include "Ship.h"
 #include "graphics.h"
 #include <vector>
-
 using namespace std;
+
+enum cellStatus {Destroyer, DestroyerHit, DestroyerSunk};
 
 class Board {
 private:
-    std::vector<std::vector<Cell>> board;
+    std::vector<std::vector<cellStatus>> board;
     int cols;
     int rows;
-    vector<Ship> p1Ships;
-    vector<Ship> p2Ships;
-    vector<Cell> temp;
-
-
+    Fleet fleet;
 public:
     /* Constructor */
     Board();
-
-    void draw_board();
+//    void draw_board();
 };
 
 
