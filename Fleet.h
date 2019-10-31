@@ -5,6 +5,7 @@
 #ifndef CS205_FINAL_PROJECT_FLEET_H
 #define CS205_FINAL_PROJECT_FLEET_H
 
+#include "Game.h"
 
 class Fleet {
 
