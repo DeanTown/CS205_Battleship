@@ -8,16 +8,16 @@
 #include "Ship.h"
 #include <vector>
 
-class Player {
-private:
-    std::vector<Ship> ships;
-public:
-    /* Constructor */
-    Player();
-    /* Player move function
-     * virtual function (overridden in child classes) */
-    virtual void move();
-};
+//class Player {
+//private:
+//    std::vector<Ship> ships;
+//public:
+//    /* Constructor */
+//    Player();
+//    /* Player move function
+//     * virtual function (overridden in child classes) */
+//    virtual void move();
+//};
 
 
 #endif //CS205_FINALPROJECT_PLAYER_H

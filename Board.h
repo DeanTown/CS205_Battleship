@@ -7,6 +7,7 @@
 
 #include "Cell.h"
 #include "Ship.h"
+#include "graphics.h"
 #include <vector>
 
 using namespace std;
@@ -18,11 +19,14 @@ private:
     int rows;
     vector<Ship> p1Ships;
     vector<Ship> p2Ships;
+    vector<Cell> temp;
 
 
 public:
     /* Constructor */
     Board();
+
+    void draw_board();
 };
 
 

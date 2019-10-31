@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(CS205-FinalProject)
+project(CS205_final_project)
 
 if (WIN32)
     set(FREEGLUT_INCLUDE_DIRS "C:/Program\ Files/Common\ Files/freeglut/include")
@@ -10,27 +10,26 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wno-deprecated -Werror=retur
 
 find_package (OpenGL REQUIRED)
 
-if (APPLE OR UNIX)
+if (APPLE)
     find_package(GLUT REQUIRED)
-endif (APPLE OR UNIX)
+endif (APPLE)
 
 if (WIN32)
     include_directories(${OPENGL_INCLUDE_DIR}  ${FREEGLUT_INCLUDE_DIRS})
     link_directories(${FREEGLUT_LIBRARY_DIRS})
 elseif (APPLE)
     include_directories(${OPENGL_INCLUDE_DIR}  ${GLUT_INCLUDE_DIRS})
-elseif (UNIX)
-    include_directories(${OPENGL_INCLUDE_DIR} ${FREEGLUT_INCLUDE_DIRS})
 endif ()
 
 file(GLOB SOURCE_FILES
         *.cpp
         *.h
         )
-add_executable(graphics ${SOURCE_FILES} Ship.cpp)
+
+add_executable(graphics Board Cell Ship ${SOURCE_FILES})
 
 if (WIN32)
     target_link_libraries (graphics ${OPENGL_LIBRARIES} freeglut)
-elseif (APPLE OR UNIX)
+elseif (APPLE)
     target_link_libraries (graphics ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES})
 endif ()
