@@ -34,6 +34,8 @@ void Game::endGame(){
 void Game::playGame(){
     int row;
     int col;
+    bool userValid;
+
     cout<<"OK now that the pieces are placed, lets begin the game\n";
 
     while(!compBoard.getFleet().sunk() and !userBoard.getFleet().sunk()){
@@ -44,9 +46,21 @@ void Game::playGame(){
         cout<<"What col?"<<endl;
         cin>> col;
 
-        compBoard.userMove(row,col);
+        userValid= compBoard.userMove(row,col);
+
+        while(!userValid){
+            cout<<"Invalid"<<endl;
+            cout<<"What row?"<<endl;
+            cin>> row;
+            cout<<"What col?"<<endl;
+            cin>> col;
+            userValid= compBoard.userMove(row,col);
+        }
 
         wait(new int(3));
+
+        userBoard.compMove();
+
 
 
     }
