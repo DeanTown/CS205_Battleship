@@ -6,6 +6,7 @@
 #define CS205_FINAL_PROJECT_FLEET_H
 
 #include "Game.h"
+#include "Ship.h"
 
 class Fleet {
 
