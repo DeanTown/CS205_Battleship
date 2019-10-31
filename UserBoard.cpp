@@ -12,9 +12,7 @@ bool UserBoard::compMove() {
     int randRow = rand() % 10;
     int randCol = rand() % 10;
 
-    // TODO: this compare doesn't work because the board object return an enum type
-    // TODO: which can't be compared to a regex string
-    if (board[randRow][randCol] == r) {
+    if (regex_match(cellStatusToString(board[randRow][randCol]), r)) {
         return false;
     }
 
