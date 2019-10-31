@@ -10,6 +10,7 @@
  * The basic logic which is repeated is to check if the cell clicked contains something.
  * If it does, then it marks it as hit. If it has already been hit, it rejects the move
  * and returns false.
+ *
  */
 bool ComputerBoard::userMove(int row, int col) {
     // get cell status
