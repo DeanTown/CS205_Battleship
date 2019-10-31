@@ -9,6 +9,7 @@
 #include "graphics.h"
 #include "Fleet.h"
 #include <vector>
+#include "string"
 using namespace std;
 
 /*
@@ -39,6 +40,7 @@ protected:
 public:
     /* Constructor */
     Board();
+    Fleet getFleet();
     string cellStatusToString(cellStatus c);
     void printBoard();
 };
