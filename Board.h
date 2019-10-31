@@ -11,6 +11,13 @@
 #include <vector>
 using namespace std;
 
+/*
+ * Carrier size: 5
+ * Battleship size: 4
+ * Destroyer size: 3
+ * Sub size: 3
+ * Cruiser size: 2
+ */
 enum cellStatus {Destroyer, DestroyerHit, DestroyerSunk,
                 Sub, SubHit, SubSunk,
                 Carrier, CarrierHit, CarrierSunk,

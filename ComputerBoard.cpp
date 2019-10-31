@@ -53,9 +53,27 @@ bool ComputerBoard::userMove(int row, int col) {
     return true;
 }
 
+/*
+ * generate some random integers for the row and column
+ * if the cell at that integer is Nothing AND all the cells surrounding it within
+ * the length of the ship placed is Nothing, then change all the cells to be that
+ * specific ship.
+ * Another random int to determine direction that the ship is generated in. if the random
+ * position of the ship is too close to one side for it to face that way, then narrow the
+ * choices for facing direction.
+ */
 void ComputerBoard::placePieces() {
+    // Initialize random object
+    srand(time(nullptr));
     int placed = 0;
     while (placed < 5) {
+        // generate random number between 0 and 9 for row
+        int randomRow = rand() % 10;
+        // generate random number between 0 and 9 for col
+        int randomCol = rand() % 10;
+        if (board[randomRow][randomCol] == Nothing) {
+
+        }
         placed++;
     }
 }
