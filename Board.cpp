@@ -38,6 +38,9 @@ int Board::getCellNum() const {
     return bde.cellNum;
 
 }
+int Board::getCellWidth() const {
+    return cellWidth;
+}
 cellStatus Board::getCellStat() const {
     return bde.stat;
 }

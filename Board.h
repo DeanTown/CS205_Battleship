@@ -39,6 +39,7 @@ public:
     int getCellNum() const;
     int getCellX() const;
     int getCellY() const;
+    int getCellWidth() const;
     cellStatus getCellStat() const;
 
     //settet

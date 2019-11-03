@@ -1,27 +1,28 @@
-//
-// Created by Oliver Reckord Groten on 10/22/19.
-//
-
 #include "Ship.h"
-using namespace std;
 
-/* Constructor */
-Ship::Ship(int size) {
-    this->size = size;
+// getters
+int Ship::getCenterX() const {
+    return shipCenter.x;
 }
-
-/* Getters */
-int Ship::getSize() {
-    return size;
-}
-bool Ship::getDestroyed() {
-    return destroyed;
+int Ship::getCenterY() const {
+    return shipCenter.y;
 }
 
-/* Setters */
-void Ship::setSize(int s) {
-    size = s;
+// setters
+void Ship::setCenterX(int x) {
+    shipCenter.x = x;
 }
-void Ship::setDestroyed(bool d) {
-    destroyed = d;
+void Ship::setCenterY(int y) {
+    shipCenter.y = y;
+}
+
+void Ship::createShip(int x, int y,int size, int num) {
+    for (int i = 0; i < cellSize * size; i += 30) {
+        cell.setPosition(x,y + i);
+        cell.setWidth(cellSize);
+        cell.setLength(cellSize);
+        cell.drawShapeDefault();
+    }
+    setCenterX(x);
+    setCenterY((y - 15) + (cellSize * size / 2));
 }
