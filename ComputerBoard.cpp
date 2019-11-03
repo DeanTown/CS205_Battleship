@@ -65,19 +65,199 @@ bool ComputerBoard::userMove(int row, int col) {
  * choices for facing direction.
  */
 void ComputerBoard::placePieces() {
+
+    int randomRow, randomCol;
+    position randomPos;
+    int currSize;
+    cellStatus currShip;
+
     // Initialize random object
     srand(time(nullptr));
     int placed = 0;
-    while (placed < 5) {
-        // generate random number between 0 and 9 for row
-        int randomRow = rand() % 10;
-        // generate random number between 0 and 9 for col
-        int randomCol = rand() % 10;
-        if (board[randomRow][randomCol] == Nothing) {
 
+    while (placed < 5) {
+        int direction= -1;
+
+        randomPos= newPosition();
+        randomRow=randomPos.row;
+        randomCol=randomPos.col;
+
+        int cap=0;
+        switch(placed){
+            case 0:
+                currSize=5;
+                currShip=Carrier;
+                break;
+            case 1:
+                currSize=4;
+                currShip=Battleship;
+                break;
+            case 2:
+                currSize=3;
+                currShip=Destroyer;
+                break;
+            case 3:
+                currSize=3;
+                currShip=Sub;
+                break;
+            case 4:
+                currSize=2;
+                currShip=Cruiser;
+                break;
         }
+        cap=0;
+        direction=getDirection(randomRow,randomCol,currSize);
+
+        while(!checkClear(randomRow,randomCol,currSize,direction)){
+            if(cap==4){
+                randomPos= newPosition();
+                randomRow=randomPos.row;
+                randomCol=randomPos.col;
+                cap=0;
+            }
+            direction=getDirection(randomRow,randomCol,currSize);
+            cap++;
+        }
+        setBoardValues(currShip,randomPos,currSize,direction);
+
         placed++;
     }
+}
+
+void ComputerBoard::setBoardValues(cellStatus shipType,position pos, int size, int direction){
+    int row=pos.row;
+    int col=pos.col;
+
+    switch(direction){
+        case 0:
+            for(int i=row;i>=row-size;i--){
+                board[i][col]=shipType;
+            }
+            break;
+        case 1:
+            for(int i=row;i<=row+size;i++){
+                board[i][col]=shipType;
+            }
+            break;
+        case 2:
+            for(int i=col;i<=col+size;i++){
+                board[row][i]=shipType;
+            }
+            break;
+        case 3:
+            for(int i=col;i>=col-size;i--){
+                board[row][i]=shipType;
+            }
+            break;
+    }
+}
+
+bool ComputerBoard::checkClear(int row, int col, int size, int direction){
+    bool valid=true;
+    switch(direction){
+        case 0:
+            for(int i=row;i>=row-size;i--){
+                if(board[i][col]!= Nothing){
+                    valid=false;
+                }
+            }
+            break;
+        case 1:
+            for(int i=row;i<=row+size;i++){
+                if(board[i][col]!= Nothing){
+                    valid=false;
+                }
+            }
+            break;
+        case 2:
+            for(int i=col;i<=col+size;i++){
+                if(board[row][i]!= Nothing){
+                    valid=false;
+                }
+            }
+            break;
+        case 3:
+            for(int i=col;i>=col-size;i--){
+                if(board[row][i]!= Nothing){
+                    valid=false;
+                }
+            }
+            break;
+    }
+    return valid;
+}
+
+position ComputerBoard::newPosition(){
+    position pos;
+    int randomRow = rand() % 10;
+    // generate random number between 0 and 9 for col
+    int randomCol = rand() % 10;
+
+    while (board[randomRow][randomCol] != Nothing) {
+        randomRow = rand() % 10;
+        randomCol = rand() % 10;
+    }
+
+    pos.row=randomRow;
+    pos.col=randomCol;
+
+    return pos;
+}
+
+int ComputerBoard::getDirection(int row, int col, int size){
+    int northDist=0;
+    int southDist=0;
+    int eastDist=0;
+    int westDist=0;
+    bool northValid=false;
+    bool southValid=false;
+    bool eastValid=false;
+    bool westValid=false;
+
+    northDist= row;
+    southDist= 9 - row;
+    eastDist= 9 - col;
+    westDist= col;
+
+    if(northDist>=size-1){
+        northValid=true;
+    }if(southDist>=size-1){
+        southValid=true;
+    }if(eastDist>=size-1){
+        eastValid= true;
+    }if(westDist>=size-1){
+        westValid=true;
+    }
+    bool found=false;
+    int direction=-1;
+
+    while(!found){
+        direction = rand() % 4;
+        switch(direction){
+            case 0:
+                if(northValid){
+                    found=true;
+                }
+                break;
+            case 1:
+                if(southValid){
+                    found=true;
+                }
+                break;
+            case 2:
+                if(eastValid){
+                    found=true;
+                }
+                break;
+            case 3:
+                if(westValid){
+                    found=true;
+                }
+                break;
+        }
+    }
+
+    return direction;
 }
 
 void ComputerBoard::printBoard() {
