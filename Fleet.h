@@ -6,6 +6,7 @@
 #define CS205_FINAL_PROJECT_FLEET_H
 
 #include "Ship.h"
+using namespace std;
 
 class Fleet {
 private:
@@ -16,6 +17,7 @@ private:
     Ship cruiser = Ship(2);
 public:
     Fleet();
+    void updateShip(int ship);
     bool sunk();
 };
 

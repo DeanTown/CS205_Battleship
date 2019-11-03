@@ -21,6 +21,8 @@ public:
     /* Setters */
     void setSize(int s);
     void setDestroyed(bool d);
+
+    void addHit();
 };
 
 

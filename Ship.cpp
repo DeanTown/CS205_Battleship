@@ -25,3 +25,7 @@ void Ship::setSize(int s) {
 void Ship::setDestroyed(bool d) {
     destroyed = d;
 }
+
+void Ship::addHit() {
+    hits++;
+}

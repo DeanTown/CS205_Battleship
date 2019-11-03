@@ -12,11 +12,29 @@ bool UserBoard::compMove() {
     int randRow = rand() % 10;
     int randCol = rand() % 10;
 
-    if (regex_match(cellStatusToString(board[randRow][randCol]), r)) {
+    // Check to see if that square has already been clicked
+    // if it has, then the move is invalid; return false
+    if (isHit(randRow, randCol)) {
         return false;
     }
 
+    // If the hits vector is empty, we don't have any previous moves
+    // to go off of, so we pick a random square. If the random square has
+    // not already been hit, then we "hit" it by updating the board,
+    // updating the ship hit, and adding it to the hits vector
     if (hits.size() == 0) {
+        if (!isHit(randRow, randCol)) {
+            // update board
+            cellStatus tempStat = board[randRow][randCol];
+            cellStatus updated = cellStatusUpdater(tempStat);
+            board[randRow][randCol] = updated;
+            // update ship hit
+            updateShip(tempStat);
+            position tempPos;
+            tempPos.row = randRow;
+            tempPos.col = randCol;
+            hits.push_back(tempPos);
+        }
         // create random position
         // check if the position is a hit
         // if it is then update the board and add to hit vector
@@ -37,6 +55,14 @@ bool UserBoard::compMove() {
 
 
     return true;
+}
+
+bool UserBoard::isHit(int row, int col) {
+    regex r ("(*)(Hit)");
+    if (regex_match(cellStatusToString(board[row][col]), r)) {
+        return true;
+    }
+    return false;
 }
 
 void UserBoard::placePieces(){
