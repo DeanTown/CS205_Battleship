@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <iomanip>
+#include <zconf.h>
 #include "algorithm"
 #include "cstdlib"
 #include "ctime"
@@ -14,9 +15,10 @@
 
 using namespace std;
 GLdouble width, height;
-int wd;
+int wd, cellNumber;
 Board board;
-
+Cell cell;
+bool mouseInput = false;
 
 
 void init() {
@@ -43,21 +45,12 @@ void display(){
     glClear(GL_COLOR_BUFFER_BIT);   // Clear the color buffer with current clearing color
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    board.draw_board();
-//    glColor3f(1.0,0.0,0.0);
-//    glBegin(GL_QUADS);
-//    glVertex2d(0.0,0.0);
-//    glVertex2d(100.0,0.0);
-//    glVertex2d(100.0,100.0);
-//    glVertex2d(0.0,100.0);
-//    glEnd();
-//    glColor3f(0.0,1.0,0.0);
-//    glBegin(GL_QUADS);
-//    glVertex2d(10.0,10.0);
-//    glVertex2d(90.0,10.0);
-//    glVertex2d(90.0,90.0);
-//    glVertex2d(10.0,90.0);
-//    glEnd();
+    board.drawBoard();
+    if (mouseInput) {
+        board.updateBoard();
+//        mouseInput = false;
+    }
+
     glFlush();  // Render now
 }
 
@@ -76,8 +69,6 @@ void kbd(unsigned char key, int x, int y)
 
 void kbdS(int key, int x, int y) {
     switch(key) {
-
-
         case GLUT_KEY_DOWN:
 
             break;
@@ -106,7 +97,21 @@ void cursor(int x, int y) {
 // button will be GLUT_LEFT_BUTTON or GLUT_RIGHT_BUTTON
 // state will be GLUT_UP or GLUT_DOWN
 void mouse(int button, int state, int x, int y) {
-
+    switch (button) {
+        default:
+            break;
+        case GLUT_LEFT_BUTTON:
+            if (state == GLUT_DOWN) {
+                if (x >= board.getLeftX() && x <= board.getRightX() && y >= board.getTopY() && y <= board.getBottomY()) {
+                    cout << board.cellNum(x,y) << endl;
+                    cellNumber = board.cellNum(x,y);
+                    mouseInput = board.updateStat(cellNumber - 1 );
+                }
+            }
+            break;
+        case GLUT_RIGHT_BUTTON:
+            break;
+    }
 }
 void timer(int dummy) {
 

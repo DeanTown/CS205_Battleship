@@ -26,7 +26,7 @@ file(GLOB SOURCE_FILES
         *.h
         )
 
-add_executable(graphics Board Ship ComputerBoard ${SOURCE_FILES})
+add_executable(graphics Board Ship Cell ${SOURCE_FILES} Cell.cpp Cell.h)
 
 if (WIN32)
     target_link_libraries (graphics ${OPENGL_LIBRARIES} freeglut)
