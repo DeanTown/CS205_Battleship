@@ -35,38 +35,42 @@ bool UserBoard::compMove() {
                 randRow -= 1;
                 miss.row = randRow;
                 miss.col = randCol;
-                if (!alreadyHit((randRow), randCol)) {
+                if (!alreadyHit(randRow, randCol)) {
                     updateBoard(randRow, randCol);
                 } else {
                     attempts.push_back(miss);
                 }
+                break;
             case 1: // east
                 randCol += 1;
                 miss.row = randRow;
                 miss.col = randCol;
-                if (!alreadyHit(randRow, (randCol))) {
+                if (!alreadyHit(randRow, randCol)) {
                     updateBoard(randRow, randCol);
                 } else {
                     attempts.push_back(miss);
                 }
+                break;
             case 2: // south
                 randRow += 1;
                 miss.row = randRow;
                 miss.col = randCol;
-                if (!alreadyHit(randRow, (randCol))) {
+                if (!alreadyHit(randRow, randCol)) {
                     updateBoard(randRow, randCol);
                 } else {
                     attempts.push_back(miss);
                 }
+                break;
             case 3: // west
                 randCol -= 1;
                 miss.row = randRow;
                 miss.col = randCol;
-                if (!alreadyHit(randRow, (randCol))) {
+                if (!alreadyHit(randRow, randCol)) {
                     updateBoard(randRow, randCol);
                 } else {
                     attempts.push_back(miss);
                 }
+                break;
         }
         // pick a random direction
         // see if its a hit
@@ -75,7 +79,61 @@ bool UserBoard::compMove() {
     }
 
     if (hits.size() > 1) {
+        int hitsSize = hits.size();
+        position to = hits[hitsSize];
+        position from = hits[hitsSize - 1];
+        // position to check if the next logical move is in the attempts vector
+        bool inAttempts;
+        position check;
+        // NORTH
+        check.row = hits[hitsSize].row - 2;
+        check.col = hits[hitsSize].col;
+        for (position p : attempts) {
+            if (p.row == check.row && p.col == check.col) {
+                inAttempts = true;
+            }
+        }
+        if ((from.row - to.row == -1) && (from.col - to.col == 0) && !inAttempts) {
+            // north
+            updateBoard(check.row, check.col);
 
+        }
+        // EAST
+        check.row = hits[hitsSize].row;
+        check.col = hits[hitsSize].col + 2;
+        for (position p : attempts) {
+            if (p.row == check.row && p.col == check.col) {
+                inAttempts = true;
+            }
+        }
+        if ((from.row - to.row == 0) && (from.col - to.col == 1) && !inAttempts) {
+            // east
+            updateBoard(check.row, check.col);
+        }
+        // SOUTH
+        check.row = hits[hitsSize].row + 2;
+        check.col = hits[hitsSize].col;
+        for (position p : attempts) {
+            if (p.row == check.row && p.col == check.col) {
+                inAttempts = true;
+            }
+        }
+        if ((from.row - to.row == 1) && (from.col - to.col == 0) && !inAttempts) {
+            // south
+            updateBoard(check.row, check.col);
+        }
+        // WEST
+        check.row = hits[hitsSize].row;
+        check.col = hits[hitsSize].col - 2;
+        for (position p : attempts) {
+            if (p.row == check.row && p.col == check.col) {
+                inAttempts = true;
+            }
+        }
+        if ((from.row - to.row == 0) && (from.col - to.col == -1) && !inAttempts) {
+            // west
+            updateBoard(check.row, check.col);
+        }
         // find the direction of the hits
         // keep going in that direction, unless the position next in line is in the attempts vector
         // if next in line in attempts vector, go the opposite direction
