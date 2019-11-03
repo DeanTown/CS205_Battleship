@@ -15,6 +15,8 @@ private:
 public:
     UserBoard();
     bool compMove();
+    bool alreadyHit(int row, int col);
+    void updateBoard(int row, int col);
     void placePieces();
     void printBoard();
 };

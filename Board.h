@@ -42,6 +42,8 @@ public:
     Board();
     Fleet getFleet();
     string cellStatusToString(cellStatus c);
+    cellStatus cellStatusUpdater(cellStatus c);
+    void updateShip(cellStatus c);
     void printBoard();
 };
 
