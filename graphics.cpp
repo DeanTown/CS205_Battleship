@@ -104,8 +104,10 @@ void mouse(int button, int state, int x, int y) {
             if (state == GLUT_DOWN) {
                 if (x >= board.getLeftX() && x <= board.getRightX() && y >= board.getTopY() && y <= board.getBottomY()) {
                     cout << board.cellNum(x,y) << endl;
-                    cellNumber = board.cellNum(x,y);
-                    mouseInput = board.updateStat(cellNumber - 1 );
+                    if (board.cellNum(x,y) != 0) {
+                        cellNumber = board.cellNum(x,y);
+                        mouseInput = board.updateStat(cellNumber - 1 );
+                    }
                 }
             }
             break;
