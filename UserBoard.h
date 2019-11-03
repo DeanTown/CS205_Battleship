@@ -18,7 +18,10 @@ public:
     bool alreadyHit(int row, int col);
     void updateBoard(int row, int col);
     void placePieces();
-    void printBoard();
+    int getDirection(int row, int col, int size);
+    bool checkClear(int row, int col, int size, int direction);
+    position newPosition();
+    void setBoardValues(cellStatus shipType,position pos, int size, int direction);
 };
 
 

@@ -12,12 +12,16 @@
  * and returns false.
  *
  */
+ComputerBoard::ComputerBoard(): Board(){
+
+}
 bool ComputerBoard::userMove(int row, int col) {
     // get cell status
     cellStatus c = board[row][col];
     // cell contains destroyer
     if (c == Destroyer) {
         board[row][col] = DestroyerHit;
+        updateShip(Destroyer);
         // go into ship class and increment hit
     } else if (c == DestroyerHit) {
         return false;
@@ -25,24 +29,28 @@ bool ComputerBoard::userMove(int row, int col) {
     // cell contains sub
     if (c == Sub) {
         board[row][col] = SubHit;
+        updateShip(Sub);
     } else if (c == SubHit) {
         return false;
     }
     // cell contains carrier
     if (c == Carrier) {
         board[row][col] = CarrierHit;
+        updateShip(Carrier);
     } else if (c == CarrierHit) {
         return false;
     }
     // cell contains cruiser
     if (c == Cruiser) {
         board[row][col] = CruiserHit;
+        updateShip(Cruiser);
     } else if (c == CruiserHit) {
         return false;
     }
     // cell contains battleship
     if (c == Battleship) {
         board[row][col] = BattleshipHit;
+        updateShip(Battleship);
     } else if (c == BattleshipHit) {
         return false;
     }
@@ -130,22 +138,22 @@ void ComputerBoard::setBoardValues(cellStatus shipType,position pos, int size, i
 
     switch(direction){
         case 0:
-            for(int i=row;i>=row-size;i--){
+            for(int i=row;i>=row-size+1;i--){
                 board[i][col]=shipType;
             }
             break;
         case 1:
-            for(int i=row;i<=row+size;i++){
+            for(int i=row;i<=row+size-1;i++){
                 board[i][col]=shipType;
             }
             break;
         case 2:
-            for(int i=col;i<=col+size;i++){
+            for(int i=col;i<=col+size-1;i++){
                 board[row][i]=shipType;
             }
             break;
         case 3:
-            for(int i=col;i>=col-size;i--){
+            for(int i=col;i>=col-size+1;i--){
                 board[row][i]=shipType;
             }
             break;
@@ -156,28 +164,28 @@ bool ComputerBoard::checkClear(int row, int col, int size, int direction){
     bool valid=true;
     switch(direction){
         case 0:
-            for(int i=row;i>=row-size;i--){
+            for(int i=row;i>=row-size+1;i--){
                 if(board[i][col]!= Nothing){
                     valid=false;
                 }
             }
             break;
         case 1:
-            for(int i=row;i<=row+size;i++){
+            for(int i=row;i<=row+size-1;i++){
                 if(board[i][col]!= Nothing){
                     valid=false;
                 }
             }
             break;
         case 2:
-            for(int i=col;i<=col+size;i++){
+            for(int i=col;i<=col+size-1;i++){
                 if(board[row][i]!= Nothing){
                     valid=false;
                 }
             }
             break;
         case 3:
-            for(int i=col;i>=col-size;i--){
+            for(int i=col;i>=col-size+1;i--){
                 if(board[row][i]!= Nothing){
                     valid=false;
                 }
@@ -260,10 +268,3 @@ int ComputerBoard::getDirection(int row, int col, int size){
     return direction;
 }
 
-void ComputerBoard::printBoard() {
-    for (vector<cellStatus> row : board) {
-        for (cellStatus col : row) {
-            cout << " | " << col << " | " << endl;
-        }
-    }
-}

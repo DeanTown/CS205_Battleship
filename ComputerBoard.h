@@ -13,7 +13,7 @@ public:
     ComputerBoard();
     bool userMove(int row, int col);
     void placePieces();
-    void printBoard();
+
     int getDirection(int row, int col, int size);
     bool checkClear(int row, int col, int size, int direction);
     position newPosition();

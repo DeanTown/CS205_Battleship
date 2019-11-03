@@ -3,6 +3,9 @@
 //
 
 #include "Board.h"
+#include <iostream>
+#include <string.h>
+#include <sstream>
 using namespace std;
 
 /* Constructor */
@@ -11,9 +14,12 @@ Board::Board() {
     cols = 10;
     rows = 10;
     board.resize(rows);
-    for (vector<cellStatus> row : board) {
-        row.resize(cols);
+    for(int i=0; i< rows ; i++){
+        for(int j=0; j<cols; j++){
+            board[i].push_back(Nothing);
+        }
     }
+
 }
 
 Fleet Board::getFleet() {
@@ -64,6 +70,70 @@ void Board::updateShip(cellStatus c) {
     }
 }
 
-void printBoard(){
+void Board::printBoard() {
+    for(int i=0; i< rows ; i++){
+        for(int j=0; j<cols; j++){
 
+            //cout<<cellStatusToString(board[i][j]).substr(0,2)<<cellStatusToString(board[i][j]).substr(cellStatusToString(board[i][j]).length()-3,3)+" ";
+
+            switch(board[i][j]){
+                case Nothing:
+                    cout<<"o   ";
+                    break;
+                case NothingHit:
+                    cout<<"x   ";
+                    break;
+                case Battleship:
+                    cout<<"b   ";
+                    break;
+                case BattleshipHit:
+                    cout<<"B   ";
+                    break;
+                case Cruiser:
+                    cout<<"cr  ";
+                    break;
+                case CruiserHit:
+                    cout<<"CR  ";
+                    break;
+                case Sub:
+                    cout<<"s   ";
+                    break;
+                case SubHit:
+                    cout<<"S   ";
+                    break;
+                case Destroyer:
+                    cout<<"d   ";
+                    break;
+                case DestroyerHit:
+                    cout<<"D   ";
+                    break;
+                case Carrier:
+                    cout<<"c   ";
+                    break;
+                case CarrierHit:
+                    cout<<"C   ";
+                    break;
+                default:
+                    cout<<"0   ";
+                    break;
+
+            }
+
+
+        }
+        cout<<"\n";
+    }
+}
+
+int Board::getIntInput(string input){
+    input = "";
+    int returnVal = 0;
+    while(true) {
+        getline(cin, input);
+        stringstream strToInt(input);
+        if (strToInt >> returnVal) {
+            return returnVal;
+        }
+        cout << "Please enter a valid input" << endl;
+    }
 }

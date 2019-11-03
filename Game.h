@@ -5,7 +5,6 @@
 #ifndef CS205_FINALPROJECT_GAME_H
 #define CS205_FINALPROJECT_GAME_H
 
-#include "Board.h"
 #include "UserBoard.h"
 #include "ComputerBoard.h"
 using namespace std;
