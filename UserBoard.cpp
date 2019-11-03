@@ -11,10 +11,11 @@ bool UserBoard::compMove() {
     srand(time(nullptr));
     int randRow = rand() % 10;
     int randCol = rand() % 10;
+    int randDirection;
 
     // Check to see if that square has already been clicked
     // if it has, then the move is invalid; return false
-    if (isHit(randRow, randCol)) {
+    if (alreadyHit(randRow, randCol)) {
         return false;
     }
 
@@ -23,31 +24,58 @@ bool UserBoard::compMove() {
     // not already been hit, then we "hit" it by updating the board,
     // updating the ship hit, and adding it to the hits vector
     if (hits.size() == 0) {
-        if (!isHit(randRow, randCol)) {
-            // update board
-            cellStatus tempStat = board[randRow][randCol];
-            cellStatus updated = cellStatusUpdater(tempStat);
-            board[randRow][randCol] = updated;
-            // update ship hit
-            updateShip(tempStat);
-            position tempPos;
-            tempPos.row = randRow;
-            tempPos.col = randCol;
-            hits.push_back(tempPos);
-        }
-        // create random position
-        // check if the position is a hit
-        // if it is then update the board and add to hit vector
+        updateBoard(randRow, randCol);
     }
 
     if (hits.size() == 1) {
+        randDirection = rand() % 4;
+        position miss;
+        switch (randDirection) {
+            case 0: // north
+                randRow -= 1;
+                miss.row = randRow;
+                miss.col = randCol;
+                if (!alreadyHit((randRow), randCol)) {
+                    updateBoard(randRow, randCol);
+                } else {
+                    attempts.push_back(miss);
+                }
+            case 1: // east
+                randCol += 1;
+                miss.row = randRow;
+                miss.col = randCol;
+                if (!alreadyHit(randRow, (randCol))) {
+                    updateBoard(randRow, randCol);
+                } else {
+                    attempts.push_back(miss);
+                }
+            case 2: // south
+                randRow += 1;
+                miss.row = randRow;
+                miss.col = randCol;
+                if (!alreadyHit(randRow, (randCol))) {
+                    updateBoard(randRow, randCol);
+                } else {
+                    attempts.push_back(miss);
+                }
+            case 3: // west
+                randCol -= 1;
+                miss.row = randRow;
+                miss.col = randCol;
+                if (!alreadyHit(randRow, (randCol))) {
+                    updateBoard(randRow, randCol);
+                } else {
+                    attempts.push_back(miss);
+                }
+        }
         // pick a random direction
         // see if its a hit
         // if it is a hit then add to hit vector
-        // if not a hit, add to attemps vector
+        // if not a hit, add to attempts vector
     }
 
     if (hits.size() > 1) {
+
         // find the direction of the hits
         // keep going in that direction, unless the position next in line is in the attempts vector
         // if next in line in attempts vector, go the opposite direction
@@ -57,12 +85,26 @@ bool UserBoard::compMove() {
     return true;
 }
 
-bool UserBoard::isHit(int row, int col) {
+bool UserBoard::alreadyHit(int row, int col) {
     regex r ("(*)(Hit)");
     if (regex_match(cellStatusToString(board[row][col]), r)) {
         return true;
     }
     return false;
+}
+
+void UserBoard::updateBoard(int row, int col) {
+    // update board
+    cellStatus tempStat = board[row][col];
+    cellStatus updated = cellStatusUpdater(tempStat);
+    board[row][col] = updated;
+    // update ship hit
+    updateShip(tempStat);
+    position tempPos;
+    tempPos.row = row;
+    tempPos.col = col;
+    // add to hits vector
+    hits.push_back(tempPos);
 }
 
 void UserBoard::placePieces(){

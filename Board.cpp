@@ -48,14 +48,19 @@ void Board::updateShip(cellStatus c) {
     switch(c) {
         case Destroyer:
             fleet.updateShip(1);
+            break;
         case Sub:
             fleet.updateShip(2);
+            break;
         case Carrier:
             fleet.updateShip(3);
+            break;
         case Cruiser:
             fleet.updateShip(4);
+            break;
         case Battleship:
             fleet.updateShip(5);
+            break;
     }
 }
 

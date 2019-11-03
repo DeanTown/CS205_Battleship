@@ -11,14 +11,19 @@ void Fleet::updateShip(int ship) {
     switch(ship) {
         case 1:
             destroyer.addHit();
+            break;
         case 2:
             sub.addHit();
+            break;
         case 3:
             carrier.addHit();
+            break;
         case 4:
             cruiser.addHit();
+            break;
         case 5:
             battleship.addHit();
+            break;
     }
 }
 
