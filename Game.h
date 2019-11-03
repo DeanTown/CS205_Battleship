@@ -19,7 +19,7 @@ public:
     /* Constructor */
     Game();
     //To Begin and end games
-    void startGame();
+    bool startGame();
     void resetGame();
     void endGame();
     void playGame();

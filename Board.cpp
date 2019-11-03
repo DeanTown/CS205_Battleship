@@ -124,7 +124,59 @@ void Board::printBoard() {
         cout<<"\n";
     }
 }
+void Board::printHiddenBoard() {
+    for(int i=0; i< rows ; i++){
+        for(int j=0; j<cols; j++){
 
+
+            switch(board[i][j]){
+                case Nothing:
+                    cout<<"o   ";
+                    break;
+                case NothingHit:
+                    cout<<"+   ";
+                    break;
+                case Battleship:
+                    cout<<"o   ";
+                    break;
+                case BattleshipHit:
+                    cout<<"X   ";
+                    break;
+                case Cruiser:
+                    cout<<"o   ";
+                    break;
+                case CruiserHit:
+                    cout<<"X   ";
+                    break;
+                case Sub:
+                    cout<<"o   ";
+                    break;
+                case SubHit:
+                    cout<<"X   ";
+                    break;
+                case Destroyer:
+                    cout<<"o   ";
+                    break;
+                case DestroyerHit:
+                    cout<<"X   ";
+                    break;
+                case Carrier:
+                    cout<<"o   ";
+                    break;
+                case CarrierHit:
+                    cout<<"X   ";
+                    break;
+                default:
+                    cout<<"0   ";
+                    break;
+
+            }
+
+
+        }
+        cout<<"\n";
+    }
+}
 int Board::getIntInput(string input){
     input = "";
     int returnVal = 0;

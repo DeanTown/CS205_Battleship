@@ -6,11 +6,12 @@
 #include "cstdlib"
 #include "ctime"
 
-#include "Board.h"
+
 #include "ComputerBoard.h"
 #include "UserBoard.h"
 #include "Ship.h"
 #include "Game.h"
+#include <sstream>
 
 
 using namespace std;
@@ -116,8 +117,15 @@ void timer(int dummy) {
 }
 
 
+
 /* Main function: GLUT runs as a console application starting at main()  */
 int main(int argc, char** argv) {
+
+    Game game= Game();
+    if(game.startGame()){
+        game.playGame();
+        game.endGame();
+    }
 
 //    ComputerBoard comp;
 //
@@ -128,24 +136,52 @@ int main(int argc, char** argv) {
 //
 //    int row;
 //    int col;
-//    cout<<"Row?"<<endl;
-//    cin>>row;
-//    cout<<"Col?"<<endl;
-//    cin>>col;
-//    comp.userMove(row,col);
+//    string s="";
 //
+//    while(!comp.getFleet().sunk()) {
+//        cout << "Row?" << endl;
+//        row = getIntInput(s);
+//        while (row < 0 or row > 9) {
+//            cout << "Invalid Number" << endl;
+//          row = getIntInput(s);
+//        }
+//
+//        cout << "Col?" << endl;
+//        col = getIntInput(s);
+//        while (col < 0 or col > 9) {
+//            cout << "Invalid Number" << endl;
+//            col = getIntInput(s);
+//        }
+//
+//        while (!comp.userMove(row, col)) {
+//            cout << "INVALID MOVE" << endl;
+//            cout << "Row?" << endl;
+//            row = getIntInput(s);
+//            while (row < 0 or row > 9) {
+//                cout << "Invalid Number" << endl;
+//                row = getIntInput(s);
+//            }
+//
+//            cout << "Col?" << endl;
+//            col = getIntInput(s);
+//            while (col < 0 or col > 9) {
+//                cout << "Invalid Number" << endl;
+//                col = getIntInput(s);
+//            }
+//        }
+//    }
 //    comp.printBoard();
-
-    UserBoard user;
-    user.printBoard();
-    cout<<"---------------------------------\n";
-    user.placePieces();
-    user.printBoard();
-    cout<<"---------------------------------\n";
-    for(int i=0;i<5;i++){
-        while(!user.compMove());
-    }
-    user.printBoard();
+//
+//    UserBoard user;
+//    user.printBoard();
+//    cout<<"---------------------------------\n";
+//    user.placePieces();
+//    user.printBoard();
+//    cout<<"---------------------------------\n";
+//    for(int i=0;i<5;i++){
+//        while(!user.compMove());
+//    }
+//    user.printBoard();
 
 
 

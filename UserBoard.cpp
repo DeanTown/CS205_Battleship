@@ -250,7 +250,9 @@ void UserBoard::placePieces() {
                 cout<<"Carrier\n--------"<<endl;
                 randomPos= newPosition();
                 cout<<"What Direction (0=North, 1=South, 2=East, 3= West)"<<endl;
+                direction=getIntInput(junk);
                 while(direction<0 or direction >3){
+                    cout<<"Invalid Number"<<endl;
                     direction=getIntInput(junk);
                 }
                 break;
@@ -260,7 +262,9 @@ void UserBoard::placePieces() {
                 cout<<"BattleShip\n--------"<<endl;
                 randomPos= newPosition();
                 cout<<"What Direction (0=North, 1=South, 2=East, 3= West)"<<endl;
+                direction=getIntInput(junk);
                 while(direction<0 or direction >3){
+                    cout<<"Invalid Number"<<endl;
                     direction=getIntInput(junk);
                 }
                 break;
@@ -270,7 +274,9 @@ void UserBoard::placePieces() {
                 cout<<"Destroyer\n--------"<<endl;
                 randomPos= newPosition();
                 cout<<"What Direction (0=North, 1=South, 2=East, 3= West)"<<endl;
+                direction=getIntInput(junk);
                 while(direction<0 or direction >3){
+                    cout<<"Invalid Number"<<endl;
                     direction=getIntInput(junk);
                 }
                 break;
@@ -280,7 +286,9 @@ void UserBoard::placePieces() {
                 cout<<"Sub\n--------"<<endl;
                 randomPos= newPosition();
                 cout<<"What Direction (0=North, 1=South, 2=East, 3= West)"<<endl;
+                direction=getIntInput(junk);
                 while(direction<0 or direction >3){
+                    cout<<"Invalid Number"<<endl;
                     direction=getIntInput(junk);
                 }
                 break;
@@ -290,7 +298,9 @@ void UserBoard::placePieces() {
                 cout<<"Cruiser\n--------"<<endl;
                 randomPos= newPosition();
                 cout<<"What Direction (0=North, 1=South, 2=East, 3= West)"<<endl;
+                direction=getIntInput(junk);
                 while(direction<0 or direction >3){
+                    cout<<"Invalid Number"<<endl;
                     direction=getIntInput(junk);
                 }
                 break;
@@ -305,6 +315,7 @@ void UserBoard::placePieces() {
 
             direction=getIntInput(junk);
             while(direction<0 or direction >3){
+                cout<<"Invalid Number"<<endl;
                 direction=getIntInput(junk);
             }
             randomRow=randomPos.row;
@@ -390,11 +401,13 @@ position UserBoard::newPosition(){
     cout<<"What Row?"<<endl;
     randomRow=getIntInput(junk);
     while(randomRow<0 or randomRow> 9){
+        cout<<"Invalid Number"<<endl;
         randomRow=getIntInput(junk);
     }
     cout<<"What Col?"<<endl;
     randomCol=getIntInput(junk);
     while(randomCol<0 or randomCol> 9){
+        cout<<"Invalid Number"<<endl;
         randomCol=getIntInput(junk);
     }
 
@@ -403,11 +416,13 @@ position UserBoard::newPosition(){
         cout<<"What Row?"<<endl;
         randomRow=getIntInput(junk);
         while(randomRow<0 or randomRow> 9){
+            cout<<"Invalid Number"<<endl;
             randomRow=getIntInput(junk);
         }
         cout<<"What Col?"<<endl;
         randomCol=getIntInput(junk);
         while(randomCol<0 or randomCol> 9){
+            cout<<"Invalid Number"<<endl;
             randomCol=getIntInput(junk);
         }
     }

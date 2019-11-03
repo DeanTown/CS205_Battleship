@@ -5,8 +5,23 @@
 #include "Game.h"
 #include "stdio.h"
 #include "iostream"
+#include <sstream>
+#include "graphics.h"
 
 using namespace std;
+
+int getIntInput(string input){
+    input = "";
+    int returnVal = 0;
+    while(true) {
+        getline(cin, input);
+        stringstream strToInt(input);
+        if (strToInt >> returnVal) {
+            return returnVal;
+        }
+        cout << "Please enter a valid input" << endl;
+    }
+}
 
 Game::Game(){
     compBoard= ComputerBoard();
@@ -14,54 +29,88 @@ Game::Game(){
 }
 
 //To Begin and end games
-void Game::startGame(){
-
-    string enter;
+bool Game::startGame(){
+    int choice;
+    string junk="";
     cout<<"Hello Welcome to BattleShip"<<endl;
-    cout<<"Press enter to start loading pieces";
-    cin>> enter;
-    userBoard.placePieces();
-    compBoard.placePieces();
+    cout<<"Do you want to play a game 0=NO 1=YES: ";
+    choice=getIntInput(junk);
+    if(choice==1){
+        cout<<"Enter starting position in row, col then the direction the ship will be placed from that point"<<endl;
+        userBoard.placePieces();
+        compBoard.placePieces();
+        return true;
+    }else{
+        return false;
+    }
 }
 
 void Game::resetGame(){
-
+    userBoard= UserBoard();
+    compBoard= ComputerBoard();
 }
 void Game::endGame(){
+    if(compBoard.getFleet().sunk()){
+        cout<<"Congrats you beat the computer!"<<endl;
+    }else{
+        cout<<"You lost to the computer..."<<endl;
+    }
 
 }
+
+
 
 void Game::playGame(){
     int row;
     int col;
-    bool userValid;
+    string s="";
 
     cout<<"OK now that the pieces are placed, lets begin the game\n";
 
     while(!compBoard.getFleet().sunk() and !userBoard.getFleet().sunk()){
-        compBoard.printBoard();
 
+        cout<<"OPPONENT BOARD\n-----------------------------------"<<endl;
+        compBoard.printHiddenBoard();
+
+        cout<<"USER BOARD\n-----------------------------------"<<endl;
+        userBoard.printBoard();
+
+        cout<<"Time to FIRE!"<<endl;
         cout<<"What row?"<<endl;
-        cin>> row;
+        row = getIntInput(s);
+        while (row < 0 or row > 9) {
+            cout << "Invalid Row #" << endl;
+            row = getIntInput(s);
+        }
         cout<<"What col?"<<endl;
-        cin>> col;
-
-        userValid= compBoard.userMove(row,col);
-
-        while(!userValid){
-            cout<<"Invalid"<<endl;
-            cout<<"What row?"<<endl;
-            cin>> row;
-            cout<<"What col?"<<endl;
-            cin>> col;
-            userValid= compBoard.userMove(row,col);
+        col = getIntInput(s);
+        while (row < 0 or row > 9) {
+            cout << "Invalid Col #" << endl;
+            col = getIntInput(s);
         }
 
-        wait(new int(3));
 
-        userBoard.compMove();
+        while(!compBoard.userMove(row,col)){
+            cout<<"Invalid Move"<<endl;
+            cout<<"What row?"<<endl;
+            row = getIntInput(s);
+            while (row < 0 or row > 9) {
+                cout << "Invalid Row #" << endl;
+                row = getIntInput(s);
+            }
+            cout<<"What col?"<<endl;
+            col = getIntInput(s);
+            while (row < 0 or row > 9) {
+                cout << "Invalid Col #" << endl;
+                col = getIntInput(s);
+            }
+        }
 
+        wait(new int(1));
 
+        while(!userBoard.compMove());
+
+        cout<<"Computer has made a move! \n"<<endl;
 
     }
 

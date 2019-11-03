@@ -15,7 +15,7 @@ int Ship::getSize() {
     return size;
 }
 bool Ship::getDestroyed() {
-    return destroyed;
+    return size==hits;
 }
 
 /* Setters */
