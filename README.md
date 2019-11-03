@@ -4,6 +4,12 @@
 
 # CS205 Final Project
 
+## Sprint 1 instructions:
+    
+    In sprint 1 we created the model of the game.
+    To run the game, run graphics.cpp and follow the onscreen instructions.
+    Also, the graphics branch on github is where Hannah and Teemo made most of their commits this sprint. Oliver and Harry
+    wrote most of the game functionality which is on master.
 
 ## Project:
 
