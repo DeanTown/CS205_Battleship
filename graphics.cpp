@@ -7,9 +7,10 @@
 #include "ctime"
 
 #include "Board.h"
-//#include "Player.h"
+#include "ComputerBoard.h"
+#include "UserBoard.h"
 #include "Ship.h"
-//#include "Game.h"
+#include "Game.h"
 
 
 using namespace std;
@@ -43,7 +44,7 @@ void display(){
     glClear(GL_COLOR_BUFFER_BIT);   // Clear the color buffer with current clearing color
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    board.draw_board();
+//    board.draw_board();
 //    glColor3f(1.0,0.0,0.0);
 //    glBegin(GL_QUADS);
 //    glVertex2d(0.0,0.0);
@@ -118,46 +119,76 @@ void timer(int dummy) {
 /* Main function: GLUT runs as a console application starting at main()  */
 int main(int argc, char** argv) {
 
-    init();
+//    ComputerBoard comp;
+//
+//    comp.printBoard();
+//    cout<<"---------------------------------\n";
+//    comp.placePieces();
+//    comp.printBoard();
+//
+//    int row;
+//    int col;
+//    cout<<"Row?"<<endl;
+//    cin>>row;
+//    cout<<"Col?"<<endl;
+//    cin>>col;
+//    comp.userMove(row,col);
+//
+//    comp.printBoard();
 
-    // Initialize GLUT
-    glutInit(&argc, argv);
+    UserBoard user;
+    user.printBoard();
+    cout<<"---------------------------------\n";
+    user.placePieces();
+    user.printBoard();
+    cout<<"---------------------------------\n";
+    for(int i=0;i<5;i++){
+        while(!user.compMove());
+    }
+    user.printBoard();
 
-    glutInitDisplayMode(GLUT_RGBA);
 
-    glutInitWindowSize((int)width, (int)height);
 
-    // Position the window's initial top-left corner
-    /* create the window and store the handle to it */
-    glutInitWindowPosition(-200,-100);
-
-    wd = glutCreateWindow("BATTLESHIP" /* title */ );
-
-    // Register callback handler for window re-paint event
-    glutDisplayFunc(display);
-
-    // Our own OpenGL initialization
-    initGL();
-
-    // register keyboard press event processing function
-    // works for numbers, letters, spacebar, etc.
-
-    glutKeyboardFunc(kbd);
-
-    // register special event: function keys, arrows, etc.
-    glutSpecialFunc(kbdS);
-
-    // handles mouse movement
-    glutPassiveMotionFunc(cursor);
-
-    // handles mouse click
-    glutMouseFunc(mouse);
-
-    // handles timer
-    glutTimerFunc(0, timer, 0);
-
-    // Enter the event-processing loop
-    glutMainLoop();
+//    init();
+//
+//    // Initialize GLUT
+//    glutInit(&argc, argv);
+//
+//    glutInitDisplayMode(GLUT_RGBA);
+//
+//    glutInitWindowSize((int)width, (int)height);
+//
+//    // Position the window's initial top-left corner
+//    /* create the window and store the handle to it */
+//    glutInitWindowPosition(-200,-100);
+//
+//    wd = glutCreateWindow("BATTLESHIP" /* title */ );
+//
+//    // Register callback handler for window re-paint event
+//    glutDisplayFunc(display);
+//
+//    // Our own OpenGL initialization
+//    initGL();
+//
+//    // register keyboard press event processing function
+//    // works for numbers, letters, spacebar, etc.
+//
+//    glutKeyboardFunc(kbd);
+//
+//    // register special event: function keys, arrows, etc.
+//    glutSpecialFunc(kbdS);
+//
+//    // handles mouse movement
+//    glutPassiveMotionFunc(cursor);
+//
+//    // handles mouse click
+//    glutMouseFunc(mouse);
+//
+//    // handles timer
+//    glutTimerFunc(0, timer, 0);
+//
+//    // Enter the event-processing loop
+//    glutMainLoop();
 
     return 0;
 }

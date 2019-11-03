@@ -45,6 +45,8 @@ public:
     cellStatus cellStatusUpdater(cellStatus c);
     void updateShip(cellStatus c);
     void printBoard();
+    int getIntInput(string input);
+
 };
 
 
