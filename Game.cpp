@@ -68,7 +68,7 @@ void Game::playGame(){
 
     cout<<"OK now that the pieces are placed, lets begin the game\n";
 
-    while(!compBoard.getFleet().sunk() and !userBoard.getFleet().sunk()){
+    while(!compBoard.getFleet().sunk() or !userBoard.getFleet().sunk()){
 
         cout<<"OPPONENT BOARD\n-----------------------------------"<<endl;
         compBoard.printHiddenBoard();

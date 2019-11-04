@@ -127,6 +127,18 @@ int main(int argc, char** argv) {
         game.endGame();
     }
 
+//    UserBoard user;
+//    user.placePieces();
+//    user.printBoard();
+//
+//    cout<<"---------------------------------\n";
+//    for(int i= 0; i< 30 ; i++){
+//        cout<<i<<endl;
+//        //wait(new int(1));
+//        while(!user.compMove());
+//    }
+//    user.printBoard();
+
 //    ComputerBoard comp;
 //
 //    comp.printBoard();

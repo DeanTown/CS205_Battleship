@@ -33,6 +33,7 @@
 
     When all opponents pieces have been sunk or all your pieces have been sunk, the game will end!
 
+
 ## Project:
 
         The goal of our project is to implement the board game Battleship with two game modes: Human vs Computer and Human
