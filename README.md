@@ -1,5 +1,4 @@
 
-
 # Battleship
 
 # CS205 Final Project
@@ -10,6 +9,29 @@
     To run the game, run graphics.cpp and follow the onscreen instructions.
     Also, the graphics branch on github is where Hannah and Teemo made most of their commits this sprint. Oliver and Harry
     wrote most of the game functionality which is on master.
+
+    TO PLAY THE GAME:
+    - To run the game, run graphics.cpp and follow the onscreen instructions.
+    - The board is displayed as a 10x10 map of letters indicating what is placed on
+    that space
+    When the computer board is displayed to you you will only see "nothings" and when you get a missed hit
+    it will be a + and when you hit an opponents ship there will be a X
+    KEY:
+    o - nothing
+    + - nothingHit
+    X - unknown piece hit
+    b - battleship
+    B - battleshipHit
+    cr - cruiser
+    CR - cruiserHit
+    c - carrier
+    C - carrierHit
+    d - destroyer
+    D- destroyerHit
+    s- submarine
+    S- submarineHit
+
+    When all opponents pieces have been sunk or all your pieces have been sunk, the game will end!
 
 ## Project:
 

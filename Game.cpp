@@ -37,6 +37,7 @@ bool Game::startGame(){
     choice=getIntInput(junk);
     if(choice==1){
         cout<<"Enter starting position in row, col then the direction the ship will be placed from that point"<<endl;
+        userBoard.printBoard();
         userBoard.placePieces();
         compBoard.placePieces();
         return true;
