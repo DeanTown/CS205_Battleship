@@ -6,23 +6,98 @@
 #include <iostream>
 
 using namespace std;
-UserBoard::UserBoard() : Board() {}
+UserBoard::UserBoard() : Board() {
+    possiblePositions;
+    position temp;
+    for(int i=0; i<10; i++){
+        for(int j=0; j<10; j++){
+            temp.row=i;
+            temp.col=j;
+            possiblePositions.push_back(temp);
+        }
+    }
+}
 
 bool UserBoard::compMove() {
     srand(time(nullptr));
-    int randRow = rand() % 10;
-    int randCol = rand() % 10;
+    int randRow,randCol;
     int randDirection;
+    bool used=false;
 
     // Check to see if that square has already been clicked
     // if it has, then the move is invalid; return false
-    if (alreadyHit(randRow, randCol)) {
-        return false;
+    position pos;
+    int index= rand()% possiblePositions.size();
+    pos= possiblePositions[index];
+    possiblePositions.erase(possiblePositions.begin()+index);
+
+    randRow=pos.row;
+    randCol=pos.col;
+
+    if(board[randRow][randCol]!=Nothing){
+        updateBoard(randRow,randCol);
+        cout<<"COMPUTER HIT"<<endl;
+        attempts.push_back(pos);
     }else{
         updateBoard(randRow,randCol);
+        cout<<"COMPUTER MISSED"<<endl;
+        attempts.push_back(pos);
         return true;
     }
 
+
+//---------------------------------------------------------------------------
+//    if (alreadyHit(randRow, randCol)) {
+//        return false;
+//    }else if(hits.size()==1){
+//        randDirection= rand() %4;
+//        if(directionTries.empty()){
+//            directionTries.push_back(randDirection);
+//        }else if(directionTries.size() > 1 && directionTries.size() < 4){
+//            bool inVec;
+//            do{
+//                randDirection= rand() %4;
+//                inVec=false;
+//                for(int i : directionTries){
+//                    if (randDirection==i){
+//                        inVec=true;
+//                    }
+//                }
+//
+//            }while(inVec);
+//            directionTries.push_back(randDirection);
+//        }
+//
+//        switch(randDirection){
+//            //North
+//            case 0:
+//
+//                break;
+//            //South
+//            case 1:
+//                break;
+//
+//            //East
+//            case 2:
+//                break;
+//            //West
+//            case 3:
+//                break;
+//        }
+//
+//
+//    }else if(board[randRow][randCol]!= Nothing && hits.empty()){
+//        hits.push_back(pos);
+//        updateBoard(randRow,randCol);
+//        return true;
+//
+//
+//    }else{
+//
+//        updateBoard(randRow,randCol);
+//        return true;
+//    }
+//-------------------------------------------------------------------------------
 //    // If the hits vector is empty, we don't have any previous moves
 //    // to go off of, so we pick a random square. If the random square has
 //    // not already been hit, then we "hit" it by updating the board,

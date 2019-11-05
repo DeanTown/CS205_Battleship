@@ -132,7 +132,7 @@ int main(int argc, char** argv) {
 //    user.printBoard();
 //
 //    cout<<"---------------------------------\n";
-//    for(int i= 0; i< 30 ; i++){
+//    for(int i= 0; i< 99 ; i++){
 //        cout<<i<<endl;
 //        //wait(new int(1));
 //        while(!user.compMove());

@@ -8,6 +8,7 @@ using namespace std;
 /* Constructor */
 Ship::Ship(int size) {
     this->size = size;
+    hits=0;
 }
 
 /* Getters */
