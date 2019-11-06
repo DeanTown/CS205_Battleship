@@ -10,12 +10,18 @@ using namespace std;
 
 class Fleet {
 private:
+//    Ship carrier = Ship(5);
+//    Ship battleship = Ship(4);
+//    Ship destroyer = Ship(3);
+//    Ship sub = Ship(3);
+//    Ship cruiser = Ship(2);
+public:
     Ship carrier = Ship(5);
     Ship battleship = Ship(4);
     Ship destroyer = Ship(3);
     Ship sub = Ship(3);
     Ship cruiser = Ship(2);
-public:
+
     Fleet();
     void updateShip(int ship);
     bool sunk();

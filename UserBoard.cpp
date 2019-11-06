@@ -9,13 +9,21 @@ using namespace std;
 UserBoard::UserBoard() : Board() {
     possiblePositions;
     position temp;
-    for(int i=0; i<10; i++){
-        for(int j=0; j<10; j++){
+    for(int i=1; i<10; i+=2){
+        for(int j=1; j<10; j+=2){
             temp.row=i;
             temp.col=j;
             possiblePositions.push_back(temp);
         }
     }
+    for(int i=0; i<10; i+=2){
+        for(int j=0; j<10; j+=2){
+            temp.row=i;
+            temp.col=j;
+            possiblePositions.push_back(temp);
+        }
+    }
+    lastHit=Nothing;
 }
 
 bool UserBoard::compMove() {
@@ -27,245 +35,95 @@ bool UserBoard::compMove() {
     // Check to see if that square has already been clicked
     // if it has, then the move is invalid; return false
     position pos;
+
     int index= rand()% possiblePositions.size();
     pos= possiblePositions[index];
     possiblePositions.erase(possiblePositions.begin()+index);
-
     randRow=pos.row;
     randCol=pos.col;
 
-    if(board[randRow][randCol]!=Nothing){
+    bool sunk=false;
+
+    switch(lastHit){
+        case Carrier:
+            sunk= fleet.carrier.getDestroyed();
+            break;
+        case Battleship:
+            sunk= fleet.battleship.getDestroyed();
+            break;
+        case Destroyer:
+            sunk= fleet.destroyer.getDestroyed();
+            break;
+        case Sub:
+            sunk= fleet.sub.getDestroyed();
+            break;
+        case Cruiser:
+            sunk= fleet.cruiser.getDestroyed();
+            break;
+        default:
+            break;
+    }
+    if(sunk) {
+        hits.clear();
+        lastHit=Nothing;
+        return false;
+    }
+
+    if(board[randRow][randCol]!=Nothing && hits.empty()){
+        lastHit=board[randRow][randCol];
         updateBoard(randRow,randCol);
         cout<<"COMPUTER HIT"<<endl;
-        attempts.push_back(pos);
+        hits.push_back(pos);
+        return true;
+    }else if(hits.size()==1 && lastHit !=Nothing){
+        cout<<"hits has size one"<<endl;
+        for(int i=0; i<10;i++){
+            for(int j=0; j<10; j++){
+                if(board[i][j]==lastHit){
+                    position temp;
+                    temp.row=i;
+                    temp.col=j;
+                    possibleHits.push_back(temp);
+                }
+            }
+        }
+        int index= rand()% possibleHits.size();
+        position temp2= possibleHits[index];
+        possibleHits.erase(possibleHits.begin()+index);
+        updateBoard(temp2.row,temp2.col);
+        hits.push_back(temp2);
+        possiblePositions.push_back(pos);
+        for(int i=0; i<possiblePositions.size();i++){
+            if(possiblePositions[i].col==temp2.col && possiblePositions[i].row==temp2.row){
+                possiblePositions.erase(possiblePositions.begin()+i);
+            }
+
+        }
+
+        return true;
+
+    }else if(hits.size()>=2 && lastHit !=Nothing) {
+        int index= rand()% possibleHits.size();
+        position temp2= possibleHits[index];
+        possibleHits.erase(possibleHits.begin()+index);
+        updateBoard(temp2.row,temp2.col);
+        hits.push_back(temp2);
+        possiblePositions.push_back(pos);
+        for(int i=0; i<possiblePositions.size();i++){
+            if(possiblePositions[i].col==temp2.col && possiblePositions[i].row==temp2.row){
+                possiblePositions.erase(possiblePositions.begin()+i);
+            }
+
+        }
+
+        return true;
     }else{
         updateBoard(randRow,randCol);
         cout<<"COMPUTER MISSED"<<endl;
-        attempts.push_back(pos);
+
         return true;
     }
 
-
-//---------------------------------------------------------------------------
-//    if (alreadyHit(randRow, randCol)) {
-//        return false;
-//    }else if(hits.size()==1){
-//        randDirection= rand() %4;
-//        if(directionTries.empty()){
-//            directionTries.push_back(randDirection);
-//        }else if(directionTries.size() > 1 && directionTries.size() < 4){
-//            bool inVec;
-//            do{
-//                randDirection= rand() %4;
-//                inVec=false;
-//                for(int i : directionTries){
-//                    if (randDirection==i){
-//                        inVec=true;
-//                    }
-//                }
-//
-//            }while(inVec);
-//            directionTries.push_back(randDirection);
-//        }
-//
-//        switch(randDirection){
-//            //North
-//            case 0:
-//
-//                break;
-//            //South
-//            case 1:
-//                break;
-//
-//            //East
-//            case 2:
-//                break;
-//            //West
-//            case 3:
-//                break;
-//        }
-//
-//
-//    }else if(board[randRow][randCol]!= Nothing && hits.empty()){
-//        hits.push_back(pos);
-//        updateBoard(randRow,randCol);
-//        return true;
-//
-//
-//    }else{
-//
-//        updateBoard(randRow,randCol);
-//        return true;
-//    }
-//-------------------------------------------------------------------------------
-//    // If the hits vector is empty, we don't have any previous moves
-//    // to go off of, so we pick a random square. If the random square has
-//    // not already been hit, then we "hit" it by updating the board,
-//    // updating the ship hit, and adding it to the hits vector
-//    if (hits.size() == 0) {
-//        updateBoard(randRow, randCol);
-//    }
-//    else if (hits.size() == 1) {
-//        randDirection = rand() % 4;
-//        position miss;
-//
-//        switch (randDirection) {
-//            case 0: // north
-//
-//                if(randRow!=0){
-//                    randRow-=1;
-//                }else{
-//                    return false;
-//                }
-//                miss.row = randRow;
-//                miss.col = randCol;
-//                for(position m: attempts){
-//                    if (m.row==randRow and m.col==randCol){
-//                        return false;
-//                    }
-//                }
-//                if(!alreadyHit(randRow,randCol) && board[randRow][randCol]==Nothing){
-//                    attempts.push_back(miss);
-//                }else if (!alreadyHit(randRow, randCol)) {
-//                    updateBoard(randRow, randCol);
-//                } else {
-//                    return false;
-//                }
-//                break;
-//            case 1: // east
-//                if(randCol!=9){
-//                    randCol += 1;
-//                }else{
-//                    return false;
-//                }
-//                miss.row = randRow;
-//                miss.col = randCol;
-//                for(position m: attempts){
-//                    if (m.row==randRow and m.col==randCol){
-//                        return false;
-//                    }
-//                }
-//                if(!alreadyHit(randRow,randCol) && board[randRow][randCol]==Nothing){
-//                    attempts.push_back(miss);
-//                }else if (!alreadyHit(randRow, randCol)) {
-//                    updateBoard(randRow, randCol);
-//                } else {
-//                    return false;
-//                }
-//                break;
-//            case 2: // south
-//                if(randRow!=9){
-//                    randRow += 1;
-//                }else{
-//                    return false;
-//                }
-//
-//                miss.row = randRow;
-//                miss.col = randCol;
-//                for(position m: attempts){
-//                    if (m.row==randRow and m.col==randCol){
-//                        return false;
-//                    }
-//                }
-//                if(!alreadyHit(randRow,randCol) && board[randRow][randCol]==Nothing){
-//                    attempts.push_back(miss);
-//                }else if (!alreadyHit(randRow, randCol)) {
-//                    updateBoard(randRow, randCol);
-//                } else {
-//                    return false;
-//                }
-//                break;
-//            case 3: // west
-//                if(randCol!=0){
-//                    randCol -= 1;
-//                }else{
-//                    return false;
-//                }
-//
-//                miss.row = randRow;
-//                miss.col = randCol;
-//                for(position m: attempts){
-//                    if (m.row==randRow and m.col==randCol){
-//                        return false;
-//                    }
-//                }
-//                if(!alreadyHit(randRow,randCol) && board[randRow][randCol]==Nothing){
-//                    attempts.push_back(miss);
-//                }else if (!alreadyHit(randRow, randCol)) {
-//                    updateBoard(randRow, randCol);
-//                } else {
-//                    return false;
-//                }
-//                break;
-//        }
-//        // pick a random direction
-//        // see if its a hit
-//        // if it is a hit then add to hit vector
-//        // if not a hit, add to attempts vector
-//    }
-//    else if (hits.size() > 1) {
-//        int hitsSize = hits.size();
-//        position to = hits[hitsSize];
-//        position from = hits[hitsSize - 1];
-//        // position to check if the next logical move is in the attempts vector
-//        bool inAttempts;
-//        position check;
-//        // NORTH
-//        check.row = hits[hitsSize].row - 2;
-//        check.col = hits[hitsSize].col;
-//        for (position p : attempts) {
-//            if (p.row == check.row && p.col == check.col) {
-//                inAttempts = true;
-//            }
-//        }
-//        if ((from.row - to.row == -1) && (from.col - to.col == 0) && !inAttempts) {
-//            // north
-//            updateBoard(check.row, check.col);
-//
-//        }
-//        // EAST
-//        check.row = hits[hitsSize].row;
-//        check.col = hits[hitsSize].col + 2;
-//        for (position p : attempts) {
-//            if (p.row == check.row && p.col == check.col) {
-//                inAttempts = true;
-//            }
-//        }
-//        if ((from.row - to.row == 0) && (from.col - to.col == 1) && !inAttempts) {
-//            // east
-//            updateBoard(check.row, check.col);
-//        }
-//        // SOUTH
-//        check.row = hits[hitsSize].row + 2;
-//        check.col = hits[hitsSize].col;
-//        for (position p : attempts) {
-//            if (p.row == check.row && p.col == check.col) {
-//                inAttempts = true;
-//            }
-//        }
-//        if ((from.row - to.row == 1) && (from.col - to.col == 0) && !inAttempts) {
-//            // south
-//            updateBoard(check.row, check.col);
-//        }
-//        // WEST
-//        check.row = hits[hitsSize].row;
-//        check.col = hits[hitsSize].col - 2;
-//        for (position p : attempts) {
-//            if (p.row == check.row && p.col == check.col) {
-//                inAttempts = true;
-//            }
-//        }
-//        if ((from.row - to.row == 0) && (from.col - to.col == -1) && !inAttempts) {
-//            // west
-//            updateBoard(check.row, check.col);
-//        }
-//        // find the direction of the hits
-//        // keep going in that direction, unless the position next in line is in the attempts vector
-//        // if next in line in attempts vector, go the opposite direction
-//    }
-//
-
-    return true;
 }
 
 bool UserBoard::alreadyHit(int row, int col) {
@@ -298,10 +156,6 @@ void UserBoard::updateBoard(int row, int col) {
     position tempPos;
     tempPos.row = row;
     tempPos.col = col;
-    // add to hits vector
-    if(tempStat!=Nothing){
-        hits.push_back(tempPos);
-    }
 }
 
 void UserBoard::placePieces() {

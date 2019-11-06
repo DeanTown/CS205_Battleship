@@ -12,8 +12,9 @@ class UserBoard : public Board{
 private:
     vector<position> hits;
     vector<position> attempts;
-
+    cellStatus lastHit;
     vector<position> possiblePositions;
+    vector<position> possibleHits;
 public:
     UserBoard();
     bool compMove();
