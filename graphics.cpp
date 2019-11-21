@@ -47,11 +47,13 @@ void display(){
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     board.drawBoard();
-    ships.createShip(100,450,4,1);
-    ships.createShip(170,450,5,2);
-    ships.createShip(240,450,3,3);
-    ships.createShip(310,450,3,4);
-    ships.createShip(380,450,2,5);
+    ships.createCarrier();
+    ships.createBattleship();
+//    ships.createShip(100,450,4,1);
+//    ships.createShip(170,450,5,2);
+//    ships.createShip(240,450,3,3);
+//    ships.createShip(310,450,3,4);
+//    ships.createShip(380,450,2,5);
     if (mouseInput) {
         board.updateBoard();
 //        cout << ships.getCenterX() << "," << ships.getCenterY() << endl;
@@ -109,6 +111,7 @@ void mouse(int button, int state, int x, int y) {
             break;
         case GLUT_LEFT_BUTTON:
             if (state == GLUT_DOWN) {
+
                 if (x >= board.getLeftX() && x <= board.getRightX() && y >= board.getTopY() && y <= board.getBottomY()) {
                     cout << board.cellNum(x,y) << endl;
                     cellNumber = board.cellNum(x,y);
@@ -122,6 +125,24 @@ void mouse(int button, int state, int x, int y) {
             break;
     }
 }
+//void onMouse(int button, int state, int x, int y) {
+//    if(state != GLUT_DOWN)
+//        return;
+//
+//    width = glutGet(GLUT_WINDOW_WIDTH);
+//    height = glutGet(GLUT_WINDOW_HEIGHT);
+//
+//    GLbyte color[4];
+//    GLfloat depth;
+//    GLuint index;
+//
+//    glReadPixels(x, height - y - 1, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, color);
+//    glReadPixels(x, height - y - 1, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+//    glReadPixels(x, height - y - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
+//
+//    printf("Clicked on pixel %d, %d, color %02hhx%02hhx%02hhx%02hhx, depth %f, stencil index %u\n",
+//           x, y, color[0], color[1], color[2], color[3], depth, index);
+//}
 void timer(int dummy) {
 
     glutPostRedisplay();
@@ -166,7 +187,6 @@ int main(int argc, char** argv) {
 
     // handles mouse click
     glutMouseFunc(mouse);
-
     // handles timer
     glutTimerFunc(0, timer, 0);
 

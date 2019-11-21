@@ -11,6 +11,7 @@ using namespace std;
 struct Point {
     int x;
     int y;
+
 };
 
 struct ShipInfo {
@@ -33,6 +34,11 @@ public:
     void setCenterY(int y);
     void setShipInfo(Point point, int Num);
     void createShip(int x, int y, int size, int num);
+    void createCarrier();
+    void createBattleship();
+    void createCruiser();
+    void createSub();
+    void createDestroyer();
 };
 
 

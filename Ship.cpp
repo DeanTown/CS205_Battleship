@@ -1,4 +1,5 @@
 #include "Ship.h"
+#include "Shapes.h"
 
 // getters
 int Ship::getCenterX() const {
@@ -26,3 +27,27 @@ void Ship::createShip(int x, int y,int size, int num) {
     setCenterX(x);
     setCenterY((y - 15) + (cellSize * size / 2));
 }
+
+
+void Ship::createCarrier(){
+    Tangle box;
+    box.setDimensions(75,22);
+    box.setFillColor(112,128,144);
+    box.setBorderColor(105,105,105);
+    box.setCenter(160, 500);
+    box.draw();
+
+
+}
+void Ship::createBattleship(){
+
+    Tangle box;
+    box.setDimensions(75,22);
+    box.setFillColor(112,128,144);
+    box.setBorderColor(105,105,105);
+    box.setCenter(160, 500);
+    box.draw();
+}
+void createCruiser();
+void createSub();
+void createDestroyer();
