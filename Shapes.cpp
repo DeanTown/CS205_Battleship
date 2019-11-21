@@ -90,6 +90,126 @@ void Shape::setFillColor(double r, double g, double b) {
     fill = {r, g, b};
 }
 
+/******************** Circle class ********************/
+
+void Circle::calculateArea() {
+    area = PI * radius * radius;
+}
+
+void Circle::calculatePerimeter() {
+    perimeter = 2.0 * PI * radius;
+}
+
+Circle::Circle() : Shape(), radius(0) { }
+
+Circle::Circle(double rad) : Shape() {
+    setRadius(rad);
+}
+
+Circle::Circle(color b, color f) : Shape({0, 0}, b, f), radius(0) { }
+
+Circle::Circle(double rb, double gb, double bb,
+               double rf, double gf, double bf) :
+        Shape(0, 0, rb, gb, bb, rf, gf, bf), radius(0) {}
+
+Circle::Circle(double rad, color b, color f)  {
+    // example without initializer list
+    setCenter({0, 0});
+    setBorderColor(b);
+    setFillColor(f);
+    setRadius(rad);
+    calculateArea();
+    calculatePerimeter();
+}
+
+Circle::Circle(double rad,
+               double rb, double gb, double bb,
+               double rf, double gf, double bf) :
+        Shape(0, 0, rb, gb, bb, rf, gf, bf) {
+    setRadius(rad);
+}
+
+Circle::Circle(double rad, point c) :
+        Shape(c, {0, 0, 0}, {0, 0, 0}) {
+    setRadius(rad);
+}
+
+Circle::Circle(double rad, int xIn, int yIn) :
+        Shape(xIn, yIn, 0, 0, 0, 0, 0, 0) {
+    setRadius(rad);
+}
+
+Circle::Circle(double rad, color b, color f, point c) :
+        Shape(c, b, f) {
+    setRadius(rad);
+}
+
+Circle::Circle(double rad,
+               double rb, double gb, double bb,
+               double rf, double gf, double bf,
+               int xIn, int yIn) :
+        Shape(xIn, yIn, rb, gb, bb, rf, gf, bf) {
+    setRadius(rad);
+}
+
+double Circle::getRadius() const {
+    return radius;
+}
+
+void Circle::setRadius(double rad) {
+    // do not want to accept negative values for radius
+    radius = (rad < 0) ? 0 : rad;
+    calculateArea();
+    calculatePerimeter();
+}
+
+void Circle::draw() const {
+    glBegin(GL_TRIANGLE_FAN);
+    glColor3f(fill.red, fill.green, fill.blue);
+    glVertex2i(center.x, center.y);
+    glColor3f(border.red, border.green, border.blue);
+    for (double i = 0; i < 2.0*PI+0.05; i += 2.0*PI/360.0) {
+        glVertex2i(center.x + radius * cos(i),
+                   center.y + radius * sin(i));
+    }
+    glEnd();
+}
+
+char Circle::getType() const {
+    return 'c';
+}
+
+bool Circle::isOverlapping(const point &p) const {
+    return distance(p, center) <= radius;
+}
+
+bool Circle::isOverlappingCircle(const Circle &c) const {
+    return distance(center, c.center) <= radius + c.radius;
+}
+
+bool Circle::isOverlappingLineSeg(const point &p1, const point &p2) const {
+    if (p1.x == p2.x) {
+        // vertical line
+        if (p1.x >= center.x-radius && p1.x <= center.x+radius) {
+            if ((p1.y < center.y && p2.y > center.y) ||
+                (p1.y > center.y && p2.y < center.y)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    if (p1.y == p2.y) {
+        // horizontal line
+        if (p1.y >= center.y-radius && p1.y <= center.y+radius) {
+            if ((p1.x < center.x && p2.x > center.x) ||
+                (p1.x > center.x && p2.x < center.x)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    return false;
+}
 
 /******************** Tangle class ********************/
 

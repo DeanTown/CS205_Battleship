@@ -67,7 +67,6 @@ public:
     virtual char getType() const = 0;
 
     virtual bool isOverlapping(const point &p) const = 0;
-
 protected:
     point center;
     color border;
@@ -76,7 +75,49 @@ protected:
     double perimeter;
     virtual void calculateArea() = 0;
     virtual void calculatePerimeter() = 0;
+
+
+
 };
+
+class Circle : public Shape {
+private:
+    double radius;
+
+    void calculateArea() override;
+    void calculatePerimeter() override;
+
+public:
+    // Constructors
+    Circle();
+    explicit Circle(double rad);
+    Circle(color b, color f);
+    Circle(double rb, double gb, double bb, double rf, double gf, double bf);
+    Circle(double rad, color b, color f);
+    Circle(double rad, double rb, double gb, double bb, double rf, double gf, double bf);
+    Circle(double rad, point c);
+    Circle(double rad, int xIn, int yIn);
+    Circle(double rad, color b, color f, point c);
+    Circle(double rad, double rb, double gb, double bb, double rf, double gf, double bf, int xIn, int yIn);
+
+    // Getter
+    double getRadius() const;
+
+    // Setter
+    // This will also calculate new area and perimeter
+    void setRadius(double rad);
+
+    void draw() const override;
+
+    char getType() const override;
+
+    bool isOverlapping(const point &p) const override;
+    bool isOverlappingCircle(const Circle &c) const;
+    // Assuming that the x or y coordinates line up
+    bool isOverlappingLineSeg(const point &p1, const point &p2) const;
+};
+
+
 
 
 class Tangle : public Shape {
