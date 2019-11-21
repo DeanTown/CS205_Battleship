@@ -231,6 +231,11 @@ Tangle::Tangle(double l, double w, color b, color f, point c) : Shape(c, b, f) {
     setDimensions(l, w);
 }
 
+Tangle::Tangle(double l, double w, point c) {
+    setDimensions(l, w);
+    setCenter(c);
+}
+
 double Tangle::getLength() const {
     return length;
 }
@@ -301,7 +306,7 @@ point Tangle::mouse(int x, int y)
     int windowWidth = 400, windowHeight = 400;
     return point(float(x)/windowWidth, 1.0 - float(y)/windowHeight);
 }
-
+/*
 Tangle* Tangle::drag(Tangle *sqr, point *mouse)
 {
     sqr->center.x = mouse->x - 0.1;
@@ -317,7 +322,7 @@ Tangle* Tangle::drag(Tangle *sqr, point *mouse)
 
     return sqr;
 }
-
+*/
 //bool isOverlappingTangle(const std::unique_ptr<Shape> &s, const Tangle &r) {
 //    if (s->getType() == 't') {
 //        return r.isOverlappingTangle(dynamic_cast<Tangle&>(*s));
