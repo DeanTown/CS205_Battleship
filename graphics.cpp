@@ -2,28 +2,29 @@
 #include <iostream>
 #include <vector>
 #include <iomanip>
+#include <zconf.h>
 #include "algorithm"
 #include "cstdlib"
 #include "ctime"
-
-
-#include "ComputerBoard.h"
-#include "UserBoard.h"
+#include "Cell.h"
+#include "Board.h"
+//#include "Player.h"
 #include "Ship.h"
-#include "Game.h"
-#include <sstream>
+//#include "Game.h"
 
 
 using namespace std;
 GLdouble width, height;
-int wd;
+int wd, cellNumber;
 Board board;
-
+Cell cell;
+Ship ships;
+bool mouseInput = false;
 
 
 void init() {
     width = 500;
-    height = 500;
+    height = 600;
 }
 
 /* Initialize OpenGL Graphics */
@@ -45,21 +46,20 @@ void display(){
     glClear(GL_COLOR_BUFFER_BIT);   // Clear the color buffer with current clearing color
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-//    board.draw_board();
-//    glColor3f(1.0,0.0,0.0);
-//    glBegin(GL_QUADS);
-//    glVertex2d(0.0,0.0);
-//    glVertex2d(100.0,0.0);
-//    glVertex2d(100.0,100.0);
-//    glVertex2d(0.0,100.0);
-//    glEnd();
-//    glColor3f(0.0,1.0,0.0);
-//    glBegin(GL_QUADS);
-//    glVertex2d(10.0,10.0);
-//    glVertex2d(90.0,10.0);
-//    glVertex2d(90.0,90.0);
-//    glVertex2d(10.0,90.0);
-//    glEnd();
+    board.drawBoard();
+    ships.createCarrier();
+    ships.createBattleship();
+//    ships.createShip(100,450,4,1);
+//    ships.createShip(170,450,5,2);
+//    ships.createShip(240,450,3,3);
+//    ships.createShip(310,450,3,4);
+//    ships.createShip(380,450,2,5);
+    if (mouseInput) {
+        board.updateBoard();
+//        cout << ships.getCenterX() << "," << ships.getCenterY() << endl;
+//        mouseInput = false;
+    }
+
     glFlush();  // Render now
 }
 
@@ -78,8 +78,6 @@ void kbd(unsigned char key, int x, int y)
 
 void kbdS(int key, int x, int y) {
     switch(key) {
-
-
         case GLUT_KEY_DOWN:
 
             break;
@@ -108,8 +106,43 @@ void cursor(int x, int y) {
 // button will be GLUT_LEFT_BUTTON or GLUT_RIGHT_BUTTON
 // state will be GLUT_UP or GLUT_DOWN
 void mouse(int button, int state, int x, int y) {
+    switch (button) {
+        default:
+            break;
+        case GLUT_LEFT_BUTTON:
+            if (state == GLUT_DOWN) {
 
+                if (x >= board.getLeftX() && x <= board.getRightX() && y >= board.getTopY() && y <= board.getBottomY()) {
+                    cout << board.cellNum(x,y) << endl;
+                    cellNumber = board.cellNum(x,y);
+                    mouseInput = board.updateStat(cellNumber - 1 );
+                } else {
+                    cout << x << "," << y << endl;
+                }
+            }
+            break;
+        case GLUT_RIGHT_BUTTON:
+            break;
+    }
 }
+//void onMouse(int button, int state, int x, int y) {
+//    if(state != GLUT_DOWN)
+//        return;
+//
+//    width = glutGet(GLUT_WINDOW_WIDTH);
+//    height = glutGet(GLUT_WINDOW_HEIGHT);
+//
+//    GLbyte color[4];
+//    GLfloat depth;
+//    GLuint index;
+//
+//    glReadPixels(x, height - y - 1, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, color);
+//    glReadPixels(x, height - y - 1, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+//    glReadPixels(x, height - y - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
+//
+//    printf("Clicked on pixel %d, %d, color %02hhx%02hhx%02hhx%02hhx, depth %f, stencil index %u\n",
+//           x, y, color[0], color[1], color[2], color[3], depth, index);
+//}
 void timer(int dummy) {
 
     glutPostRedisplay();
@@ -117,126 +150,48 @@ void timer(int dummy) {
 }
 
 
-
 /* Main function: GLUT runs as a console application starting at main()  */
 int main(int argc, char** argv) {
 
-    Game game= Game();
-    if(game.startGame()){
-        game.playGame();
-        game.endGame();
-    }
+    init();
 
-//    UserBoard user;
-//    user.placePieces();
-//    user.printBoard();
-//
-//    cout<<"---------------------------------\n";
-//    for(int i= 0; i< 99 ; i++){
-//        cout<<i<<endl;
-//        //wait(new int(1));
-//        while(!user.compMove());
-//    }
-//    user.printBoard();
+    // Initialize GLUT
+    glutInit(&argc, argv);
 
-//    ComputerBoard comp;
-//
-//    comp.printBoard();
-//    cout<<"---------------------------------\n";
-//    comp.placePieces();
-//    comp.printBoard();
-//
-//    int row;
-//    int col;
-//    string s="";
-//
-//    while(!comp.getFleet().sunk()) {
-//        cout << "Row?" << endl;
-//        row = getIntInput(s);
-//        while (row < 0 or row > 9) {
-//            cout << "Invalid Number" << endl;
-//          row = getIntInput(s);
-//        }
-//
-//        cout << "Col?" << endl;
-//        col = getIntInput(s);
-//        while (col < 0 or col > 9) {
-//            cout << "Invalid Number" << endl;
-//            col = getIntInput(s);
-//        }
-//
-//        while (!comp.userMove(row, col)) {
-//            cout << "INVALID MOVE" << endl;
-//            cout << "Row?" << endl;
-//            row = getIntInput(s);
-//            while (row < 0 or row > 9) {
-//                cout << "Invalid Number" << endl;
-//                row = getIntInput(s);
-//            }
-//
-//            cout << "Col?" << endl;
-//            col = getIntInput(s);
-//            while (col < 0 or col > 9) {
-//                cout << "Invalid Number" << endl;
-//                col = getIntInput(s);
-//            }
-//        }
-//    }
-//    comp.printBoard();
-//
-//    UserBoard user;
-//    user.printBoard();
-//    cout<<"---------------------------------\n";
-//    user.placePieces();
-//    user.printBoard();
-//    cout<<"---------------------------------\n";
-//    for(int i=0;i<5;i++){
-//        while(!user.compMove());
-//    }
-//    user.printBoard();
+    glutInitDisplayMode(GLUT_RGBA);
 
+    glutInitWindowSize((int)width, (int)height);
 
+    // Position the window's initial top-left corner
+    /* create the window and store the handle to it */
+    glutInitWindowPosition(-200,-100);
 
-//    init();
-//
-//    // Initialize GLUT
-//    glutInit(&argc, argv);
-//
-//    glutInitDisplayMode(GLUT_RGBA);
-//
-//    glutInitWindowSize((int)width, (int)height);
-//
-//    // Position the window's initial top-left corner
-//    /* create the window and store the handle to it */
-//    glutInitWindowPosition(-200,-100);
-//
-//    wd = glutCreateWindow("BATTLESHIP" /* title */ );
-//
-//    // Register callback handler for window re-paint event
-//    glutDisplayFunc(display);
-//
-//    // Our own OpenGL initialization
-//    initGL();
-//
-//    // register keyboard press event processing function
-//    // works for numbers, letters, spacebar, etc.
-//
-//    glutKeyboardFunc(kbd);
-//
-//    // register special event: function keys, arrows, etc.
-//    glutSpecialFunc(kbdS);
-//
-//    // handles mouse movement
-//    glutPassiveMotionFunc(cursor);
-//
-//    // handles mouse click
-//    glutMouseFunc(mouse);
-//
-//    // handles timer
-//    glutTimerFunc(0, timer, 0);
-//
-//    // Enter the event-processing loop
-//    glutMainLoop();
+    wd = glutCreateWindow("BATTLESHIP" /* title */ );
+
+    // Register callback handler for window re-paint event
+    glutDisplayFunc(display);
+
+    // Our own OpenGL initialization
+    initGL();
+
+    // register keyboard press event processing function
+    // works for numbers, letters, spacebar, etc.
+
+    glutKeyboardFunc(kbd);
+
+    // register special event: function keys, arrows, etc.
+    glutSpecialFunc(kbdS);
+
+    // handles mouse movement
+    glutPassiveMotionFunc(cursor);
+
+    // handles mouse click
+    glutMouseFunc(mouse);
+    // handles timer
+    glutTimerFunc(0, timer, 0);
+
+    // Enter the event-processing loop
+    glutMainLoop();
 
     return 0;
 }

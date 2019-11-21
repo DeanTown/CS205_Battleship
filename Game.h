@@ -5,25 +5,26 @@
 #ifndef CS205_FINALPROJECT_GAME_H
 #define CS205_FINALPROJECT_GAME_H
 
-#include "UserBoard.h"
-#include "ComputerBoard.h"
+//#include "Player.h"
+#include "Board.h"
 using namespace std;
 
 class Game {
-private:
-
-    UserBoard userBoard;
-    ComputerBoard compBoard;
-
-public:
-    /* Constructor */
-    Game();
-    //To Begin and end games
-    bool startGame();
-    void resetGame();
-    void endGame();
-    void playGame();
-};
+//private:
+//    Player player1;
+//    Player player2;
+//    Board gameBoard;
+//    bool p1Turn;
+//    bool p2Turn;
+//public:
+//    /* Constructor */
+//    Game(Player p1, Player p2);
+//    //To Begin and end games
+//    void startGame();
+//    void resetGame();
+//    void endGame();
+//    void playGame();
+//};
 
 
 #endif //CS205_FINALPROJECT_GAME_H

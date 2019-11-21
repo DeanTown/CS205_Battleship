@@ -1,191 +1,123 @@
-//
-// Created by Oliver Reckord Groten on 10/21/19.
-//
-
 #include "Board.h"
-#include <iostream>
-#include <string.h>
-#include <sstream>
 using namespace std;
 
 /* Constructor */
 Board::Board() {
-    fleet= Fleet();
     cols = 10;
     rows = 10;
-    board.resize(rows);
-    for(int i=0; i< rows ; i++){
-        for(int j=0; j<cols; j++){
-            board[i].push_back(Nothing);
+//    for (int i = 0; i < rows; i ++) {
+//        temp.clear();
+//        for (int j = 0; j < cols; j++) {
+//            cell.setPosition(i, j);
+//            temp.push_back(cell);
+//        }
+//        board.push_back(temp);
+//    }
+}
+
+// getters
+int Board::getLeftX() const {
+    return leftX;
+}
+int Board::getRightX() const {
+    return rightX;
+}
+int Board::getTopY() const {
+    return topY;
+}
+int Board::getBottomY() const {
+    return bottomY;
+}
+int Board::getCellX() const {
+    return bde.cellX;
+}
+int Board::getCellY() const {
+    return bde.cellY;
+}
+int Board::getCellNum() const {
+    return bde.cellNum;
+
+}
+int Board::getCellWidth() const {
+    return cellWidth;
+}
+cellStatus Board::getCellStat() const {
+    return bde.stat;
+}
+
+// setters
+void Board::setBoardElement(int x, int y, int cellNum, cellStatus stat) {
+    bde.cellX = x;
+    bde.cellY = y;
+    bde.cellNum = cellNum;
+    bde.stat = stat;
+}
+
+void Board::drawBoard() {
+    cellVector.clear();
+    leftX = 100;
+    topY = 100;
+    cellNumber = 1;
+    cols = 10;
+    rows = 10;
+
+    for (int i = topY; i < topY + cellWidth * cols; i += cellWidth) {
+        for (int j = leftX; j < leftX + cellWidth * rows; j += cellWidth) {
+            cell.setPosition(j,i);
+            cell.setWidth(cellWidth);
+            cell.setLength(cellWidth);
+            cell.drawShapeDefault();
+            setBoardElement(j,i,cellNumber,empty);
+            cellVector.push_back(bde);
+            ++cellNumber;
+            bottomY = j;
+        }
+        rightX = i;
+    }
+    leftX -= cellWidth / 2;
+    topY -= cellWidth / 2;
+    bottomY += cellWidth / 2;
+    rightX += cellWidth / 2;
+}
+
+bool Board::updateStat(int cellNum) {
+//    cout << cellVector[cellNum].cellX << "," << cellVector[cellNum].cellY << "," << cellVector[cellNum].cellNum << "," << cellVector[cellNum].stat << endl;
+    setBoardElement(cellVector[cellNum].cellX,cellVector[cellNum].cellY,cellNumber,occupied);
+    ocCell.push_back(bde);
+    return true;
+}
+
+void Board::updateBoard() {
+    for (auto & i : ocCell) {
+        cell.setPosition(i.cellX,i.cellY);
+        cell.setLength(cellWidth);
+        cell.setWidth(cellWidth);
+        if (i.stat == 0) {
+            cell.drawShapeDefault();
+        } else {
+            cell.drawShapeOc();
         }
     }
-
 }
 
-Fleet Board::getFleet() {
-    return fleet;
-}
-
-string Board::cellStatusToString(cellStatus c) {
-    switch(c) {
-        case Destroyer: return "Destroyer";
-        case Sub: return "Sub";
-        case Carrier: return "Carrier";
-        case Cruiser: return "Cruiser";
-        case Battleship: return "Battleship";
-        case Nothing: return "Nothing";
-    }
-    return "";
-}
-
-cellStatus Board::cellStatusUpdater(cellStatus c) {
-    switch(c) {
-        case Destroyer: return DestroyerHit;
-        case Sub: return SubHit;
-        case Carrier: return CarrierHit;
-        case Cruiser: return CruiserHit;
-        case Battleship: return BattleshipHit;
-        case Nothing: return NothingHit;
-    }
-    return Nothing;
-}
-
-void Board::updateShip(cellStatus c) {
-    switch(c) {
-        case Destroyer:
-            fleet.updateShip(1);
-            break;
-        case Sub:
-            fleet.updateShip(2);
-            break;
-        case Carrier:
-            fleet.updateShip(3);
-            break;
-        case Cruiser:
-            fleet.updateShip(4);
-            break;
-        case Battleship:
-            fleet.updateShip(5);
-            break;
-    }
-}
-
-void Board::printBoard() {
-    for(int i=0; i< rows ; i++){
-        for(int j=0; j<cols; j++){
-
-            //cout<<cellStatusToString(board[i][j]).substr(0,2)<<cellStatusToString(board[i][j]).substr(cellStatusToString(board[i][j]).length()-3,3)+" ";
-
-            switch(board[i][j]){
-                case Nothing:
-                    cout<<"o   ";
-                    break;
-                case NothingHit:
-                    cout<<"x   ";
-                    break;
-                case Battleship:
-                    cout<<"b   ";
-                    break;
-                case BattleshipHit:
-                    cout<<"B   ";
-                    break;
-                case Cruiser:
-                    cout<<"cr  ";
-                    break;
-                case CruiserHit:
-                    cout<<"CR  ";
-                    break;
-                case Sub:
-                    cout<<"s   ";
-                    break;
-                case SubHit:
-                    cout<<"S   ";
-                    break;
-                case Destroyer:
-                    cout<<"d   ";
-                    break;
-                case DestroyerHit:
-                    cout<<"D   ";
-                    break;
-                case Carrier:
-                    cout<<"c   ";
-                    break;
-                case CarrierHit:
-                    cout<<"C   ";
-                    break;
-                default:
-                    cout<<"0   ";
-                    break;
-
-            }
-
-
+int Board::cellNum(int x, int y) {
+    int num = 0;
+    for (auto & i : cellVector) {
+        if (x < i.cellX + 15 && x > i.cellX - 15 && y > i.cellY - 15 && y < i.cellY + 15) {
+            num = i.cellNum;
         }
-        cout<<"\n";
     }
+    return num;
 }
-void Board::printHiddenBoard() {
-    for(int i=0; i< rows ; i++){
-        for(int j=0; j<cols; j++){
 
 
-            switch(board[i][j]){
-                case Nothing:
-                    cout<<"o   ";
-                    break;
-                case NothingHit:
-                    cout<<"+   ";
-                    break;
-                case Battleship:
-                    cout<<"o   ";
-                    break;
-                case BattleshipHit:
-                    cout<<"X   ";
-                    break;
-                case Cruiser:
-                    cout<<"o   ";
-                    break;
-                case CruiserHit:
-                    cout<<"X   ";
-                    break;
-                case Sub:
-                    cout<<"o   ";
-                    break;
-                case SubHit:
-                    cout<<"X   ";
-                    break;
-                case Destroyer:
-                    cout<<"o   ";
-                    break;
-                case DestroyerHit:
-                    cout<<"X   ";
-                    break;
-                case Carrier:
-                    cout<<"o   ";
-                    break;
-                case CarrierHit:
-                    cout<<"X   ";
-                    break;
-                default:
-                    cout<<"0   ";
-                    break;
-
-            }
-
-
-        }
-        cout<<"\n";
-    }
-}
-int Board::getIntInput(string input){
-    input = "";
-    int returnVal = 0;
-    while(true) {
-        getline(cin, input);
-        stringstream strToInt(input);
-        if (strToInt >> returnVal) {
-            return returnVal;
-        }
-        cout << "Please enter a valid input" << endl;
-    }
-}
+//void Board::display() {
+//    for (int i = 0; i < cellVector.size(); ++i) {
+//        cout << cellVector[i] << endl;
+//    }
+//}
+//
+//ostream &operator << (ostream &os, const boardElement& obj) {
+//    os << "cell number: " << obj.cellNum << "| cell x: " << obj.cellX << "| cell y: " << obj.cellY << "| cell stat: " << obj.stat << endl;
+//    return os;
+//}
