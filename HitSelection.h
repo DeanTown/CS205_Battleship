@@ -15,7 +15,7 @@ private:
     Board board;
 public:
     HitSelection();
-    void draw();
+    void draw(int width, int height);
 };
 
 

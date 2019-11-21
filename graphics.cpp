@@ -22,8 +22,8 @@ Board board;
 
 
 void init() {
-    width = 500;
-    height = 500;
+    width = 1000;
+    height = 1000;
 }
 
 /* Initialize OpenGL Graphics */
@@ -46,7 +46,7 @@ void display(){
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     HitSelection h;
-    h.draw();
+    h.draw(width, height);
 //    board.draw_board();
 //    glColor3f(1.0,0.0,0.0);
 //    glBegin(GL_QUADS);

@@ -8,14 +8,14 @@ HitSelection::HitSelection() {
     board = Board();
 }
 
-void HitSelection::draw() {
+void HitSelection::draw(int width, int height) {
     // draw background
     glColor3f(1.0,1.0,1.0);
     glBegin(GL_QUADS);
     glVertex2i(0,0);
-    glVertex2i(1000,0);
-    glVertex2i(1000,1000);
-    glVertex2i(0,1000);
+    glVertex2i(width,0);
+    glVertex2i(width,height);
+    glVertex2i(0,height);
     glEnd();
     // drawn cells for hit selection
     Tangle cell;
