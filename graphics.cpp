@@ -12,7 +12,7 @@
 #include "Ship.h"
 #include "Game.h"
 #include <sstream>
-#include "HitSelection.h"
+
 
 using namespace std;
 GLdouble width, height;
@@ -20,10 +20,15 @@ int wd;
 Board board;
 
 
+enum gameState{menu,game,hitSelection,bye,help};
+
+gameState screen;
+
 
 void init() {
-    width = 1000;
-    height = 1000;
+    screen= menu;
+    width = 500;
+    height = 500;
 }
 
 /* Initialize OpenGL Graphics */
@@ -45,23 +50,36 @@ void display(){
     glClear(GL_COLOR_BUFFER_BIT);   // Clear the color buffer with current clearing color
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    HitSelection h;
-    h.draw(width, height);
-//    board.draw_board();
-//    glColor3f(1.0,0.0,0.0);
-//    glBegin(GL_QUADS);
-//    glVertex2d(0.0,0.0);
-//    glVertex2d(100.0,0.0);
-//    glVertex2d(100.0,100.0);
-//    glVertex2d(0.0,100.0);
-//    glEnd();
-//    glColor3f(0.0,1.0,0.0);
-//    glBegin(GL_QUADS);
-//    glVertex2d(10.0,10.0);
-//    glVertex2d(90.0,10.0);
-//    glVertex2d(90.0,90.0);
-//    glVertex2d(10.0,90.0);
-//    glEnd();
+
+    switch(screen) {
+        case menu:
+            glColor3f(1.0,0.0,0.0);
+            glBegin(GL_QUADS);
+            glVertex2d(0.0,0.0);
+            glVertex2d(100.0,0.0);
+            glVertex2d(100.0,100.0);
+            glVertex2d(0.0,100.0);
+            glEnd();
+            glColor3f(0.0,1.0,0.0);
+            glBegin(GL_QUADS);
+            glVertex2d(10.0,10.0);
+            glVertex2d(90.0,10.0);
+            glVertex2d(90.0,90.0);
+            glVertex2d(10.0,90.0);
+            glEnd();
+            break;
+        case game:
+            break;
+        case hitSelection:
+            break;
+        case bye:
+            break;
+        case help:
+            break;
+
+    }
+
+    glEnd();
     glFlush();  // Render now
 }
 
@@ -110,6 +128,13 @@ void cursor(int x, int y) {
 // button will be GLUT_LEFT_BUTTON or GLUT_RIGHT_BUTTON
 // state will be GLUT_UP or GLUT_DOWN
 void mouse(int button, int state, int x, int y) {
+
+//    while(state == GLUT_DOWN){
+//        drag(getShip(x,y),x,y);
+//        glutPostRedisplay();
+//    }
+
+
 
 }
 void timer(int dummy) {
@@ -242,4 +267,3 @@ int main(int argc, char** argv) {
 
     return 0;
 }
-
