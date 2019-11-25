@@ -12,12 +12,14 @@
 
 class HitSelection {
 private:
-    Board board;
-    vector<Tangle> hitOptions;
+    vector<vector<Tangle>> hitOptions;
+    Tangle window;
 public:
     HitSelection();
     void draw(int width, int height);
     point getCell(int x, int y);
+    bool isOverlapping(const point &p) const;
+    void update(Board b);
 };
 
 

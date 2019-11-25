@@ -20,6 +20,7 @@ GLdouble width, height;
 int wd;
 Board board;
 HitSelection hs;
+Game g = Game();
 
 
 enum gameState{menu,game,hitSelection,bye,help};
@@ -28,7 +29,7 @@ gameState screen;
 
 
 void init() {
-    screen= menu;
+    screen= hitSelection;
     width = 500;
     height = 500;
 }
@@ -74,6 +75,9 @@ void display(){
             break;
         case hitSelection:
             hs.draw(width, height);
+            // get cell clicked
+            // update hitSelection board
+            hs.update(g.getComputerBoard());
             break;
         case bye:
             break;
