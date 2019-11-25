@@ -189,3 +189,7 @@ int Board::getIntInput(string input){
         cout << "Please enter a valid input" << endl;
     }
 }
+
+cellStatus Board::getCell(int row, int col) {
+    return board[row][col];
+}

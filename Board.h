@@ -46,6 +46,7 @@ public:
     void updateShip(cellStatus c);
     void printBoard();
     void printHiddenBoard();
+    cellStatus getCell(int row, int col);
 
     int getIntInput(string input);
 
