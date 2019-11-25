@@ -18,6 +18,9 @@ private:
 public:
     /* Constructor */
     Game();
+    // Get boards
+    Board getUserBoard();
+    Board getComputerBoard();
     //To Begin and end games
     bool startGame();
     void resetGame();

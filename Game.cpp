@@ -28,6 +28,14 @@ Game::Game(){
     userBoard= UserBoard();
 }
 
+Board Game::getComputerBoard() {
+    return compBoard;
+}
+
+Board Game::getUserBoard() {
+    return userBoard;
+}
+
 //To Begin and end games
 bool Game::startGame(){
     int choice;
