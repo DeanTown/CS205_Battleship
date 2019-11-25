@@ -231,9 +231,10 @@ Tangle::Tangle(double l, double w, color b, color f, point c) : Shape(c, b, f) {
     setDimensions(l, w);
 }
 
-Tangle::Tangle(double l, double w, point c) {
+Tangle::Tangle(double l, double w, point c, point boardCell) {
     setDimensions(l, w);
     setCenter(c);
+    this->boardCell = boardCell;
 }
 
 double Tangle::getLength() const {
@@ -242,6 +243,10 @@ double Tangle::getLength() const {
 
 double Tangle::getWidth() const {
     return width;
+}
+
+point Tangle::getBoardCell() const {
+    return boardCell;
 }
 
 void Tangle::setDimensions(double l, double w) {

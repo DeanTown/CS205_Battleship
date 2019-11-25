@@ -11,6 +11,7 @@
 #include "UserBoard.h"
 #include "Ship.h"
 #include "Game.h"
+#include "HitSelection.h"
 #include <sstream>
 
 
@@ -18,6 +19,7 @@ using namespace std;
 GLdouble width, height;
 int wd;
 Board board;
+HitSelection hs;
 
 
 enum gameState{menu,game,hitSelection,bye,help};
@@ -71,6 +73,7 @@ void display(){
         case game:
             break;
         case hitSelection:
+            hs.draw(width, height);
             break;
         case bye:
             break;
@@ -133,6 +136,12 @@ void mouse(int button, int state, int x, int y) {
 //        drag(getShip(x,y),x,y);
 //        glutPostRedisplay();
 //    }
+
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_UP && hs.isOverlapping({x,y})) {
+        // get cell that is clicked and provide user feedback
+        point cell = hs.getCell(x,y);
+    }
+
 
 
 

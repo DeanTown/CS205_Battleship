@@ -124,6 +124,8 @@ class Tangle : public Shape {
 private:
     double length;
     double width;
+    // the position on the board of the cell this Tangle represents
+    point boardCell;
 
     void calculateArea() override;
     void calculatePerimeter() override;
@@ -135,7 +137,7 @@ public:
     Tangle(double rb, double gb, double bb, double rf, double gf, double bf);
     Tangle(double l, double w, color b, color f);
     Tangle(double l, double w, double rb, double gb, double bb, double rf, double gf, double bf);
-    Tangle(double l, double w, point c);
+    Tangle(double l, double w, point c, point boardCell);
     Tangle(double l, double w, int xIn, int yIn);
     Tangle(double l, double w, color b, color f, point c);
     Tangle(double l, double w, double rb, double gb, double bb, double rf, double gf, double bf, int xIn, int yIn);
@@ -143,6 +145,7 @@ public:
     // Getters
     double getLength() const;
     double getWidth() const;
+    point getBoardCell() const;
 
     // Setters
     void setDimensions(double l, double w);

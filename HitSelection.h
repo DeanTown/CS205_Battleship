@@ -13,9 +13,11 @@
 class HitSelection {
 private:
     Board board;
+    vector<Tangle> hitOptions;
 public:
     HitSelection();
     void draw(int width, int height);
+    point getCell(int x, int y);
 };
 
 
