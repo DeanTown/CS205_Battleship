@@ -119,11 +119,5 @@ void Game::playGame(){
         wait(new int(1));
 
         while(!userBoard.compMove());
-
-
-
     }
-
-
-
 }

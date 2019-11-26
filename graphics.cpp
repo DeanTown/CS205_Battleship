@@ -21,15 +21,21 @@ int wd;
 Board board;
 HitSelection hs;
 Game g = Game();
+Tangle startButton;
+Tangle helpButton;
+Tangle hhButton;
+Tangle hcButton;
+Tangle hMenu;
 
 
-enum gameState{menu,game,hitSelection,bye,help};
+
+enum gameState{menu,mode,hhGame,hcGame,game,hitSelection,bye,help};
 
 gameState screen;
 
 
 void init() {
-    screen= hitSelection;
+    screen= menu;
     width = 500;
     height = 500;
 }
@@ -43,6 +49,128 @@ void initGL() {
 /* Handler for window-repaint event. Call back when the window first appears and
  whenever the window needs to be re-painted. */
 
+void startMenu(){
+    startButton.setDimensions(100, 100);
+    startButton.setFillColor(0, 0, 0);
+    startButton.setBorderColor(0,255,0);
+    startButton.setCenter(235, 300);
+
+    startButton.draw();
+
+    helpButton.setDimensions(40, 40);
+    helpButton.setFillColor(0, 0, 0);
+    helpButton.setBorderColor(0,255,0);
+    helpButton.setCenter(30, 30);
+
+    helpButton.draw();
+
+    glColor3f(0,255,0);
+
+
+    glBegin(GL_TRIANGLES);
+
+    glVertex2f(215,270);
+    glVertex2f(260,300);
+    glVertex2f(215,330);
+
+    glEnd();
+
+
+    string title = "Battleship";
+
+    string help = "?";
+
+
+    glColor3f(1.0, 1.0, 1.0);
+    glRasterPos2i(190, 175);
+    for (char c : title) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
+    }
+
+    glColor3f(0, 255, 0);
+    glRasterPos2i(25, 35);
+    for (char h :help) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, h);
+    }
+
+}
+
+void modeMenu(){
+    hhButton.setDimensions(100, 100);
+    hhButton.setFillColor(0, 0, 0);
+    hhButton.setBorderColor(0,255,0);
+    hhButton.setCenter(170, 300);
+
+    hhButton.draw();
+
+    hcButton.setDimensions(100, 100);
+    hcButton.setFillColor(0, 0, 0);
+    hcButton.setBorderColor(0,255,0);
+    hcButton.setCenter(330, 300);
+
+    hcButton.draw();
+
+    string hhTitle = "vs. Human";
+
+    string hcTitle = "vs. Computer";
+
+    glColor3f(1.0, 1.0, 1.0);
+    glRasterPos2i(140, 300);
+    for (char c : hhTitle) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+    }
+
+
+    glRasterPos2i(293, 300);
+    for (char c : hcTitle) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+    }
+
+}
+
+void humanStart() {
+    string hhTitle = "Human";
+
+    glColor3f(1.0, 1.0, 1.0);
+    glRasterPos2i(140, 300);
+    for (char c : hhTitle) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+    }
+}
+
+void compStart() {
+    string hhTitle = "computer";
+
+    glColor3f(1.0, 1.0, 1.0);
+    glRasterPos2i(140, 300);
+    for (char c : hhTitle) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+    }
+}
+
+void helpMenu() {
+    hMenu.setDimensions(200, 400);
+    hMenu.setFillColor(0, 0, 0);
+    hMenu.setBorderColor(0,255,0);
+    hMenu.setCenter(250, 200);
+
+    hMenu.draw();
+
+    string help = "Help";
+    string instructions = "Guess the position of your enemy's ship by clicking on a cell to destroy their ships";
+
+    glColor3f(0, 255, 0);
+    glRasterPos2i(140, 150);
+    for (char c : help) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
+    }
+
+    glColor3f(0, 255, 0);
+    glRasterPos2i(140, 300);
+    for (char c : instructions) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
+    }
+}
 void display(){
     glViewport(0, 0, width, height);
     // do an orthographic parallel projection with the coordinate
@@ -55,23 +183,32 @@ void display(){
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     switch(screen) {
+
         case menu:
-            glColor3f(1.0,0.0,0.0);
-            glBegin(GL_QUADS);
-            glVertex2d(0.0,0.0);
-            glVertex2d(100.0,0.0);
-            glVertex2d(100.0,100.0);
-            glVertex2d(0.0,100.0);
-            glEnd();
-            glColor3f(0.0,1.0,0.0);
-            glBegin(GL_QUADS);
-            glVertex2d(10.0,10.0);
-            glVertex2d(90.0,10.0);
-            glVertex2d(90.0,90.0);
-            glVertex2d(10.0,90.0);
-            glEnd();
+//            glColor3f(1.0,0.0,0.0);
+//            glBegin(GL_QUADS);
+//            glVertex2d(0.0,0.0);
+//            glVertex2d(100.0,0.0);
+//            glVertex2d(100.0,100.0);
+//            glVertex2d(0.0,100.0);
+//            glEnd();
+//            glColor3f(0.0,1.0,0.0);
+//            glBegin(GL_QUADS);
+//            glVertex2d(10.0,10.0);
+//            glVertex2d(90.0,10.0);
+//            glVertex2d(90.0,90.0);
+//            glVertex2d(10.0,90.0);
+//            glEnd();
+            startMenu();
             break;
-        case game:
+        case mode:
+            modeMenu();
+            break;
+        case hhGame:
+            humanStart();
+            break;
+        case hcGame:
+            hs.draw(width, height);
             break;
         case hitSelection:
             hs.draw(width, height);
@@ -82,6 +219,7 @@ void display(){
         case bye:
             break;
         case help:
+            helpMenu();
             break;
 
     }
@@ -89,6 +227,7 @@ void display(){
     glEnd();
     glFlush();  // Render now
 }
+
 
 // http://www.theasciicode.com.ar/ascii-control-characters/escape-ascii-code-27.html
 void kbd(unsigned char key, int x, int y)
@@ -141,13 +280,29 @@ void mouse(int button, int state, int x, int y) {
 //        glutPostRedisplay();
 //    }
 
-    if (button == GLUT_LEFT_BUTTON && state == GLUT_UP && hs.isOverlapping({x,y})) {
-        // get cell that is clicked and provide user feedback
-        point cell = hs.getCell(x,y);
+//    if (button == GLUT_LEFT_BUTTON && state == GLUT_UP && hs.isOverlapping({x,y})) {
+//        // get cell that is clicked and provide user feedback
+//        point cell = hs.getCell(x,y);
+//    }
+
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 184 && x < 286 && y > 249 && y < 351 && screen == menu ){
+        screen = mode;
+    }
+
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 9 && x < 51 && y > 9 && y < 51 && screen == menu ){
+        screen = help;
+    }
+
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 121 && x < 221 && y > 249 && y < 351 && screen == mode ){
+        screen = hhGame;
+    }
+
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 281 && x < 381 && y > 249 && y < 351 && screen == mode ){
+        screen = hcGame;
     }
 
 
-
+    glutPostRedisplay();
 
 }
 void timer(int dummy) {

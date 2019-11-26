@@ -164,6 +164,47 @@ public:
     point mouse(int x, int y);
 
 };
+//
+//class Triangle : public Shape {
+//private:
+//    double length;
+//    double width;
+//    // the position on the board of the cell this Tangle represents
+//    point boardCell;
+//
+//    void calculateArea() override;
+//    void calculatePerimeter() override;
+//
+//public:
+//    Triangle();
+//    Triangle(double l, double w);
+//    Triangle(color b, color f);
+//    Triangle(double rb, double gb, double bb, double rf, double gf, double bf);
+//    Triangle(double l, double w, color b, color f);
+//    Triangle(double l, double w, double rb, double gb, double bb, double rf, double gf, double bf);
+//    Triangle(double l, double w, point c, point boardCell);
+//    Triangle(double l, double w, int xIn, int yIn);
+//    Triangle(double l, double w, color b, color f, point c);
+//    Triangle(double l, double w, double rb, double gb, double bb, double rf, double gf, double bf, int xIn, int yIn);
+//
+//    // Getters
+//    double getLength() const;
+//    double getWidth() const;
+//    point getBoardCell() const;
+//
+//    // Setters
+//    void setDimensions(double l, double w);
+//
+//    void draw() const override;
+//
+//    char getType() const override;
+//
+//    bool isOverlapping(const point &p) const override;
+//    bool isOverlappingTriangle(const Triangle &trian) const;
+//
+//    point mouse(int x, int y);
+//
+//};
 
 
 

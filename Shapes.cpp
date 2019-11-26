@@ -272,7 +272,7 @@ void Tangle::draw() const {
     glVertex2i(center.x-(width/2.0), center.y+(length/2.0));
     glEnd();
 
-    glLineWidth((GLfloat)5.0);
+    glLineWidth((GLfloat)1.0);
     // draw border
     glColor3f(border.red, border.green, border.blue);
     glBegin(GL_LINE_STRIP);
@@ -288,6 +288,8 @@ void Tangle::draw() const {
     glVertex2i(center.x-(width/2.0), center.y-(length/2.0));
     glEnd();
 }
+
+
 
 char Tangle::getType() const {
     return 't';
@@ -334,4 +336,73 @@ Tangle* Tangle::drag(Tangle *sqr, point *mouse)
 //    } else {
 //        return isOverlappingTangleCircle(r, dynamic_cast<Circle&>(*s));
 //    }
+//}
+
+//
+///******************** Triangle class ********************/
+//
+//Triangle::Triangle() : Shape(), length(0), width(0) { }
+//
+//Triangle::Triangle(double l, double w) : Shape() {
+//    setDimensions(l, w);
+//}
+//
+//Triangle::Triangle(double l, double w, color b, color f, point c) : Shape(c, b, f) {
+//    setDimensions(l, w);
+//}
+//
+//Triangle::Triangle(double l, double w, point c, point boardCell) {
+//    setDimensions(l, w);
+//    setCenter(c);
+//    this->boardCell = boardCell;
+//}
+//
+//double Triangle::getLength() const {
+//    return length;
+//}
+//
+//double Triangle::getWidth() const {
+//    return width;
+//}
+//
+//point Triangle::getBoardCell() const {
+//    return boardCell;
+//}
+//
+//void Triangle::setDimensions(double l, double w) {
+//    // we don't want to accept negative values for length and width
+//    length = (l < 0) ? 0 : l;
+//    width = (w < 0) ? 0 : w;
+//    // update area and perimeter
+//
+//}
+//
+//void Triangle::draw() const {
+//    // draw fill
+//    glColor3f(fill.red, fill.green, fill.blue);
+//    glBegin(GL_TRIANGLES);
+//
+//    glVertex2f(300.0,210.0);
+//    glVertex2f(340.0,215.0);
+//    glVertex2f(320.0,250.0);
+//    glEnd();
+//}
+//
+//bool Triangle::isOverlapping(const point &p) const {
+//    return (p.x >= center.x-(width/2.0) && // left side
+//            p.x <= center.x+(width/2.0) && // right side
+//            p.y >= center.y-(length/2.0) && // top
+//            p.y <= center.y+(length/2.0)); // bottom
+//}
+//
+//bool Triangle::isOverlappingTriangle(const Triangle &trian) const {
+//    return !(center.x+(width/2.0) < trian.center.x-(trian.width/2.0) || // self is left of rectangle
+//                                                                        trian.center.x+(trian.width/2.0) < center.x-(width/2.0) || // rectangle is left of self
+//             center.y-(length/2.0) > trian.center.y+(trian.length/2.0) || // self is below rectangle
+//                                                                          trian.center.y-(trian.length/2.0) > center.y+(length/2.0)); // rectangle is below self
+//}
+//point Triangle::mouse(int x, int y)
+//{
+//    int windowWidth = 400, windowHeight = 400;
+//    return point(float(x)/windowWidth, 1.0 - float(y)/windowHeight);
 //}
