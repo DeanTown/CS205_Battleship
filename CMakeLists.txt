@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(test)
+project(CS205_final_project)
 
 if (WIN32)
     set(FREEGLUT_INCLUDE_DIRS "C:/Program\ Files/Common\ Files/freeglut/include")
@@ -26,7 +26,7 @@ file(GLOB SOURCE_FILES
         *.h
         )
 
-add_executable(graphics Board Cell Ship ${SOURCE_FILES} Shapes.cpp Shapes.h)
+add_executable(graphics Cell Board Fleet UCarrier UBattleship UDestroyer USub UCruiser ${SOURCE_FILES})
 
 if (WIN32)
     target_link_libraries (graphics ${OPENGL_LIBRARIES} freeglut)

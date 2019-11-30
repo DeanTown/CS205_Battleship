@@ -1,11 +1,15 @@
 #include "Fleet.h"
+fleetStat Fleet::getFleetStat() const {
+    return fs;
+}
+fleetStat Fleet::getAdditionStat() const {
+    return fsA;
+}
 
-//Fleet::Fleet() {}
-//
-//bool Fleet::sunk() {
-//    return carrier.getDestroyed() &&
-//           battleship.getDestroyed() &&
-//           destroyer.getDestroyed() &&
-//           sub.getDestroyed() &&
-//           cruiser.getDestroyed();
-//}
+void Fleet::setFleetStat(fleetStat fs) {
+    this->fs = fs;
+}
+
+void Fleet::setAdditionStat(fleetStat fs) {
+    fsA = fs;
+}

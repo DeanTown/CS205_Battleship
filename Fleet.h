@@ -1,19 +1,16 @@
-#ifndef CS205_FINAL_PROJECT_FLEET_H
-#define CS205_FINAL_PROJECT_FLEET_H
+#ifndef CS205_FINALPROJECT_FLEET_H
+#define CS205_FINALPROJECT_FLEET_H
 
-#include "Ship.h"
-
+enum fleetStat{moveable,selected,placed,StoM,placedHo,placedVe,ready,No,addNull};
 class Fleet {
-//private:
-//    Ship carrier = Ship(5);
-//    Ship battleship = Ship(4);
-//    Ship destroyer = Ship(3);
-//    Ship sub = Ship(3);
-//    Ship cruiser = Ship(2);
-//public:
-//    Fleet();
-//    bool sunk();
+private:
+    fleetStat fs, fsA;
+public:
+    fleetStat getFleetStat() const;
+    fleetStat getAdditionStat() const;
+    void setFleetStat(fleetStat fs);
+    void setAdditionStat(fleetStat fs);
 };
 
 
-#endif //CS205_FINAL_PROJECT_FLEET_H
+#endif //CS205_FINALPROJECT_FLEET_H

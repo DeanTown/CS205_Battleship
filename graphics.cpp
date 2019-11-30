@@ -7,23 +7,31 @@
 #include "cstdlib"
 #include "ctime"
 #include "Cell.h"
+#include "UCarrier.h"
+#include "UBattleship.h"
+#include "UDestroyer.h"
+#include "USub.h"
+#include "UCruiser.h"
 #include "Board.h"
-//#include "Player.h"
-#include "Ship.h"
-//#include "Game.h"
+
 
 
 using namespace std;
 GLdouble width, height;
-int wd, cellNumber;
-Board board;
-Cell cell;
-Ship ships;
+GLint wd, cellNumber;
+GLint boardL,boardR,boardT,boardB;
+Cell cells;
+Board userBoard;
+UCarrier* uc = new UCarrier;
+UBattleship* ub = new UBattleship;
+UDestroyer* ud = new UDestroyer;
+USub* us = new USub;
+UCruiser* ur = new UCruiser;
 bool mouseInput = false;
 
 
 void init() {
-    width = 500;
+    width = 700;
     height = 600;
 }
 
@@ -46,19 +54,24 @@ void display(){
     glClear(GL_COLOR_BUFFER_BIT);   // Clear the color buffer with current clearing color
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    board.drawBoard();
-    ships.createCarrier();
-    ships.createBattleship();
-//    ships.createShip(100,450,4,1);
-//    ships.createShip(170,450,5,2);
-//    ships.createShip(240,450,3,3);
-//    ships.createShip(310,450,3,4);
-//    ships.createShip(380,450,2,5);
-    if (mouseInput) {
-        board.updateBoard();
-//        cout << ships.getCenterX() << "," << ships.getCenterY() << endl;
-//        mouseInput = false;
+    userBoard.drawBoard();
+    boardL = userBoard.getLeftX();
+    boardR = userBoard.getRightX();
+    boardT = userBoard.getTopY();
+    boardB = userBoard.getBottomY();
+    uc->draw();
+    ub->draw();
+    ud->draw();
+    us->draw();
+    ur->draw();
+
+    if (uc->getFleetStat() == placedHo || ub->getFleetStat() == placedHo || ud->getFleetStat() == placedHo || us->getFleetStat() == placedHo
+    || ur->getFleetStat() == placedHo || uc->getFleetStat() == placedVe || ub->getFleetStat() == placedVe || ud->getFleetStat() == placedVe
+    || us->getFleetStat() == placedVe || ur->getFleetStat() == placedVe) {
+        cells.drawButton("change dirction");
+        cells.drawDone("done");
     }
+
 
     glFlush();  // Render now
 }
@@ -99,7 +112,27 @@ void kbdS(int key, int x, int y) {
 }
 
 void cursor(int x, int y) {
-
+    // when fleet state is selected, it can be moved
+    if (uc->getFleetStat() == selected || uc->getFleetStat() == StoM) {
+        uc->drag(uc,x,y);
+        glutPostRedisplay();
+    }
+    if (ub->getFleetStat() == selected) {
+        ub->drag(ub,x,y);
+        glutPostRedisplay();
+    }
+    if (ud->getFleetStat() == selected) {
+        ud->drag(ud,x,y);
+        glutPostRedisplay();
+    }
+    if (us->getFleetStat() == selected) {
+        us->drag(us,x,y);
+        glutPostRedisplay();
+    }
+    if (ur->getFleetStat() == selected) {
+        ur->drag(ur,x,y);
+        glutPostRedisplay();
+    }
     glutPostRedisplay();
 }
 
@@ -110,39 +143,367 @@ void mouse(int button, int state, int x, int y) {
         default:
             break;
         case GLUT_LEFT_BUTTON:
-            if (state == GLUT_DOWN) {
-
-                if (x >= board.getLeftX() && x <= board.getRightX() && y >= board.getTopY() && y <= board.getBottomY()) {
-                    cout << board.cellNum(x,y) << endl;
-                    cellNumber = board.cellNum(x,y);
-                    mouseInput = board.updateStat(cellNumber - 1 );
-                } else {
-                    cout << x << "," << y << endl;
-                }
+            // -------------------------------------------------------------------------------------------------------------
+            if (state == GLUT_DOWN && x >= userBoard.getLeftX() && x <= userBoard.getRightX() && y >= userBoard.getTopY() &&
+                y <= userBoard.getBottomY()) {
+                cellNumber = userBoard.cellNum(x,y);
+//                cout << userBoard.getCellX(cellNumber - 1) << endl;
+                mouseInput = userBoard.updateStat(cellNumber - 1 );
             }
+            // -------------------------------------------------------------------------------------------------------------
+
+            // user carrier
+            // -------------------------------------------------------------------------------------------------------------
+            if (state == GLUT_DOWN && uc->getFleetStat() == moveable ) {
+                if (x >= uc->getLeftX() && x <= uc->getRightX() && y >= uc->getTopY() && y <= uc->getBottomY()) {
+                    uc->setFleetStat(selected);
+                    if (ub->getFleetStat() != ready)
+                        ub->setFleetStat(No);
+                    if (ud->getFleetStat() != ready)
+                        ud->setFleetStat(No);
+                    if (us->getFleetStat() != ready)
+                        us->setFleetStat(No);
+                    if (ur->getFleetStat() != ready)
+                        ur->setFleetStat(No);
+                    glutPostRedisplay();
+                }
+            } else if (state == GLUT_DOWN && uc->getFleetStat() == selected) {
+                if (uc->inBoard(boardL,boardR,boardT,boardB)) {
+                    uc->setCenterX(userBoard.getCellX(cellNumber - 1));
+                    uc->setCenterY(userBoard.getCellY(cellNumber - 1));
+                    if (uc->getWidth() == 30 && uc->getHeight() == 149)
+                        uc->setFleetStat(placedHo);
+                    else
+                        uc->setFleetStat(placedVe);
+                    uc->setAdditionStat(placed);
+                } else {
+                    uc->setCenterX(100);
+                    uc->setCenterY(500);
+                    uc->setFleetStat(moveable);
+                }
+            } else if (state == GLUT_DOWN && cells.inButton(x,y) && uc->getFleetStat() == placedHo) {
+                uc->setWidth(149);
+                uc->setHeight(30);
+                uc->setFleetStat(placedVe);
+                uc->setAdditionStat(placed);
+                if (!uc->inBoard(boardL,boardR,boardT,boardB)) {
+                    uc->setWidth(30);
+                    uc->setHeight(149);
+                    uc->setCenterX(100);
+                    uc->setCenterY(500);
+                    uc->setFleetStat(moveable);
+                }
+            } else if (state == GLUT_DOWN && cells.inButton(x,y) && uc->getFleetStat() == placedVe) {
+                uc->setWidth(30);
+                uc->setHeight(149);
+                uc->setFleetStat(placedHo);
+                uc->setAdditionStat(placed);
+                if (!uc->inBoard(boardL,boardR,boardT,boardB)) {
+                    uc->setWidth(30);
+                    uc->setHeight(149);
+                    uc->setCenterX(100);
+                    uc->setCenterY(500);
+                    uc->setFleetStat(moveable);
+                }
+            } else if (state == GLUT_DOWN && cells.inDone(x,y)) {
+                uc->setFleetStat(ready);
+                uc->setAdditionStat(addNull);
+                if (ub->getFleetStat() == No)
+                    ub->setFleetStat(moveable);
+                if (ud->getFleetStat() == No)
+                    ud->setFleetStat(moveable);
+                if (us->getFleetStat() == No)
+                    us->setFleetStat(moveable);
+                if (ur->getFleetStat() == No)
+                    ur->setFleetStat(moveable);
+            } else if (state == GLUT_DOWN && uc->getAdditionStat() == placed) {
+                uc->setFleetStat(selected);
+            }
+            // -------------------------------------------------------------------------------------------------------------
+
+            // user battleship
+            // -------------------------------------------------------------------------------------------------------------
+            if (state == GLUT_DOWN && ub->getFleetStat() == moveable ) {
+                if (x >= ub->getLeftX() && x <= ub->getRightX() && y >= ub->getTopY() && y <= ub->getBottomY()) {
+                    ub->setFleetStat(selected);
+                    if (uc->getFleetStat() != ready)
+                        uc->setFleetStat(No);
+                    if (ud->getFleetStat() != ready)
+                        ud->setFleetStat(No);
+                    if (us->getFleetStat() != ready)
+                        us->setFleetStat(No);
+                    if (ur->getFleetStat() != ready)
+                        ur->setFleetStat(No);
+                    glutPostRedisplay();
+                }
+            } else if (state == GLUT_DOWN && ub->getFleetStat() == selected) {
+                if (ub->inBoard(boardL,boardR,boardT,boardB)) {
+                    if (ub->getWidth() == 30 && ub->getHeight() == 119) {
+                        ub->setCenterX(userBoard.getCellX(cellNumber - 1));
+                        ub->setCenterY(userBoard.getCellY(cellNumber - 1) + cells.getWidth() / 2);
+                        ub->setFleetStat(placedHo);
+                    }
+                    else {
+                        ub->setCenterX(userBoard.getCellX(cellNumber) - cells.getWidth() / 2);
+                        ub->setCenterY(userBoard.getCellY(cellNumber));
+                        ub->setFleetStat(placedVe);
+                    }
+                    ub->setAdditionStat(placed);
+                } else {
+                    ub->setCenterX(160);
+                    ub->setCenterY(500);
+                    ub->setFleetStat(moveable);
+                }
+            } else if (state == GLUT_DOWN && cells.inButton(x,y) && ub->getFleetStat() == placedHo) {
+                ub->setWidth(119);
+                ub->setHeight(30);
+                ub->setCenterX(userBoard.getCellX(cellNumber) - cells.getWidth() / 2);
+                ub->setCenterY(userBoard.getCellY(cellNumber));
+                ub->setFleetStat(placedVe);
+                ub->setAdditionStat(placed);
+                if (!ub->inBoard(boardL,boardR,boardT,boardB)) {
+                    ub->setWidth(30);
+                    ub->setHeight(119);
+                    ub->setCenterX(160);
+                    ub->setCenterY(500);
+                    ub->setFleetStat(moveable);
+                }
+            } else if (state == GLUT_DOWN && cells.inButton(x,y) && ub->getFleetStat() == placedVe) {
+                ub->setWidth(30);
+                ub->setHeight(119);
+                ub->setCenterX(userBoard.getCellX(cellNumber - 1));
+                ub->setCenterY(userBoard.getCellY(cellNumber - 1) + cells.getWidth() / 2);
+                ub->setFleetStat(placedHo);
+                ub->setAdditionStat(placed);
+                if (!ub->inBoard(boardL,boardR,boardT,boardB)) {
+                    ub->setWidth(30);
+                    ub->setHeight(119);
+                    ub->setCenterX(160);
+                    ub->setCenterY(500);
+                    ub->setFleetStat(moveable);
+                }
+            } else if (state == GLUT_DOWN && cells.inDone(x,y)) {
+                ub->setFleetStat(ready);
+                ub->setAdditionStat(addNull);
+                if (uc->getFleetStat() == No)
+                    uc->setFleetStat(moveable);
+                if (ud->getFleetStat() == No)
+                    ud->setFleetStat(moveable);
+                if (us->getFleetStat() == No)
+                    us->setFleetStat(moveable);
+                if (ur->getFleetStat() == No)
+                    ur->setFleetStat(moveable);
+            } else if (state == GLUT_DOWN && ub->getAdditionStat() == placed) {
+                ub->setFleetStat(selected);
+            }
+            // -------------------------------------------------------------------------------------------------------------
+
+            // user destroyer
+            // -------------------------------------------------------------------------------------------------------------
+            if (state == GLUT_DOWN && ud->getFleetStat() == moveable ) {
+                if (x >= ud->getLeftX() && x <= ud->getRightX() && y >= ud->getTopY() && y <= ud->getBottomY()) {
+                    ud->setFleetStat(selected);
+                    if (uc->getFleetStat() != ready)
+                        uc->setFleetStat(No);
+                    if (ub->getFleetStat() != ready)
+                        ub->setFleetStat(No);
+                    if (us->getFleetStat() != ready)
+                        us->setFleetStat(No);
+                    if (ur->getFleetStat() != ready)
+                        ur->setFleetStat(No);
+                    glutPostRedisplay();
+                }
+            } else if (state == GLUT_DOWN && ud->getFleetStat() == selected) {
+                if (ud->inBoard(boardL,boardR,boardT,boardB)) {
+                    ud->setCenterX(userBoard.getCellX(cellNumber - 1));
+                    ud->setCenterY(userBoard.getCellY(cellNumber - 1));
+                    if (ud->getWidth() == 30 && ud->getHeight() == 89)
+                        ud->setFleetStat(placedHo);
+                    else
+                        ud->setFleetStat(placedVe);
+                    ud->setAdditionStat(placed);
+                } else {
+                    ud->setCenterX(220);
+                    ud->setCenterY(500);
+                    ud->setFleetStat(moveable);
+                }
+            } else if (state == GLUT_DOWN && cells.inButton(x,y) && ud->getFleetStat() == placedHo) {
+                ud->setWidth(89);
+                ud->setHeight(30);
+                ud->setFleetStat(placedVe);
+                ud->setAdditionStat(placed);
+                if (!ud->inBoard(boardL,boardR,boardT,boardB)) {
+                    ud->setWidth(30);
+                    ud->setHeight(89);
+                    ud->setCenterX(220);
+                    ud->setCenterY(500);
+                    ud->setFleetStat(moveable);
+                }
+            } else if (state == GLUT_DOWN && cells.inButton(x,y) && ud->getFleetStat() == placedVe) {
+                ud->setWidth(30);
+                ud->setHeight(89);
+                ud->setFleetStat(placedHo);
+                ud->setAdditionStat(placed);
+            } else if (state == GLUT_DOWN && cells.inDone(x,y)) {
+                ud->setFleetStat(ready);
+                ud->setAdditionStat(addNull);
+                if (uc->getFleetStat() == No)
+                    uc->setFleetStat(moveable);
+                if (ub->getFleetStat() == No)
+                    ub->setFleetStat(moveable);
+                if (us->getFleetStat() == No)
+                    us->setFleetStat(moveable);
+                if (ur->getFleetStat() == No)
+                    ur->setFleetStat(moveable);
+            } else if (state == GLUT_DOWN && ud->getAdditionStat() == placed) {
+                ud->setFleetStat(selected);
+            }
+            // -------------------------------------------------------------------------------------------------------------
+
+            // user sub
+            // -------------------------------------------------------------------------------------------------------------
+            if (state == GLUT_DOWN && us->getFleetStat() == moveable ) {
+                if (x >= us->getLeftX() && x <= us->getRightX() && y >= us->getTopY() && y <= us->getBottomY()) {
+                    us->setFleetStat(selected);
+                    if (uc->getFleetStat() != ready)
+                        uc->setFleetStat(No);
+                    if (ub->getFleetStat() != ready)
+                        ub->setFleetStat(No);
+                    if (ud->getFleetStat() != ready)
+                        ud->setFleetStat(No);
+                    if (ur->getFleetStat() != ready)
+                        ur->setFleetStat(No);
+                    glutPostRedisplay();
+                }
+            } else if (state == GLUT_DOWN && us->getFleetStat() == selected) {
+                if (us->inBoard(boardL,boardR,boardT,boardB)) {
+                    us->setCenterX(userBoard.getCellX(cellNumber - 1));
+                    us->setCenterY(userBoard.getCellY(cellNumber - 1));
+                    if (us->getWidth() == 30 && us->getHeight() == 89)
+                        us->setFleetStat(placedHo);
+                    else
+                        us->setFleetStat(placedVe);
+                    us->setAdditionStat(placed);
+                } else {
+                    us->setCenterX(280);
+                    us->setCenterY(500);
+                    us->setFleetStat(moveable);
+                }
+            } else if (state == GLUT_DOWN && cells.inButton(x,y) && us->getFleetStat() == placedHo) {
+                us->setWidth(89);
+                us->setHeight(30);
+                us->setFleetStat(placedVe);
+                us->setAdditionStat(placed);
+                if (!us->inBoard(boardL,boardR,boardT,boardB)) {
+                    us->setWidth(30);
+                    us->setHeight(89);
+                    us->setCenterX(280);
+                    us->setCenterY(500);
+                    us->setFleetStat(moveable);
+                }
+            } else if (state == GLUT_DOWN && cells.inButton(x,y) && us->getFleetStat() == placedVe) {
+                us->setWidth(30);
+                us->setHeight(89);
+                us->setFleetStat(placedHo);
+                us->setAdditionStat(placed);
+            } else if (state == GLUT_DOWN && cells.inDone(x,y)) {
+                us->setFleetStat(ready);
+                us->setAdditionStat(addNull);
+                if (uc->getFleetStat() == No)
+                    uc->setFleetStat(moveable);
+                if (ub->getFleetStat() == No)
+                    ub->setFleetStat(moveable);
+                if (ud->getFleetStat() == No)
+                    ud->setFleetStat(moveable);
+                if (ur->getFleetStat() == No)
+                    ur->setFleetStat(moveable);
+            } else if (state == GLUT_DOWN && us->getAdditionStat() == placed) {
+                us->setFleetStat(selected);
+            }
+            // -------------------------------------------------------------------------------------------------------------
+
+            // user cruiser
+            // -------------------------------------------------------------------------------------------------------------
+            if (state == GLUT_DOWN && ur->getFleetStat() == moveable ) {
+                if (x >= ur->getLeftX() && x <= ur->getRightX() && y >= ur->getTopY() && y <= ur->getBottomY()) {
+                    ur->setFleetStat(selected);
+                    if (uc->getFleetStat() != ready)
+                        uc->setFleetStat(No);
+                    if (ub->getFleetStat() != ready)
+                        ub->setFleetStat(No);
+                    if (ud->getFleetStat() != ready)
+                        ud->setFleetStat(No);
+                    if (us->getFleetStat() != ready)
+                        us->setFleetStat(No);
+                    glutPostRedisplay();
+                }
+            } else if (state == GLUT_DOWN && ur->getFleetStat() == selected) {
+                if (ur->inBoard(boardL,boardR,boardT,boardB)) {
+                    if (ur->getWidth() == 30 && ur->getHeight() == 59) {
+                        ur->setCenterX(userBoard.getCellX(cellNumber - 1));
+                        ur->setCenterY(userBoard.getCellY(cellNumber - 1) + cells.getWidth() / 2);
+                        ur->setFleetStat(placedHo);
+                    }
+                    else {
+                        ur->setCenterX(userBoard.getCellX(cellNumber) - cells.getWidth() / 2);
+                        ur->setCenterY(userBoard.getCellY(cellNumber));
+                        ur->setFleetStat(placedVe);
+                    }
+                    ur->setAdditionStat(placed);
+                } else {
+                    ur->setCenterX(340);
+                    ur->setCenterY(500);
+                    ur->setFleetStat(moveable);
+                }
+            } else if (state == GLUT_DOWN && cells.inButton(x,y) && ur->getFleetStat() == placedHo) {
+                ur->setWidth(59);
+                ur->setHeight(30);
+                ur->setCenterX(userBoard.getCellX(cellNumber) - cells.getWidth() / 2);
+                ur->setCenterY(userBoard.getCellY(cellNumber));
+                ur->setFleetStat(placedVe);
+                ur->setAdditionStat(placed);
+                if (!ur->inBoard(boardL,boardR,boardT,boardB)) {
+                    ur->setWidth(30);
+                    ur->setHeight(59);
+                    ur->setCenterX(340);
+                    ur->setCenterY(500);
+                    ur->setFleetStat(moveable);
+                }
+            } else if (state == GLUT_DOWN && cells.inButton(x,y) && ur->getFleetStat() == placedVe) {
+                ur->setWidth(30);
+                ur->setHeight(59);
+                ur->setCenterX(userBoard.getCellX(cellNumber - 1));
+                ur->setCenterY(userBoard.getCellY(cellNumber - 1) + cells.getWidth() / 2);
+                ur->setFleetStat(placedHo);
+                ur->setAdditionStat(placed);
+                if (!ur->inBoard(boardL,boardR,boardT,boardB)) {
+                    ur->setWidth(30);
+                    ur->setHeight(59);
+                    ur->setCenterX(340);
+                    ur->setCenterY(500);
+                    ur->setFleetStat(moveable);
+                }
+            } else if (state == GLUT_DOWN && cells.inDone(x,y)) {
+                ur->setFleetStat(ready);
+                ur->setAdditionStat(addNull);
+                if (uc->getFleetStat() == No)
+                    uc->setFleetStat(moveable);
+                if (ub->getFleetStat() == No)
+                    ub->setFleetStat(moveable);
+                if (ud->getFleetStat() == No)
+                    ud->setFleetStat(moveable);
+                if (us->getFleetStat() == No)
+                    us->setFleetStat(moveable);
+            } else if (state == GLUT_DOWN && ur->getAdditionStat() == placed) {
+                ur->setFleetStat(selected);
+            }
+            // -------------------------------------------------------------------------------------------------------------
+
             break;
         case GLUT_RIGHT_BUTTON:
             break;
     }
 }
-//void onMouse(int button, int state, int x, int y) {
-//    if(state != GLUT_DOWN)
-//        return;
-//
-//    width = glutGet(GLUT_WINDOW_WIDTH);
-//    height = glutGet(GLUT_WINDOW_HEIGHT);
-//
-//    GLbyte color[4];
-//    GLfloat depth;
-//    GLuint index;
-//
-//    glReadPixels(x, height - y - 1, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, color);
-//    glReadPixels(x, height - y - 1, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
-//    glReadPixels(x, height - y - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
-//
-//    printf("Clicked on pixel %d, %d, color %02hhx%02hhx%02hhx%02hhx, depth %f, stencil index %u\n",
-//           x, y, color[0], color[1], color[2], color[3], depth, index);
-//}
 void timer(int dummy) {
 
     glutPostRedisplay();
@@ -164,7 +525,7 @@ int main(int argc, char** argv) {
 
     // Position the window's initial top-left corner
     /* create the window and store the handle to it */
-    glutInitWindowPosition(-200,-100);
+    glutInitWindowPosition(400,100);
 
     wd = glutCreateWindow("BATTLESHIP" /* title */ );
 
@@ -187,6 +548,7 @@ int main(int argc, char** argv) {
 
     // handles mouse click
     glutMouseFunc(mouse);
+
     // handles timer
     glutTimerFunc(0, timer, 0);
 

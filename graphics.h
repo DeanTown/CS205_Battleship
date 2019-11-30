@@ -14,10 +14,8 @@
 #include <GL/glut.h>
 #endif
 
-
 // Program initialization NOT OpenGL/GLUT dependent,
 // as we haven't created a GLUT window yet
-int randNum(int min, int max);
 void init();
 
 // Initialize OpenGL Graphics
@@ -27,7 +25,6 @@ void initGL();
 
 // Draw the window - this is where all the GL actions are
 void display();
-
 
 
 // Trap and process alphanumeric keyboard events
@@ -44,7 +41,5 @@ void timer(int dummy);
 
 // Handle mouse button pressed and released events
 void mouse(int button, int state, int x, int y);
-
-
 
 #endif /* graphics_h */

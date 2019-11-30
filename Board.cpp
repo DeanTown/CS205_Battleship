@@ -11,7 +11,7 @@ Board::Board() {
 //            cell.setPosition(i, j);
 //            temp.push_back(cell);
 //        }
-//        board.push_back(temp);
+//        Board.push_back(temp);
 //    }
 }
 
@@ -28,18 +28,11 @@ int Board::getTopY() const {
 int Board::getBottomY() const {
     return bottomY;
 }
-int Board::getCellX() const {
-    return bde.cellX;
+int Board::getCellX(int cellNum) const {
+    return cellVector[cellNum].cellX;
 }
-int Board::getCellY() const {
-    return bde.cellY;
-}
-int Board::getCellNum() const {
-    return bde.cellNum;
-
-}
-int Board::getCellWidth() const {
-    return cellWidth;
+int Board::getCellY(int cellNum) const {
+    return cellVector[cellNum].cellY;
 }
 cellStatus Board::getCellStat() const {
     return bde.stat;
@@ -109,15 +102,3 @@ int Board::cellNum(int x, int y) {
     }
     return num;
 }
-
-
-//void Board::display() {
-//    for (int i = 0; i < cellVector.size(); ++i) {
-//        cout << cellVector[i] << endl;
-//    }
-//}
-//
-//ostream &operator << (ostream &os, const boardElement& obj) {
-//    os << "cell number: " << obj.cellNum << "| cell x: " << obj.cellX << "| cell y: " << obj.cellY << "| cell stat: " << obj.stat << endl;
-//    return os;
-//}

@@ -1,8 +1,7 @@
 #ifndef CS205_FINALPROJECT_BOARD_H
 #define CS205_FINALPROJECT_BOARD_H
 
-#include "Cell.h"
-#include "Ship.h"
+#include "cell.h"
 #include "graphics.h"
 #include <vector>
 #include <iostream>
@@ -17,7 +16,6 @@ struct boardElement {
 
 class Board {
 private:
-    vector<Cell> boardVector;
     int cols, rows;
     int leftX, rightX, topY, bottomY, cellWidth = 30, cellNumber;
     vector<boardElement> cellVector;
@@ -36,10 +34,8 @@ public:
     int getRightX() const;
     int getTopY() const;
     int getBottomY() const;
-    int getCellNum() const;
-    int getCellX() const;
-    int getCellY() const;
-    int getCellWidth() const;
+    int getCellX(int cellNum) const;
+    int getCellY(int cellNum) const;
     cellStatus getCellStat() const;
 
     //settet
@@ -50,8 +46,6 @@ public:
     int cellNum(int x, int y);
 //    void display();
 };
-
-//ostream &operator << (ostream &os, const boardElement& obj);
 
 
 #endif //CS205_FINALPROJECT_BOARD_H

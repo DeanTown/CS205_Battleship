@@ -51,9 +51,9 @@ double Cell::getBottomY() const {
     return position[1] + (getLength() / 2.0);
 }
 
-int Cell::getCellNumber() const {
-    return cellNumber;
-}
+//int Cell::getcellNumber() const {
+//    return cellNumber;
+//}
 
 /* Setters */
 void Cell::setSelected(bool sel) {
@@ -111,4 +111,60 @@ void Cell::drawShapeOc() {
     glVertex2d(getRightX() - 1,getBottomY() - 1);
     glVertex2d(getLeftX() + 1,getBottomY() - 1);
     glEnd();
+}
+
+void Cell::drawButton(string label) {
+    // outer
+    glColor3f(1.0,1.0,1.0);
+    glBegin(GL_QUADS);
+    glVertex2d(400,150);
+    glVertex2d(560,150);
+    glVertex2d(560,200);
+    glVertex2d(400,200);
+    glEnd();
+
+    glColor3f(0.0,0.0,0.0);
+    glBegin(GL_QUADS);
+    glVertex2d(410,160);
+    glVertex2d(550,160);
+    glVertex2d(550,190);
+    glVertex2d(410,190);
+    glEnd();
+
+    glColor3f(1.0,1.0,1.0);
+    glRasterPos2i(420,180);
+    for (char &le : label) {
+        glutBitmapCharacter(GLUT_BITMAP_8_BY_13,le);
+    }
+}
+bool Cell::inButton(int x, int y) {
+    return x > 400 && x < 560 && y > 150 && y < 200;
+}
+
+void Cell::drawDone(string label) {
+    // outer
+    glColor3f(1.0,1.0,1.0);
+    glBegin(GL_QUADS);
+    glVertex2d(400,250);
+    glVertex2d(560,250);
+    glVertex2d(560,300);
+    glVertex2d(400,300);
+    glEnd();
+
+    glColor3f(0.0,0.0,0.0);
+    glBegin(GL_QUADS);
+    glVertex2d(410,260);
+    glVertex2d(550,260);
+    glVertex2d(550,290);
+    glVertex2d(410,290);
+    glEnd();
+
+    glColor3f(1.0,1.0,1.0);
+    glRasterPos2i(465,280);
+    for (char &le : label) {
+        glutBitmapCharacter(GLUT_BITMAP_8_BY_13,le);
+    }
+}
+bool Cell::inDone(int x, int y) {
+    return x > 400 && x < 560 && y > 250 && y < 300;
 }

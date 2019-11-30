@@ -1,7 +1,9 @@
 #ifndef CS205_FINALPROJECT_CELL_H
 #define CS205_FINALPROJECT_CELL_H
 
+
 #include <vector>
+#include <string>
 #include "graphics.h"
 
 enum cellStatus {empty, occupied};
@@ -14,7 +16,7 @@ private:
     std::vector<int> position;
     // The status of the tile
     cellStatus status;
-    int length, width, cellNumber;
+    int length = 30, width = 30;
 public:
     /* Constructors */
     Cell();
@@ -30,7 +32,6 @@ public:
     double getRightX() const;
     double getTopY() const;
     double getBottomY() const;
-    int getCellNumber() const;
     /* Setters */
     void setSelected(bool selection);
     void setPosition(int row, int col);
@@ -40,6 +41,10 @@ public:
 
     void drawShapeDefault();
     void drawShapeOc();
+    void drawButton(std::string label);
+    bool inButton(int x, int y);
+    void drawDone(std::string label);
+    bool inDone(int x, int y);
 };
 
 
