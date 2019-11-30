@@ -2,6 +2,7 @@
 #define CS205_FINALPROJECT_CELL_H
 
 
+
 #include <vector>
 #include <string>
 #include "graphics.h"
@@ -44,6 +45,7 @@ public:
     void drawButton(std::string label);
     bool inButton(int x, int y);
     void drawDone(std::string label);
+    void hoverDone(std::string label);
     bool inDone(int x, int y);
 };
 

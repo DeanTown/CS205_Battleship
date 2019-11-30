@@ -6,13 +6,13 @@
 #include "algorithm"
 #include "cstdlib"
 #include "ctime"
-#include "Cell.h"
-#include "UCarrier.h"
-#include "UBattleship.h"
-#include "UDestroyer.h"
-#include "USub.h"
-#include "UCruiser.h"
-#include "Board.h"
+#include "cell.h"
+#include "uCarrier.h"
+#include "uBattleship.h"
+#include "uDestroyer.h"
+#include "uSub.h"
+#include "uCruiser.h"
+#include "board.h"
 
 
 
@@ -28,6 +28,7 @@ UDestroyer* ud = new UDestroyer;
 USub* us = new USub;
 UCruiser* ur = new UCruiser;
 bool mouseInput = false;
+bool doneOnHover = false;
 
 
 void init() {
@@ -66,12 +67,45 @@ void display(){
     ur->draw();
 
     if (uc->getFleetStat() == placedHo || ub->getFleetStat() == placedHo || ud->getFleetStat() == placedHo || us->getFleetStat() == placedHo
-    || ur->getFleetStat() == placedHo || uc->getFleetStat() == placedVe || ub->getFleetStat() == placedVe || ud->getFleetStat() == placedVe
-    || us->getFleetStat() == placedVe || ur->getFleetStat() == placedVe) {
+        || ur->getFleetStat() == placedHo || uc->getFleetStat() == placedVe || ub->getFleetStat() == placedVe || ud->getFleetStat() == placedVe
+        || us->getFleetStat() == placedVe || ur->getFleetStat() == placedVe) {
         cells.drawButton("change dirction");
         cells.drawDone("done");
     }
 
+    if (uc->getThirdStat() == out) {
+        uc->outBoard("carrier is out of board");
+    }
+    if (uc->getForthStat() == working) {
+        uc->focus("working on placing carrier");
+    }
+    if (ub->getThirdStat() == out) {
+        ub->outBoard("battleship is out of board");
+    }
+    if (ub->getForthStat() == working) {
+        ub->focus("working on placing battleship");
+    }
+    if (ud->getThirdStat() == out) {
+        ud->outBoard("destroyer is out of board");
+    }
+    if (ud->getForthStat() == working) {
+        ud->focus("working on placing destroyer");
+    }
+    if (us->getThirdStat() == out) {
+        us->outBoard("sub is out of board");
+    }
+    if (us->getForthStat() == working) {
+        us->focus("working on placing sub");
+    }
+    if (ur->getThirdStat() == out) {
+        ur->outBoard("cruiser is out of board");
+    }
+    if (ur->getForthStat() == working) {
+        ur->focus("working on placing cruiser");
+    }
+    if (doneOnHover) {
+        cells.hoverDone("once click, ship can't be moving again");
+    }
 
     glFlush();  // Render now
 }
@@ -113,7 +147,7 @@ void kbdS(int key, int x, int y) {
 
 void cursor(int x, int y) {
     // when fleet state is selected, it can be moved
-    if (uc->getFleetStat() == selected || uc->getFleetStat() == StoM) {
+    if (uc->getFleetStat() == selected) {
         uc->drag(uc,x,y);
         glutPostRedisplay();
     }
@@ -133,6 +167,12 @@ void cursor(int x, int y) {
         ur->drag(ur,x,y);
         glutPostRedisplay();
     }
+
+    doneOnHover = cells.inDone(x, y) && (uc->getFleetStat() == placedHo || uc->getFleetStat() == placedVe
+            || ub->getFleetStat() == placedHo || ub->getFleetStat() == placedVe || ud->getFleetStat() == placedHo
+            || ud->getFleetStat() == placedVe || us->getFleetStat() == placedHo || us->getFleetStat() == placedVe
+            || ur->getFleetStat() == placedVe || ur->getFleetStat() == placedHo);
+
     glutPostRedisplay();
 }
 
@@ -157,6 +197,7 @@ void mouse(int button, int state, int x, int y) {
             if (state == GLUT_DOWN && uc->getFleetStat() == moveable ) {
                 if (x >= uc->getLeftX() && x <= uc->getRightX() && y >= uc->getTopY() && y <= uc->getBottomY()) {
                     uc->setFleetStat(selected);
+                    uc->setForthStat(working);
                     if (ub->getFleetStat() != ready)
                         ub->setFleetStat(No);
                     if (ud->getFleetStat() != ready)
@@ -176,10 +217,12 @@ void mouse(int button, int state, int x, int y) {
                     else
                         uc->setFleetStat(placedVe);
                     uc->setAdditionStat(placed);
+                    uc->setThirdStat(noWord);
                 } else {
                     uc->setCenterX(100);
                     uc->setCenterY(500);
                     uc->setFleetStat(moveable);
+                    uc->setThirdStat(out);
                 }
             } else if (state == GLUT_DOWN && cells.inButton(x,y) && uc->getFleetStat() == placedHo) {
                 uc->setWidth(149);
@@ -192,6 +235,7 @@ void mouse(int button, int state, int x, int y) {
                     uc->setCenterX(100);
                     uc->setCenterY(500);
                     uc->setFleetStat(moveable);
+                    uc->setThirdStat(out);
                 }
             } else if (state == GLUT_DOWN && cells.inButton(x,y) && uc->getFleetStat() == placedVe) {
                 uc->setWidth(30);
@@ -204,10 +248,13 @@ void mouse(int button, int state, int x, int y) {
                     uc->setCenterX(100);
                     uc->setCenterY(500);
                     uc->setFleetStat(moveable);
+                    uc->setThirdStat(out);
                 }
             } else if (state == GLUT_DOWN && cells.inDone(x,y)) {
                 uc->setFleetStat(ready);
                 uc->setAdditionStat(addNull);
+                uc->setForthStat(noWord);
+                doneOnHover = false;
                 if (ub->getFleetStat() == No)
                     ub->setFleetStat(moveable);
                 if (ud->getFleetStat() == No)
@@ -226,6 +273,7 @@ void mouse(int button, int state, int x, int y) {
             if (state == GLUT_DOWN && ub->getFleetStat() == moveable ) {
                 if (x >= ub->getLeftX() && x <= ub->getRightX() && y >= ub->getTopY() && y <= ub->getBottomY()) {
                     ub->setFleetStat(selected);
+                    ub->setForthStat(working);
                     if (uc->getFleetStat() != ready)
                         uc->setFleetStat(No);
                     if (ud->getFleetStat() != ready)
@@ -249,10 +297,12 @@ void mouse(int button, int state, int x, int y) {
                         ub->setFleetStat(placedVe);
                     }
                     ub->setAdditionStat(placed);
+                    ub->setThirdStat(noWord);
                 } else {
                     ub->setCenterX(160);
                     ub->setCenterY(500);
                     ub->setFleetStat(moveable);
+                    ub->setThirdStat(out);
                 }
             } else if (state == GLUT_DOWN && cells.inButton(x,y) && ub->getFleetStat() == placedHo) {
                 ub->setWidth(119);
@@ -267,6 +317,7 @@ void mouse(int button, int state, int x, int y) {
                     ub->setCenterX(160);
                     ub->setCenterY(500);
                     ub->setFleetStat(moveable);
+                    ub->setThirdStat(out);
                 }
             } else if (state == GLUT_DOWN && cells.inButton(x,y) && ub->getFleetStat() == placedVe) {
                 ub->setWidth(30);
@@ -281,10 +332,12 @@ void mouse(int button, int state, int x, int y) {
                     ub->setCenterX(160);
                     ub->setCenterY(500);
                     ub->setFleetStat(moveable);
+                    ub->setThirdStat(out);
                 }
             } else if (state == GLUT_DOWN && cells.inDone(x,y)) {
                 ub->setFleetStat(ready);
                 ub->setAdditionStat(addNull);
+                ub->setForthStat(noWord);
                 if (uc->getFleetStat() == No)
                     uc->setFleetStat(moveable);
                 if (ud->getFleetStat() == No)
@@ -303,6 +356,7 @@ void mouse(int button, int state, int x, int y) {
             if (state == GLUT_DOWN && ud->getFleetStat() == moveable ) {
                 if (x >= ud->getLeftX() && x <= ud->getRightX() && y >= ud->getTopY() && y <= ud->getBottomY()) {
                     ud->setFleetStat(selected);
+                    ud->setForthStat(working);
                     if (uc->getFleetStat() != ready)
                         uc->setFleetStat(No);
                     if (ub->getFleetStat() != ready)
@@ -322,10 +376,12 @@ void mouse(int button, int state, int x, int y) {
                     else
                         ud->setFleetStat(placedVe);
                     ud->setAdditionStat(placed);
+                    ud->setThirdStat(noWord);
                 } else {
                     ud->setCenterX(220);
                     ud->setCenterY(500);
                     ud->setFleetStat(moveable);
+                    ud->setThirdStat(out);
                 }
             } else if (state == GLUT_DOWN && cells.inButton(x,y) && ud->getFleetStat() == placedHo) {
                 ud->setWidth(89);
@@ -338,15 +394,25 @@ void mouse(int button, int state, int x, int y) {
                     ud->setCenterX(220);
                     ud->setCenterY(500);
                     ud->setFleetStat(moveable);
+                    ud->setThirdStat(out);
                 }
             } else if (state == GLUT_DOWN && cells.inButton(x,y) && ud->getFleetStat() == placedVe) {
                 ud->setWidth(30);
                 ud->setHeight(89);
                 ud->setFleetStat(placedHo);
                 ud->setAdditionStat(placed);
+                if (!ud->inBoard(boardL,boardR,boardT,boardB)) {
+                    ud->setWidth(30);
+                    ud->setHeight(89);
+                    ud->setCenterX(220);
+                    ud->setCenterY(500);
+                    ud->setFleetStat(moveable);
+                    ud->setThirdStat(out);
+                }
             } else if (state == GLUT_DOWN && cells.inDone(x,y)) {
                 ud->setFleetStat(ready);
                 ud->setAdditionStat(addNull);
+                ud->setForthStat(noWord);
                 if (uc->getFleetStat() == No)
                     uc->setFleetStat(moveable);
                 if (ub->getFleetStat() == No)
@@ -365,6 +431,7 @@ void mouse(int button, int state, int x, int y) {
             if (state == GLUT_DOWN && us->getFleetStat() == moveable ) {
                 if (x >= us->getLeftX() && x <= us->getRightX() && y >= us->getTopY() && y <= us->getBottomY()) {
                     us->setFleetStat(selected);
+                    us->setForthStat(working);
                     if (uc->getFleetStat() != ready)
                         uc->setFleetStat(No);
                     if (ub->getFleetStat() != ready)
@@ -384,10 +451,12 @@ void mouse(int button, int state, int x, int y) {
                     else
                         us->setFleetStat(placedVe);
                     us->setAdditionStat(placed);
+                    us->setThirdStat(noWord);
                 } else {
                     us->setCenterX(280);
                     us->setCenterY(500);
                     us->setFleetStat(moveable);
+                    us->setThirdStat(out);
                 }
             } else if (state == GLUT_DOWN && cells.inButton(x,y) && us->getFleetStat() == placedHo) {
                 us->setWidth(89);
@@ -400,15 +469,25 @@ void mouse(int button, int state, int x, int y) {
                     us->setCenterX(280);
                     us->setCenterY(500);
                     us->setFleetStat(moveable);
+                    us->setThirdStat(out);
                 }
             } else if (state == GLUT_DOWN && cells.inButton(x,y) && us->getFleetStat() == placedVe) {
                 us->setWidth(30);
                 us->setHeight(89);
                 us->setFleetStat(placedHo);
                 us->setAdditionStat(placed);
+                if (!us->inBoard(boardL,boardR,boardT,boardB)) {
+                    us->setWidth(30);
+                    us->setHeight(89);
+                    us->setCenterX(280);
+                    us->setCenterY(500);
+                    us->setFleetStat(moveable);
+                    us->setThirdStat(out);
+                }
             } else if (state == GLUT_DOWN && cells.inDone(x,y)) {
                 us->setFleetStat(ready);
                 us->setAdditionStat(addNull);
+                us->setForthStat(noWord);
                 if (uc->getFleetStat() == No)
                     uc->setFleetStat(moveable);
                 if (ub->getFleetStat() == No)
@@ -427,6 +506,7 @@ void mouse(int button, int state, int x, int y) {
             if (state == GLUT_DOWN && ur->getFleetStat() == moveable ) {
                 if (x >= ur->getLeftX() && x <= ur->getRightX() && y >= ur->getTopY() && y <= ur->getBottomY()) {
                     ur->setFleetStat(selected);
+                    ur->setForthStat(working);
                     if (uc->getFleetStat() != ready)
                         uc->setFleetStat(No);
                     if (ub->getFleetStat() != ready)
@@ -450,10 +530,12 @@ void mouse(int button, int state, int x, int y) {
                         ur->setFleetStat(placedVe);
                     }
                     ur->setAdditionStat(placed);
+                    ur->setThirdStat(noWord);
                 } else {
                     ur->setCenterX(340);
                     ur->setCenterY(500);
                     ur->setFleetStat(moveable);
+                    ur->setThirdStat(out);
                 }
             } else if (state == GLUT_DOWN && cells.inButton(x,y) && ur->getFleetStat() == placedHo) {
                 ur->setWidth(59);
@@ -468,6 +550,7 @@ void mouse(int button, int state, int x, int y) {
                     ur->setCenterX(340);
                     ur->setCenterY(500);
                     ur->setFleetStat(moveable);
+                    ur->setThirdStat(out);
                 }
             } else if (state == GLUT_DOWN && cells.inButton(x,y) && ur->getFleetStat() == placedVe) {
                 ur->setWidth(30);
@@ -482,10 +565,12 @@ void mouse(int button, int state, int x, int y) {
                     ur->setCenterX(340);
                     ur->setCenterY(500);
                     ur->setFleetStat(moveable);
+                    ur->setThirdStat(out);
                 }
             } else if (state == GLUT_DOWN && cells.inDone(x,y)) {
                 ur->setFleetStat(ready);
                 ur->setAdditionStat(addNull);
+                ur->setForthStat(noWord);
                 if (uc->getFleetStat() == No)
                     uc->setFleetStat(moveable);
                 if (ub->getFleetStat() == No)

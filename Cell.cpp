@@ -165,6 +165,24 @@ void Cell::drawDone(string label) {
         glutBitmapCharacter(GLUT_BITMAP_8_BY_13,le);
     }
 }
+
+void Cell::hoverDone(string label){
+    // outer
+    glColor3f(1.0,1.0,1.0);
+    glBegin(GL_QUADS);
+    glVertex2d(390,338);
+    glVertex2d(670,338);
+    glVertex2d(670,340);
+    glVertex2d(390,340);
+    glEnd();
+
+    glColor3f(1.0,1.0,1.0);
+    glRasterPos2i(390,335);
+    for (char &le : label) {
+        glutBitmapCharacter(GLUT_BITMAP_8_BY_13,le);
+    }
+}
+
 bool Cell::inDone(int x, int y) {
     return x > 400 && x < 560 && y > 250 && y < 300;
 }
