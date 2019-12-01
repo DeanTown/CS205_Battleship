@@ -5,7 +5,7 @@ using namespace std;
 Cell::Cell() {
     selected = false;
     position.resize(2);
-    status = empty;
+//    status = empty;
 }
 
 /* Getters */
@@ -15,9 +15,9 @@ bool Cell::getSelected() {
 vector<int> Cell::getPosition() {
     return position;
 }
-cellStatus Cell::getStatus() {
-    return status;
-}
+//cellStatus Cell::getStatus() {
+//    return status;
+//}
 
 double Cell::getLength() const {
     return length;
@@ -63,9 +63,9 @@ void Cell::setPosition(int row, int col) {
     position[0] = row;
     position[1] = col;
 }
-void Cell::setStatus(cellStatus stat) {
-    this->status = stat;
-}
+//void Cell::setStatus(cellStatus stat) {
+//    this->status = stat;
+//}
 
 void Cell::setLength(int len) {
     this->length = len;
@@ -94,22 +94,41 @@ void Cell::drawShapeDefault() {
     glEnd();
 }
 
-void Cell::drawShapeOc() {
+void Cell::drawHit(int x, int y) {
     // outer
     glColor3f(1.0,1.0,1.0);
     glBegin(GL_QUADS);
-    glVertex2d(getLeftX(),getTopY());
-    glVertex2d(getRightX(),getTopY());
-    glVertex2d(getRightX(),getBottomY());
-    glVertex2d(getLeftX(),getBottomY());
+    glVertex2d(x - 15,y - 15);
+    glVertex2d(x + 15,y - 15);
+    glVertex2d(x + 15,y + 15);
+    glVertex2d(x - 15,y + 15);
     glEnd();
 
     glColor3f(1.0,0.0,0.0);
     glBegin(GL_QUADS);
-    glVertex2d(getLeftX() + 1,getTopY() + 1);
-    glVertex2d(getRightX() - 1,getTopY() + 1);
-    glVertex2d(getRightX() - 1,getBottomY() - 1);
-    glVertex2d(getLeftX() + 1,getBottomY() - 1);
+    glVertex2d(x - 14,y - 14);
+    glVertex2d(x + 14,y - 14);
+    glVertex2d(x + 14,y + 14);
+    glVertex2d(x - 14,y + 14);
+    glEnd();
+}
+
+void Cell::drawNotHit(int x, int y) {
+    // outer
+    glColor3f(1.0,1.0,1.0);
+    glBegin(GL_QUADS);
+    glVertex2d(x - 15,y - 15);
+    glVertex2d(x + 15,y - 15);
+    glVertex2d(x + 15,y + 15);
+    glVertex2d(x - 15,y + 15);
+    glEnd();
+
+    glColor3f(0.0,1.0,0.0);
+    glBegin(GL_QUADS);
+    glVertex2d(x - 14,y - 14);
+    glVertex2d(x + 14,y - 14);
+    glVertex2d(x + 14,y + 14);
+    glVertex2d(x - 14,y + 14);
     glEnd();
 }
 

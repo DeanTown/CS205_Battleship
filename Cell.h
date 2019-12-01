@@ -2,12 +2,11 @@
 #define CS205_FINALPROJECT_CELL_H
 
 
-
 #include <vector>
 #include <string>
 #include "graphics.h"
 
-enum cellStatus {empty, occupied};
+//enum cellStatus {empty, occupied};
 
 class Cell {
 private:
@@ -16,7 +15,7 @@ private:
     // A vector that contains the cells position on the board
     std::vector<int> position;
     // The status of the tile
-    cellStatus status;
+//    cellStatus status;
     int length = 30, width = 30;
 public:
     /* Constructors */
@@ -24,7 +23,7 @@ public:
     /* Getters */
     bool getSelected();
     std::vector<int> getPosition();
-    cellStatus getStatus();
+//    cellStatus getStatus();
     double getLength() const;
     double getWidth() const;
     double getCenterX() const;
@@ -36,12 +35,13 @@ public:
     /* Setters */
     void setSelected(bool selection);
     void setPosition(int row, int col);
-    void setStatus(cellStatus status);
+//    void setStatus(cellStatus status);
     void setLength(int length);
     void setWidth(int width);
 
     void drawShapeDefault();
-    void drawShapeOc();
+    void drawHit(int x, int y);
+    void drawNotHit(int x, int y);
     void drawButton(std::string label);
     bool inButton(int x, int y);
     void drawDone(std::string label);
@@ -50,4 +50,4 @@ public:
 };
 
 
-#endif //CS205_FINALPROJECT_CELL_H
+#endif //TEST_CELL_H

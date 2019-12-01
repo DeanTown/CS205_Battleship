@@ -26,7 +26,7 @@ file(GLOB SOURCE_FILES
         *.h
         )
 
-add_executable(graphics Cell Board Fleet UCarrier UBattleship UDestroyer USub UCruiser BPlayerOne ${SOURCE_FILES})
+add_executable(graphics cell board fleet uCarrier uBattleship uDestroyer uSub uCruiser ${SOURCE_FILES})
 
 if (WIN32)
     target_link_libraries (graphics ${OPENGL_LIBRARIES} freeglut)

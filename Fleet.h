@@ -17,9 +17,10 @@ enum fleetStat{
     overlapping, // message for ship get overlapping
     noWord // erase message
 };
+
 class Fleet {
 private:
-    fleetStat fs, fsTwo, fsThree, fsFour, fsFive = noWord;
+    fleetStat fs = moveable, fsTwo, fsThree, fsFour, fsFive = noWord;
 public:
     fleetStat getFleetStat() const;
     fleetStat getAdditionStat() const;
@@ -36,5 +37,6 @@ public:
     void focus(std::string label);
     void overlap(std::string label);
 };
+
 
 #endif //CS205_FINALPROJECT_FLEET_H

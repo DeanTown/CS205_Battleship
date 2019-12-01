@@ -16,6 +16,7 @@
 
 // Program initialization NOT OpenGL/GLUT dependent,
 // as we haven't created a GLUT window yet
+int randNum(int min, int max);
 void init();
 
 // Initialize OpenGL Graphics

@@ -12,16 +12,20 @@
 #include "UDestroyer.h"
 #include "USub.h"
 #include "UCruiser.h"
-#include "BPlayerOne.h"
+#include "Board.h"
 
-
+enum screen {playerOneSet,game};
 
 using namespace std;
 GLdouble width, height;
 GLint wd, cellNumber,ocNumber;
-GLint boardL,boardR,boardT,boardB;
+GLint uboardL,uboardR,uboardT,uboardB,
+        gUserBoardL,gUserBoardR,gUserBoardT,gUserBoardB;
+GLint hitCellX, hitCellY, notHitX, notHitY;
+screen curr = playerOneSet;
 Cell cells;
-BPlayerOne userBoard;
+Board userBoard;
+Board gameUserBoard;
 UCarrier* uc = new UCarrier;
 UBattleship* ub = new UBattleship;
 UDestroyer* ud = new UDestroyer;
@@ -29,9 +33,11 @@ USub* us = new USub;
 UCruiser* ur = new UCruiser;
 bool mouseInput = false;
 bool doneOnHover = false;
-vector<int> occupiedCells;
+bool inVec = false;
+vector<int> uOccupiedCells;
 vector<int> occupiedCellsTemp;
-vector<int> userBCarrier, userBBattleship, userBDestroyer, userBSub, userBCruiser;
+vector<int> gHitCells;
+vector<int> gNotHit;
 
 bool checkCommon(vector<int> &v1, vector<int> &v2) {
     bool tf = false;
@@ -70,16 +76,46 @@ void display(){
     glClear(GL_COLOR_BUFFER_BIT);   // Clear the color buffer with current clearing color
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    userBoard.drawBoard();
-    boardL = userBoard.getLeftX();
-    boardR = userBoard.getRightX();
-    boardT = userBoard.getTopY();
-    boardB = userBoard.getBottomY();
-    uc->draw();
-    ub->draw();
-    ud->draw();
-    us->draw();
-    ur->draw();
+
+    switch (curr) {
+        default:
+            break;
+        case playerOneSet:
+            userBoard.drawBoard();
+            uboardL = userBoard.getLeftX();
+            uboardR = userBoard.getRightX();
+            uboardT = userBoard.getTopY();
+            uboardB = userBoard.getBottomY();
+            uc->draw();
+            ub->draw();
+            ud->draw();
+            us->draw();
+            ur->draw();
+            break;
+        case game:
+            gameUserBoard.drawBoard();
+            gUserBoardL = gameUserBoard.getLeftX();
+            gUserBoardR = gameUserBoard.getRightX();
+            gUserBoardT = gameUserBoard.getTopY();
+            gUserBoardB = gameUserBoard.getBottomY();
+            for (int num : gHitCells) {
+                hitCellX = gameUserBoard.getCellX(num - 1);
+                hitCellY = gameUserBoard.getCellY(num - 1);
+                cells.drawHit(hitCellX,hitCellY);
+            }
+            for (int num : gNotHit) {
+                notHitX = gameUserBoard.getCellX(num - 1);
+                notHitY = gameUserBoard.getCellY(num - 1);
+                cells.drawNotHit(notHitX,notHitY);
+            }
+
+
+    }
+
+    if (uc->getFleetStat() == ready && ub->getFleetStat() == ready && ud->getFleetStat() == ready
+        && us->getFleetStat() == ready && ur->getFleetStat() == ready) {
+        curr = game;
+    }
 
     if (uc->getFleetStat() == placedHo || ub->getFleetStat() == placedHo || ud->getFleetStat() == placedHo || us->getFleetStat() == placedHo
         || ur->getFleetStat() == placedHo || uc->getFleetStat() == placedVe || ub->getFleetStat() == placedVe || ud->getFleetStat() == placedVe
@@ -200,9 +236,9 @@ void cursor(int x, int y) {
     }
 
     doneOnHover = cells.inDone(x, y) && (uc->getFleetStat() == placedHo || uc->getFleetStat() == placedVe
-                                         || ub->getFleetStat() == placedHo || ub->getFleetStat() == placedVe || ud->getFleetStat() == placedHo
-                                         || ud->getFleetStat() == placedVe || us->getFleetStat() == placedHo || us->getFleetStat() == placedVe
-                                         || ur->getFleetStat() == placedVe || ur->getFleetStat() == placedHo);
+            || ub->getFleetStat() == placedHo || ub->getFleetStat() == placedVe || ud->getFleetStat() == placedHo
+            || ud->getFleetStat() == placedVe || us->getFleetStat() == placedHo || us->getFleetStat() == placedVe
+            || ur->getFleetStat() == placedVe || ur->getFleetStat() == placedHo);
     glutPostRedisplay();
 }
 
@@ -222,7 +258,7 @@ void mouse(int button, int state, int x, int y) {
 
             // user carrier
             // -------------------------------------------------------------------------------------------------------------
-            if (state == GLUT_DOWN && uc->getFleetStat() == moveable ) {
+            if (state == GLUT_DOWN && uc->getFleetStat() == moveable && curr == playerOneSet ) {
                 if (x >= uc->getLeftX() && x <= uc->getRightX() && y >= uc->getTopY() && y <= uc->getBottomY()) {
                     uc->setFleetStat(selected);
                     uc->setThirdStat(noWord);
@@ -238,9 +274,9 @@ void mouse(int button, int state, int x, int y) {
                         ur->setFleetStat(No);
                     glutPostRedisplay();
                 }
-            } else if (state == GLUT_DOWN && uc->getFleetStat() == selected) {
+            } else if (state == GLUT_DOWN && uc->getFleetStat() == selected && curr == playerOneSet) {
                 occupiedCellsTemp.clear();
-                if (uc->inBoard(boardL,boardR,boardT,boardB)) {
+                if (uc->inBoard(uboardL,uboardR,uboardT,uboardB)) {
                     uc->setCenterX(userBoard.getCellX(cellNumber - 1));
                     uc->setCenterY(userBoard.getCellY(cellNumber - 1));
                     if (uc->getWidth() == 30 && uc->getHeight() == 149) {
@@ -249,7 +285,7 @@ void mouse(int button, int state, int x, int y) {
                         for (int i = ocNumber - 20; i <= ocNumber + 20; i += 10) {
                             occupiedCellsTemp.push_back(i);
                         }
-                        if (checkCommon(occupiedCellsTemp,occupiedCells)) {
+                        if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
                             uc->setCenterX(100);
                             uc->setCenterY(500);
                             uc->setFleetStat(moveable);
@@ -262,7 +298,7 @@ void mouse(int button, int state, int x, int y) {
                         for (int i = ocNumber - 2; i <= ocNumber + 2; i += 1) {
                             occupiedCellsTemp.push_back(i);
                         }
-                        if (checkCommon(occupiedCellsTemp,occupiedCells)) {
+                        if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
                             uc->setCenterX(100);
                             uc->setCenterY(500);
                             uc->setFleetStat(moveable);
@@ -276,7 +312,7 @@ void mouse(int button, int state, int x, int y) {
                     uc->setFleetStat(moveable);
                     uc->setThirdStat(out);
                 }
-            } else if (state == GLUT_DOWN && cells.inButton(x,y) && uc->getFleetStat() == placedHo) {
+            } else if (state == GLUT_DOWN && cells.inButton(x,y) && uc->getFleetStat() == placedHo && curr == playerOneSet) {
                 occupiedCellsTemp.clear();
                 uc->setWidth(149);
                 uc->setHeight(30);
@@ -286,12 +322,12 @@ void mouse(int button, int state, int x, int y) {
                 for (int i = ocNumber - 2; i <= ocNumber + 2; i += 1) {
                     occupiedCellsTemp.push_back(i);
                 }
-                if (checkCommon(occupiedCellsTemp,occupiedCells)) {
+                if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
                     uc->setCenterX(100);
                     uc->setCenterY(500);
                     uc->setFleetStat(moveable);
                     uc->setFifthStat(overlapping);
-                } else if (!uc->inBoard(boardL,boardR,boardT,boardB)) {
+                } else if (!uc->inBoard(uboardL,uboardR,uboardT,uboardB)) {
                     uc->setWidth(30);
                     uc->setHeight(149);
                     uc->setCenterX(100);
@@ -309,12 +345,12 @@ void mouse(int button, int state, int x, int y) {
                 for (int i = ocNumber - 20; i <= ocNumber + 20; i += 10) {
                     occupiedCellsTemp.push_back(i);
                 }
-                if (checkCommon(occupiedCellsTemp,occupiedCells)) {
+                if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
                     uc->setCenterX(100);
                     uc->setCenterY(500);
                     uc->setFleetStat(moveable);
                     uc->setFifthStat(overlapping);
-                } else if (!uc->inBoard(boardL,boardR,boardT,boardB)) {
+                } else if (!uc->inBoard(uboardL,uboardR,uboardT,uboardB)) {
                     uc->setWidth(30);
                     uc->setHeight(149);
                     uc->setCenterX(100);
@@ -323,9 +359,9 @@ void mouse(int button, int state, int x, int y) {
                     uc->setThirdStat(out);
                 }
             } else if (state == GLUT_DOWN && cells.inDone(x,y) && (uc->getFleetStat() == placedHo
-            || uc->getFleetStat() == placedVe)) {
+                        || uc->getFleetStat() == placedVe)) {
                 for (int num : occupiedCellsTemp) {
-                    occupiedCells.push_back(num);
+                    uOccupiedCells.push_back(num);
                 }
                 uc->setFleetStat(ready);
                 uc->setAdditionStat(addNull);
@@ -364,7 +400,7 @@ void mouse(int button, int state, int x, int y) {
                 }
             } else if (state == GLUT_DOWN && ub->getFleetStat() == selected) {
                 occupiedCellsTemp.clear();
-                if (ub->inBoard(boardL,boardR,boardT,boardB)) {
+                if (ub->inBoard(uboardL,uboardR,uboardT,uboardB)) {
                     if (ub->getWidth() == 30 && ub->getHeight() == 119) {
                         ub->setCenterX(userBoard.getCellX(cellNumber - 1));
                         ub->setCenterY(userBoard.getCellY(cellNumber - 1) + cells.getWidth() / 2);
@@ -373,7 +409,7 @@ void mouse(int button, int state, int x, int y) {
                         for (int i = ocNumber - 20; i <= ocNumber + 10; i += 10) {
                             occupiedCellsTemp.push_back(i);
                         }
-                        if (checkCommon(occupiedCellsTemp,occupiedCells)) {
+                        if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
                             ub->setCenterX(160);
                             ub->setCenterY(500);
                             ub->setFleetStat(moveable);
@@ -388,7 +424,7 @@ void mouse(int button, int state, int x, int y) {
                         for (int i = ocNumber - 2; i <= ocNumber + 1; i += 1) {
                             occupiedCellsTemp.push_back(i);
                         }
-                        if (checkCommon(occupiedCellsTemp,occupiedCells)) {
+                        if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
                             ub->setCenterX(160);
                             ub->setCenterY(500);
                             ub->setFleetStat(moveable);
@@ -414,12 +450,12 @@ void mouse(int button, int state, int x, int y) {
                 ocNumber = userBoard.cellNum(ub->getCenterX(),ub->getCenterY());
                 for (int i = ocNumber - 2; i <= ocNumber + 1; i += 1) {
                     occupiedCellsTemp.push_back(i);
-                } if (checkCommon(occupiedCellsTemp,occupiedCells)) {
+                } if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
                     ub->setCenterX(160);
                     ub->setCenterY(500);
                     ub->setFleetStat(moveable);
                     ub->setFifthStat(overlapping);
-                } else if (!ub->inBoard(boardL,boardR,boardT,boardB)) {
+                } else if (!ub->inBoard(uboardL,uboardR,uboardT,uboardB)) {
                     ub->setWidth(30);
                     ub->setHeight(119);
                     ub->setCenterX(160);
@@ -438,12 +474,12 @@ void mouse(int button, int state, int x, int y) {
                 ocNumber = userBoard.cellNum(ub->getCenterX(),ub->getCenterY());
                 for (int i = ocNumber - 20; i <= ocNumber + 10; i += 10) {
                     occupiedCellsTemp.push_back(i);
-                } if (checkCommon(occupiedCellsTemp,occupiedCells)) {
+                } if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
                     ub->setCenterX(160);
                     ub->setCenterY(500);
                     ub->setFleetStat(moveable);
                     ub->setFifthStat(overlapping);
-                } else if (!ub->inBoard(boardL,boardR,boardT,boardB)) {
+                } else if (!ub->inBoard(uboardL,uboardR,uboardT,uboardB)) {
                     ub->setWidth(30);
                     ub->setHeight(119);
                     ub->setCenterX(160);
@@ -452,9 +488,9 @@ void mouse(int button, int state, int x, int y) {
                     ub->setThirdStat(out);
                 }
             } else if (state == GLUT_DOWN && cells.inDone(x,y) && (ub->getFleetStat() == placedHo
-            || ub->getFleetStat() == placedVe)) {
+                                                                   || ub->getFleetStat() == placedVe)) {
                 for (int num : occupiedCellsTemp) {
-                    occupiedCells.push_back(num);
+                    uOccupiedCells.push_back(num);
                     occupiedCellsTemp.clear();
                 }
                 ub->setFleetStat(ready);
@@ -493,7 +529,7 @@ void mouse(int button, int state, int x, int y) {
                     glutPostRedisplay();
                 }
             } else if (state == GLUT_DOWN && ud->getFleetStat() == selected) {
-                if (ud->inBoard(boardL,boardR,boardT,boardB)) {
+                if (ud->inBoard(uboardL,uboardR,uboardT,uboardB)) {
                     occupiedCellsTemp.clear();
                     ud->setCenterX(userBoard.getCellX(cellNumber - 1));
                     ud->setCenterY(userBoard.getCellY(cellNumber - 1));
@@ -503,7 +539,7 @@ void mouse(int button, int state, int x, int y) {
                         for (int i = ocNumber - 10; i <= ocNumber + 10; i += 10) {
                             occupiedCellsTemp.push_back(i);
                         }
-                        if (checkCommon(occupiedCellsTemp,occupiedCells)) {
+                        if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
                             ud->setCenterX(220);
                             ud->setCenterY(500);
                             ud->setFleetStat(moveable);
@@ -516,7 +552,7 @@ void mouse(int button, int state, int x, int y) {
                         for (int i = ocNumber - 1; i <= ocNumber + 1; i += 1) {
                             occupiedCellsTemp.push_back(i);
                         }
-                        if (checkCommon(occupiedCellsTemp,occupiedCells)) {
+                        if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
                             ud->setCenterX(220);
                             ud->setCenterY(500);
                             ud->setFleetStat(moveable);
@@ -540,12 +576,12 @@ void mouse(int button, int state, int x, int y) {
                 ocNumber = userBoard.cellNum(ud->getCenterX(),ud->getCenterY());
                 for (int i = ocNumber - 1; i <= ocNumber + 1; i += 1) {
                     occupiedCellsTemp.push_back(i);
-                } if (checkCommon(occupiedCellsTemp,occupiedCells)) {
+                } if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
                     ud->setCenterX(220);
                     ud->setCenterY(500);
                     ud->setFleetStat(moveable);
                     ud->setFifthStat(overlapping);
-                } else if (!ud->inBoard(boardL,boardR,boardT,boardB)) {
+                } else if (!ud->inBoard(uboardL,uboardR,uboardT,uboardB)) {
                     ud->setWidth(30);
                     ud->setHeight(89);
                     ud->setCenterX(220);
@@ -562,12 +598,12 @@ void mouse(int button, int state, int x, int y) {
                 ocNumber = userBoard.cellNum(ud->getCenterX(),ud->getCenterY());
                 for (int i = ocNumber - 10; i <= ocNumber + 10; i += 10) {
                     occupiedCellsTemp.push_back(i);
-                } if (checkCommon(occupiedCellsTemp,occupiedCells)) {
+                } if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
                     ud->setCenterX(220);
                     ud->setCenterY(500);
                     ud->setFleetStat(moveable);
                     ud->setFifthStat(overlapping);
-                } else if (!ud->inBoard(boardL,boardR,boardT,boardB)) {
+                } else if (!ud->inBoard(uboardL,uboardR,uboardT,uboardB)) {
                     ud->setWidth(30);
                     ud->setHeight(89);
                     ud->setCenterX(220);
@@ -578,7 +614,7 @@ void mouse(int button, int state, int x, int y) {
             } else if (state == GLUT_DOWN && cells.inDone(x,y) && (ud->getFleetStat() == placedHo
             || ud->getFleetStat() == placedVe)) {
                 for (int num : occupiedCellsTemp) {
-                    occupiedCells.push_back(num);
+                    uOccupiedCells.push_back(num);
                     occupiedCellsTemp.clear();
                 }
                 ud->setFleetStat(ready);
@@ -617,7 +653,7 @@ void mouse(int button, int state, int x, int y) {
                     glutPostRedisplay();
                 }
             } else if (state == GLUT_DOWN && us->getFleetStat() == selected) {
-                if (us->inBoard(boardL,boardR,boardT,boardB)) {
+                if (us->inBoard(uboardL,uboardR,uboardT,uboardB)) {
                     occupiedCellsTemp.clear();
                     us->setCenterX(userBoard.getCellX(cellNumber - 1));
                     us->setCenterY(userBoard.getCellY(cellNumber - 1));
@@ -627,7 +663,7 @@ void mouse(int button, int state, int x, int y) {
                         for (int i = ocNumber - 10; i <= ocNumber + 10; i += 10) {
                             occupiedCellsTemp.push_back(i);
                         }
-                        if (checkCommon(occupiedCellsTemp,occupiedCells)) {
+                        if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
                             us->setCenterX(280);
                             us->setCenterY(500);
                             us->setFleetStat(moveable);
@@ -640,7 +676,7 @@ void mouse(int button, int state, int x, int y) {
                         for (int i = ocNumber - 1; i <= ocNumber + 1; i += 1) {
                             occupiedCellsTemp.push_back(i);
                         }
-                        if (checkCommon(occupiedCellsTemp,occupiedCells)) {
+                        if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
                             us->setCenterX(280);
                             us->setCenterY(500);
                             us->setFleetStat(moveable);
@@ -664,12 +700,12 @@ void mouse(int button, int state, int x, int y) {
                 ocNumber = userBoard.cellNum(us->getCenterX(),us->getCenterY());
                 for (int i = ocNumber - 1; i <= ocNumber + 1; i += 1) {
                     occupiedCellsTemp.push_back(i);
-                } if (checkCommon(occupiedCellsTemp,occupiedCells)) {
+                } if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
                     us->setCenterX(280);
                     us->setCenterY(500);
                     us->setFleetStat(moveable);
                     us->setFifthStat(overlapping);
-                } else if (!us->inBoard(boardL,boardR,boardT,boardB)) {
+                } else if (!us->inBoard(uboardL,uboardR,uboardT,uboardB)) {
                     us->setWidth(30);
                     us->setHeight(89);
                     us->setCenterX(280);
@@ -686,12 +722,12 @@ void mouse(int button, int state, int x, int y) {
                 ocNumber = userBoard.cellNum(us->getCenterX(),us->getCenterY());
                 for (int i = ocNumber - 10; i <= ocNumber + 10; i += 10) {
                     occupiedCellsTemp.push_back(i);
-                } if (checkCommon(occupiedCellsTemp,occupiedCells)) {
+                } if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
                     us->setCenterX(280);
                     us->setCenterY(500);
                     us->setFleetStat(moveable);
                     us->setFifthStat(overlapping);
-                } else if (!us->inBoard(boardL,boardR,boardT,boardB)) {
+                } else if (!us->inBoard(uboardL,uboardR,uboardT,uboardB)) {
                     us->setWidth(30);
                     us->setHeight(89);
                     us->setCenterX(280);
@@ -702,7 +738,7 @@ void mouse(int button, int state, int x, int y) {
             } else if (state == GLUT_DOWN && cells.inDone(x,y) && (us->getFleetStat() == placedHo
             || us->getFleetStat() == placedVe)) {
                 for (int num : occupiedCellsTemp) {
-                    occupiedCells.push_back(num);
+                    uOccupiedCells.push_back(num);
                     occupiedCellsTemp.clear();
                 }
                 us->setFleetStat(ready);
@@ -741,7 +777,7 @@ void mouse(int button, int state, int x, int y) {
                     glutPostRedisplay();
                 }
             } else if (state == GLUT_DOWN && ur->getFleetStat() == selected) {
-                if (ur->inBoard(boardL,boardR,boardT,boardB)) {
+                if (ur->inBoard(uboardL,uboardR,uboardT,uboardB)) {
                     occupiedCellsTemp.clear();
                     if (ur->getWidth() == 30 && ur->getHeight() == 59) {
                         ur->setCenterX(userBoard.getCellX(cellNumber - 1));
@@ -751,7 +787,7 @@ void mouse(int button, int state, int x, int y) {
                         for (int i = ocNumber - 10; i <= ocNumber; i += 10) {
                             occupiedCellsTemp.push_back(i);
                         }
-                        if (checkCommon(occupiedCellsTemp,occupiedCells)) {
+                        if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
                             ur->setCenterX(340);
                             ur->setCenterY(500);
                             ur->setFleetStat(moveable);
@@ -766,7 +802,7 @@ void mouse(int button, int state, int x, int y) {
                         for (int i = ocNumber - 1; i <= ocNumber; i += 1) {
                             occupiedCellsTemp.push_back(i);
                         }
-                        if (checkCommon(occupiedCellsTemp,occupiedCells)) {
+                        if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
                             ur->setCenterX(340);
                             ur->setCenterY(500);
                             ur->setFleetStat(moveable);
@@ -792,12 +828,12 @@ void mouse(int button, int state, int x, int y) {
                 ocNumber = userBoard.cellNum(ur->getCenterX(),ur->getCenterY());
                 for (int i = ocNumber - 1; i <= ocNumber; i += 1) {
                     occupiedCellsTemp.push_back(i);
-                } if (checkCommon(occupiedCellsTemp,occupiedCells)) {
+                } if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
                     ur->setCenterX(340);
                     ur->setCenterY(500);
                     ur->setFleetStat(moveable);
                     ur->setFifthStat(overlapping);
-                } else if (!ur->inBoard(boardL,boardR,boardT,boardB)) {
+                } else if (!ur->inBoard(uboardL,uboardR,uboardT,uboardB)) {
                     ur->setWidth(30);
                     ur->setHeight(59);
                     ur->setCenterX(340);
@@ -816,12 +852,12 @@ void mouse(int button, int state, int x, int y) {
                 ocNumber = userBoard.cellNum(ur->getCenterX(),ur->getCenterY());
                 for (int i = ocNumber - 10; i <= ocNumber; i += 10) {
                     occupiedCellsTemp.push_back(i);
-                } if (checkCommon(occupiedCellsTemp,occupiedCells)) {
+                } if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
                     ur->setCenterX(340);
                     ur->setCenterY(500);
                     ur->setFleetStat(moveable);
                     ur->setFifthStat(overlapping);
-                } else if (!ur->inBoard(boardL,boardR,boardT,boardB)) {
+                } else if (!ur->inBoard(uboardL,uboardR,uboardT,uboardB)) {
                     ur->setWidth(30);
                     ur->setHeight(59);
                     ur->setCenterX(340);
@@ -830,9 +866,9 @@ void mouse(int button, int state, int x, int y) {
                     ur->setThirdStat(out);
                 }
             } else if (state == GLUT_DOWN && cells.inDone(x,y) && (ur->getFleetStat() == placedHo
-            || ur->getFleetStat() == placedVe)) {
+                                                                   || ur->getFleetStat() == placedVe)) {
                 for (int num : occupiedCellsTemp) {
-                    occupiedCells.push_back(num);
+                    uOccupiedCells.push_back(num);
                     occupiedCellsTemp.clear();
                 }
                 ur->setFleetStat(ready);
@@ -847,14 +883,20 @@ void mouse(int button, int state, int x, int y) {
                     ud->setFleetStat(moveable);
                 if (us->getFleetStat() == No)
                     us->setFleetStat(moveable);
-                for (int num : occupiedCells) {
-                    cout << num << ", ";
-                }
             } else if (state == GLUT_DOWN && ur->getAdditionStat() == placed) {
                 ur->setFleetStat(selected);
             }
             // -------------------------------------------------------------------------------------------------------------
 
+            if (state == GLUT_DOWN && x >= gameUserBoard.getLeftX() && x <= gameUserBoard.getRightX() && y >= gameUserBoard.getTopY() &&
+                y <= gameUserBoard.getBottomY()) {
+                cellNumber = gameUserBoard.cellNum(x,y);
+                if (find(uOccupiedCells.begin(),uOccupiedCells.end(),cellNumber) != uOccupiedCells.end()){
+                    gHitCells.push_back(cellNumber);
+                } else {
+                    gNotHit.push_back(cellNumber);
+                }
+            }
             break;
         case GLUT_RIGHT_BUTTON:
             break;
