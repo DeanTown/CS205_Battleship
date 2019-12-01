@@ -13,6 +13,9 @@ fleetStat Fleet::getThirdStat() const {
 fleetStat Fleet::getForthStat() const {
     return fsFour;
 }
+fleetStat Fleet::getFifthStat() const {
+    return fsFive;
+}
 
 void Fleet::setFleetStat(fleetStat fs) {
     this->fs = fs;
@@ -27,6 +30,9 @@ void Fleet::setThirdStat(fleetStat fs) {
 void Fleet::setForthStat(fleetStat fs) {
     fsFour = fs;
 }
+void Fleet::setFifthStat(fleetStat fs) {
+    fsFive = fs;
+}
 
 void Fleet::outBoard(std::string label) {
     glColor3f(1.0,1.0,1.0);
@@ -38,6 +44,13 @@ void Fleet::outBoard(std::string label) {
 void Fleet::focus(std::string label) {
     glColor3f(1.0,1.0,1.0);
     glRasterPos2i(260,60);
+    for (char &le : label) {
+        glutBitmapCharacter(GLUT_BITMAP_8_BY_13,le);
+    }
+}
+void Fleet::overlap(std::string label) {
+    glColor3f(1.0,1.0,1.0);
+    glRasterPos2i(420,240);
     for (char &le : label) {
         glutBitmapCharacter(GLUT_BITMAP_8_BY_13,le);
     }
