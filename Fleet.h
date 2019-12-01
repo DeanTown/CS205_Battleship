@@ -19,7 +19,7 @@ enum fleetStat{
 };
 class Fleet {
 private:
-    fleetStat fs, fsTwo, fsThree, fsFour, fsFive;
+    fleetStat fs, fsTwo, fsThree, fsFour, fsFive = noWord;
 public:
     fleetStat getFleetStat() const;
     fleetStat getAdditionStat() const;
