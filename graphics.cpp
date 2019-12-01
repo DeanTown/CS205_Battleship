@@ -486,8 +486,8 @@ void mouse(int button, int state, int x, int y) {
                         uc->setFleetStat(No);
                     if (ub->getFleetStat() != ready)
                         ub->setFleetStat(No);
-                    if (ud->getFleetStat() != ready)
-                        ud->setFleetStat(No);
+                    if (us->getFleetStat() != ready)
+                        us->setFleetStat(No);
                     if (ur->getFleetStat() != ready)
                         ur->setFleetStat(No);
                     glutPostRedisplay();
