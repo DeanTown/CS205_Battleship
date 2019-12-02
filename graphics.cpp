@@ -14,7 +14,7 @@
 #include "UCruiser.h"
 #include "Board.h"
 
-enum screen {playerOneSet,game};
+enum screen {Start,playerOneSet,game,finished};
 
 using namespace std;
 GLdouble width, height;
@@ -22,7 +22,7 @@ GLint wd, cellNumber,ocNumber;
 GLint uboardL,uboardR,uboardT,uboardB,
         gUserBoardL,gUserBoardR,gUserBoardT,gUserBoardB;
 GLint hitCellX, hitCellY, notHitX, notHitY;
-screen curr = playerOneSet;
+screen curr = Start;
 Cell cells;
 Board userBoard;
 Board gameUserBoard;
@@ -33,7 +33,8 @@ USub* us = new USub;
 UCruiser* ur = new UCruiser;
 bool mouseInput = false;
 bool doneOnHover = false;
-bool inVec = false;
+bool gameOver = false;
+
 vector<int> uOccupiedCells;
 vector<int> occupiedCellsTemp;
 vector<int> gHitCells;
@@ -50,6 +51,12 @@ bool checkCommon(vector<int> &v1, vector<int> &v2) {
         }
     }
     return tf;
+}
+
+bool checkEquality(vector<int> &v1, vector<int> &v2) {
+    sort(v1.begin(),v1.end());
+    sort(v2.begin(),v2.end());
+    return v1 == v2;
 }
 
 void init() {
@@ -74,11 +81,15 @@ void display(){
     glLoadIdentity();
     glOrtho(0.0, width, height, 0.0, -1.f, 1.f);
     glClear(GL_COLOR_BUFFER_BIT);   // Clear the color buffer with current clearing color
-
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     switch (curr) {
         default:
+            break;
+        case Start:
+            cells.drawWelcom("Battleship");
+            cells.drawPVC("fight a computer");
+            cells.drawPVP("fight a friend");
             break;
         case playerOneSet:
             userBoard.drawBoard();
@@ -108,13 +119,10 @@ void display(){
                 notHitY = gameUserBoard.getCellY(num - 1);
                 cells.drawNotHit(notHitX,notHitY);
             }
-
-
-    }
-
-    if (uc->getFleetStat() == ready && ub->getFleetStat() == ready && ud->getFleetStat() == ready
-        && us->getFleetStat() == ready && ur->getFleetStat() == ready) {
-        curr = game;
+            break;
+        case finished:
+            cells.drawWelcom("end of Game");
+            break;
     }
 
     if (uc->getFleetStat() == placedHo || ub->getFleetStat() == placedHo || ud->getFleetStat() == placedHo || us->getFleetStat() == placedHo
@@ -172,6 +180,15 @@ void display(){
 
     if (doneOnHover) {
         cells.hoverDone("once click, ship can't be moving again");
+    }
+
+    if (uc->getFleetStat() == ready && ub->getFleetStat() == ready && ud->getFleetStat() == ready
+        && us->getFleetStat() == ready && ur->getFleetStat() == ready) {
+        curr = game;
+    }
+
+    if (gameOver) {
+        curr = finished;
     }
 
     glFlush();  // Render now
@@ -236,9 +253,9 @@ void cursor(int x, int y) {
     }
 
     doneOnHover = cells.inDone(x, y) && (uc->getFleetStat() == placedHo || uc->getFleetStat() == placedVe
-            || ub->getFleetStat() == placedHo || ub->getFleetStat() == placedVe || ud->getFleetStat() == placedHo
-            || ud->getFleetStat() == placedVe || us->getFleetStat() == placedHo || us->getFleetStat() == placedVe
-            || ur->getFleetStat() == placedVe || ur->getFleetStat() == placedHo);
+                                         || ub->getFleetStat() == placedHo || ub->getFleetStat() == placedVe || ud->getFleetStat() == placedHo
+                                         || ud->getFleetStat() == placedVe || us->getFleetStat() == placedHo || us->getFleetStat() == placedVe
+                                         || ur->getFleetStat() == placedVe || ur->getFleetStat() == placedHo);
     glutPostRedisplay();
 }
 
@@ -250,15 +267,22 @@ void mouse(int button, int state, int x, int y) {
             break;
         case GLUT_LEFT_BUTTON:
             // -------------------------------------------------------------------------------------------------------------
+            if (state == GLUT_DOWN && cells.inPVC(x,y) && curr == Start) {
+                curr = playerOneSet;
+            }
+            // -------------------------------------------------------------------------------------------------------------
+
+            // player one set ships-----------------------------------------------------------------------------------------
+            // check if the mouse clicked on board--------------------------------------------------------------------------
             if (state == GLUT_DOWN && x >= userBoard.getLeftX() && x <= userBoard.getRightX() && y >= userBoard.getTopY() &&
-                y <= userBoard.getBottomY()) {
+                y <= userBoard.getBottomY() ) {
                 cellNumber = userBoard.cellNum(x,y);
             }
             // -------------------------------------------------------------------------------------------------------------
 
             // user carrier
             // -------------------------------------------------------------------------------------------------------------
-            if (state == GLUT_DOWN && uc->getFleetStat() == moveable && curr == playerOneSet ) {
+            if (state == GLUT_DOWN && uc->getFleetStat() == moveable  ) {
                 if (x >= uc->getLeftX() && x <= uc->getRightX() && y >= uc->getTopY() && y <= uc->getBottomY()) {
                     uc->setFleetStat(selected);
                     uc->setThirdStat(noWord);
@@ -274,7 +298,7 @@ void mouse(int button, int state, int x, int y) {
                         ur->setFleetStat(No);
                     glutPostRedisplay();
                 }
-            } else if (state == GLUT_DOWN && uc->getFleetStat() == selected && curr == playerOneSet) {
+            } else if (state == GLUT_DOWN && uc->getFleetStat() == selected ) {
                 occupiedCellsTemp.clear();
                 if (uc->inBoard(uboardL,uboardR,uboardT,uboardB)) {
                     uc->setCenterX(userBoard.getCellX(cellNumber - 1));
@@ -312,7 +336,7 @@ void mouse(int button, int state, int x, int y) {
                     uc->setFleetStat(moveable);
                     uc->setThirdStat(out);
                 }
-            } else if (state == GLUT_DOWN && cells.inButton(x,y) && uc->getFleetStat() == placedHo && curr == playerOneSet) {
+            } else if (state == GLUT_DOWN && cells.inButton(x,y) && uc->getFleetStat() == placedHo ) {
                 occupiedCellsTemp.clear();
                 uc->setWidth(149);
                 uc->setHeight(30);
@@ -335,7 +359,7 @@ void mouse(int button, int state, int x, int y) {
                     uc->setFleetStat(moveable);
                     uc->setThirdStat(out);
                 }
-            } else if (state == GLUT_DOWN && cells.inButton(x,y) && uc->getFleetStat() == placedVe) {
+            } else if (state == GLUT_DOWN && cells.inButton(x,y) && uc->getFleetStat() == placedVe ) {
                 occupiedCellsTemp.clear();
                 uc->setWidth(30);
                 uc->setHeight(149);
@@ -359,7 +383,7 @@ void mouse(int button, int state, int x, int y) {
                     uc->setThirdStat(out);
                 }
             } else if (state == GLUT_DOWN && cells.inDone(x,y) && (uc->getFleetStat() == placedHo
-                        || uc->getFleetStat() == placedVe)) {
+                                                                   || uc->getFleetStat() == placedVe) ) {
                 for (int num : occupiedCellsTemp) {
                     uOccupiedCells.push_back(num);
                 }
@@ -375,7 +399,7 @@ void mouse(int button, int state, int x, int y) {
                     us->setFleetStat(moveable);
                 if (ur->getFleetStat() == No)
                     ur->setFleetStat(moveable);
-            } else if (state == GLUT_DOWN && uc->getAdditionStat() == placed) {
+            } else if (state == GLUT_DOWN && uc->getAdditionStat() == placed ) {
                 uc->setFleetStat(selected);
             }
             // -------------------------------------------------------------------------------------------------------------
@@ -512,7 +536,7 @@ void mouse(int button, int state, int x, int y) {
 
             // user destroyer
             // -------------------------------------------------------------------------------------------------------------
-            if (state == GLUT_DOWN && ud->getFleetStat() == moveable ) {
+            if (state == GLUT_DOWN && ud->getFleetStat() == moveable) {
                 if (x >= ud->getLeftX() && x <= ud->getRightX() && y >= ud->getTopY() && y <= ud->getBottomY()) {
                     ud->setFleetStat(selected);
                     ud->setThirdStat(noWord);
@@ -612,7 +636,7 @@ void mouse(int button, int state, int x, int y) {
                     ud->setThirdStat(out);
                 }
             } else if (state == GLUT_DOWN && cells.inDone(x,y) && (ud->getFleetStat() == placedHo
-            || ud->getFleetStat() == placedVe)) {
+                                                                   || ud->getFleetStat() == placedVe)) {
                 for (int num : occupiedCellsTemp) {
                     uOccupiedCells.push_back(num);
                     occupiedCellsTemp.clear();
@@ -636,7 +660,7 @@ void mouse(int button, int state, int x, int y) {
 
             // user sub
             // -------------------------------------------------------------------------------------------------------------
-            if (state == GLUT_DOWN && us->getFleetStat() == moveable ) {
+            if (state == GLUT_DOWN && us->getFleetStat() == moveable) {
                 if (x >= us->getLeftX() && x <= us->getRightX() && y >= us->getTopY() && y <= us->getBottomY()) {
                     us->setFleetStat(selected);
                     us->setThirdStat(noWord);
@@ -736,7 +760,7 @@ void mouse(int button, int state, int x, int y) {
                     us->setThirdStat(out);
                 }
             } else if (state == GLUT_DOWN && cells.inDone(x,y) && (us->getFleetStat() == placedHo
-            || us->getFleetStat() == placedVe)) {
+                                                                   || us->getFleetStat() == placedVe)) {
                 for (int num : occupiedCellsTemp) {
                     uOccupiedCells.push_back(num);
                     occupiedCellsTemp.clear();
@@ -760,7 +784,7 @@ void mouse(int button, int state, int x, int y) {
 
             // user cruiser
             // -------------------------------------------------------------------------------------------------------------
-            if (state == GLUT_DOWN && ur->getFleetStat() == moveable ) {
+            if (state == GLUT_DOWN && ur->getFleetStat() == moveable) {
                 if (x >= ur->getLeftX() && x <= ur->getRightX() && y >= ur->getTopY() && y <= ur->getBottomY()) {
                     ur->setFleetStat(selected);
                     ur->setThirdStat(noWord);
@@ -889,13 +913,18 @@ void mouse(int button, int state, int x, int y) {
             // -------------------------------------------------------------------------------------------------------------
 
             if (state == GLUT_DOWN && x >= gameUserBoard.getLeftX() && x <= gameUserBoard.getRightX() && y >= gameUserBoard.getTopY() &&
-                y <= gameUserBoard.getBottomY()) {
+                y <= gameUserBoard.getBottomY() && curr == game) {
                 cellNumber = gameUserBoard.cellNum(x,y);
                 if (find(uOccupiedCells.begin(),uOccupiedCells.end(),cellNumber) != uOccupiedCells.end()){
                     gHitCells.push_back(cellNumber);
+                    gameOver = checkEquality(gHitCells,uOccupiedCells);
                 } else {
                     gNotHit.push_back(cellNumber);
                 }
+            }
+
+            if (state == GLUT_DOWN && curr == finished) {
+                break;
             }
             break;
         case GLUT_RIGHT_BUTTON:

@@ -39,6 +39,14 @@ public:
     void setLength(int length);
     void setWidth(int width);
 
+    // Welcome page elements
+    void drawWelcom(std::string label);
+    void drawPVC(std::string label);
+    void drawPVP(std::string label);
+    bool inPVC(int x, int y);
+    bool inPVP(int x, int y);
+
+
     void drawShapeDefault();
     void drawHit(int x, int y);
     void drawNotHit(int x, int y);

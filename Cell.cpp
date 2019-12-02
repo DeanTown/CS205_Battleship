@@ -75,6 +75,75 @@ void Cell::setWidth(int wid) {
     this->width = wid;
 }
 
+//---------------------------------------------------------------------------------------------
+void Cell::drawWelcom(std::string label) {
+    glColor3f(1.0,1.0,1.0);
+    glRasterPos2i(300,200);
+    for (char &le : label) {
+        glutBitmapCharacter(GLUT_BITMAP_8_BY_13,le);
+    }
+}
+
+void Cell::drawPVC(std::string label) {
+    // outer
+    glColor3f(1.0,1.0,1.0);
+    glBegin(GL_QUADS);
+    glVertex2d(220,260);
+    glVertex2d(460,260);
+    glVertex2d(460,310);
+    glVertex2d(220,310);
+    glEnd();
+
+    glColor3f(0.0,0.0,0.0);
+    glBegin(GL_QUADS);
+    glVertex2d(230,270);
+    glVertex2d(450,270);
+    glVertex2d(450,300);
+    glVertex2d(230,300);
+    glEnd();
+
+    glColor3f(1.0,1.0,1.0);
+    glRasterPos2i(275,290);
+    for (char &le : label) {
+        glutBitmapCharacter(GLUT_BITMAP_8_BY_13,le);
+    }
+}
+
+void Cell::drawPVP(std::string label) {
+    // outer
+    glColor3f(1.0,1.0,1.0);
+    glBegin(GL_QUADS);
+    glVertex2d(220,330);
+    glVertex2d(460,330);
+    glVertex2d(460,380);
+    glVertex2d(220,380);
+    glEnd();
+
+    glColor3f(0.0,0.0,0.0);
+    glBegin(GL_QUADS);
+    glVertex2d(230,340);
+    glVertex2d(450,340);
+    glVertex2d(450,370);
+    glVertex2d(230,370);
+    glEnd();
+
+    glColor3f(1.0,1.0,1.0);
+    glRasterPos2i(280,360);
+    for (char &le : label) {
+        glutBitmapCharacter(GLUT_BITMAP_8_BY_13,le);
+    }
+}
+
+bool Cell::inPVC(int x, int y) {
+    return x > 220 && x < 460 && y > 260 && y < 310;
+}
+
+bool Cell::inPVP(int x, int y) {
+    return x > 220 && x < 460 && y > 330 && y < 380;
+}
+//---------------------------------------------------------------------------------------------
+
+
 void Cell::drawShapeDefault() {
     // outer
     glColor3f(1.0,1.0,1.0);
