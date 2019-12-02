@@ -36,6 +36,7 @@ public:
     void outBoard(std::string label);
     void focus(std::string label);
     void overlap(std::string label);
+    void drawSunk(std::string label);
 };
 
 

@@ -55,3 +55,20 @@ void Fleet::overlap(std::string label) {
         glutBitmapCharacter(GLUT_BITMAP_8_BY_13,le);
     }
 }
+
+void Fleet::drawSunk(std::string label) {
+
+    glColor3f(1.0,1.0,1.0);
+    glBegin(GL_QUADS);
+    glVertex2d(98,415);
+    glVertex2d(300,415);
+    glVertex2d(300,417);
+    glVertex2d(98,417);
+    glEnd();
+
+    glColor3f(1.0,1.0,1.0);
+    glRasterPos2i(100,410);
+    for (char &le : label) {
+        glutBitmapCharacter(GLUT_BITMAP_8_BY_13,le);
+    }
+}

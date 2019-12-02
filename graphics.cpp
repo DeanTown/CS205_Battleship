@@ -44,6 +44,7 @@ bool mouseInput = false;
 bool doneOnHover = false;
 bool gameOver = false;
 bool drawSunk = false;
+bool drawSunkP1c = true,drawSunkP1b = true, drawSunkP1d = true, drawSunkP1s = true, drawSunkP1r = true;
 
 vector<int> uOccupiedCells;
 vector<int> occupiedCellsTemp;
@@ -147,18 +148,36 @@ void display(){
                 notHitY = gamePlayer1Board.getCellY(num - 1);
                 cells.drawNotHit(notHitX,notHitY);
             }
+
             hitP1c = numOfCommon(gHitCells,p1cHit);
             p1cG->drawHit(hitP1c);
+            if (hitP1c == 5 && drawSunkP1c) {
+                p1cG->drawSunk("player 1 Carrier sunk");
+            }
 
             hitP1b = numOfCommon(gHitCells,p1bHit);
             p1bG->drawHit(hitP1b);
+            if (hitP1b == 4 && drawSunkP1b) {
+                p1bG->drawSunk("player 1 Battleship sunk");
+            }
+
             hitP1d = numOfCommon(gHitCells,p1dHit);
             p1dG->drawHit(hitP1d);
+            if (hitP1d == 3 && drawSunkP1d) {
+                p1dG->drawSunk("player 1 Destroyer sunk");
+            }
 
             hitP1s = numOfCommon(gHitCells,p1sHit);
             p1sG->drawHit(hitP1s);
+            if (hitP1s == 3 && drawSunkP1s) {
+                p1sG->drawSunk("player 1 Sub sunk");
+            }
+
             hitP1r = numOfCommon(gHitCells,p1rHit);
             p1rG->drawHit(hitP1r);
+            if (hitP1r == 2 && drawSunkP1r) {
+                p1rG->drawSunk("player 1 Cruiser sunk");
+            }
             break;
         case finished:
             cells.drawWelcom("end of Game");
@@ -962,6 +981,22 @@ void mouse(int button, int state, int x, int y) {
                 } else {
                     gNotHit.push_back(cellNumber);
                 }
+            }
+
+            if (state == GLUT_DOWN && curr == game && hitP1c == 5) {
+                drawSunkP1c = false;
+            }
+            if (state == GLUT_DOWN && curr == game && hitP1b == 4) {
+                drawSunkP1b = false;
+            }
+            if (state == GLUT_DOWN && curr == game && hitP1d == 3) {
+                drawSunkP1d = false;
+            }
+            if (state == GLUT_DOWN && curr == game && hitP1s == 3) {
+                drawSunkP1s = false;
+            }
+            if (state == GLUT_DOWN && curr == game && hitP1r == 5) {
+                drawSunkP1r = false;
             }
 
             if (state == GLUT_DOWN && curr == finished) {
