@@ -26,11 +26,11 @@ screen curr = Start;
 Cell cells;
 Board userBoard;
 Board gameUserBoard;
-UCarrier* uc = new UCarrier;
-UBattleship* ub = new UBattleship;
-UDestroyer* ud = new UDestroyer;
-USub* us = new USub;
-UCruiser* ur = new UCruiser;
+UCarrier* p1c = new UCarrier;
+UBattleship* p1b = new UBattleship;
+UDestroyer* p1d = new UDestroyer;
+USub* p1s = new USub;
+UCruiser* p1r = new UCruiser;
 bool mouseInput = false;
 bool doneOnHover = false;
 bool gameOver = false;
@@ -97,11 +97,11 @@ void display(){
             uboardR = userBoard.getRightX();
             uboardT = userBoard.getTopY();
             uboardB = userBoard.getBottomY();
-            uc->draw();
-            ub->draw();
-            ud->draw();
-            us->draw();
-            ur->draw();
+            p1c->draw();
+            p1b->draw();
+            p1d->draw();
+            p1s->draw();
+            p1r->draw();
             break;
         case game:
             gameUserBoard.drawBoard();
@@ -109,6 +109,11 @@ void display(){
             gUserBoardR = gameUserBoard.getRightX();
             gUserBoardT = gameUserBoard.getTopY();
             gUserBoardB = gameUserBoard.getBottomY();
+            p1c->draw();
+            p1b->draw();
+            p1d->draw();
+            p1s->draw();
+            p1r->draw();
             for (int num : gHitCells) {
                 hitCellX = gameUserBoard.getCellX(num - 1);
                 hitCellY = gameUserBoard.getCellY(num - 1);
@@ -125,65 +130,65 @@ void display(){
             break;
     }
 
-    if (uc->getFleetStat() == placedHo || ub->getFleetStat() == placedHo || ud->getFleetStat() == placedHo || us->getFleetStat() == placedHo
-        || ur->getFleetStat() == placedHo || uc->getFleetStat() == placedVe || ub->getFleetStat() == placedVe || ud->getFleetStat() == placedVe
-        || us->getFleetStat() == placedVe || ur->getFleetStat() == placedVe) {
+    if (p1c->getFleetStat() == placedHo || p1b->getFleetStat() == placedHo || p1d->getFleetStat() == placedHo || p1s->getFleetStat() == placedHo
+        || p1r->getFleetStat() == placedHo || p1c->getFleetStat() == placedVe || p1b->getFleetStat() == placedVe || p1d->getFleetStat() == placedVe
+        || p1s->getFleetStat() == placedVe || p1r->getFleetStat() == placedVe) {
         cells.drawButton("change dirction");
         cells.drawDone("done");
     }
 
-    if (uc->getThirdStat() == out) {
-        uc->outBoard("carrier is out of board");
+    if (p1c->getThirdStat() == out) {
+        p1c->outBoard("carrier is out of board");
     }
-    if (uc->getForthStat() == working) {
-        uc->focus("working on placing carrier");
+    if (p1c->getForthStat() == working) {
+        p1c->focus("working on placing carrier");
     }
-    if (uc->getFifthStat() == overlapping) {
-        uc->overlap("carrier get overlapped");
+    if (p1c->getFifthStat() == overlapping) {
+        p1c->overlap("carrier get overlapped");
     }
-    if (ub->getThirdStat() == out) {
-        ub->outBoard("battleship is out of board");
+    if (p1b->getThirdStat() == out) {
+        p1b->outBoard("battleship is out of board");
     }
-    if (ub->getForthStat() == working) {
-        ub->focus("working on placing battleship");
+    if (p1b->getForthStat() == working) {
+        p1b->focus("working on placing battleship");
     }
-    if (ub->getFifthStat() == overlapping) {
-        ub->overlap("battleship get overlapped");
+    if (p1b->getFifthStat() == overlapping) {
+        p1b->overlap("battleship get overlapped");
     }
-    if (ud->getThirdStat() == out) {
-        ud->outBoard("destroyer is out of board");
+    if (p1d->getThirdStat() == out) {
+        p1d->outBoard("destroyer is out of board");
     }
-    if (ud->getForthStat() == working) {
-        ud->focus("working on placing destroyer");
+    if (p1d->getForthStat() == working) {
+        p1d->focus("working on placing destroyer");
     }
-    if (ud->getFifthStat() == overlapping) {
-        ud->overlap("destroyer get overlapped");
+    if (p1d->getFifthStat() == overlapping) {
+        p1d->overlap("destroyer get overlapped");
     }
-    if (us->getThirdStat() == out) {
-        us->outBoard("sub is out of board");
+    if (p1s->getThirdStat() == out) {
+        p1s->outBoard("sub is out of board");
     }
-    if (us->getForthStat() == working) {
-        us->focus("working on placing sub");
+    if (p1s->getForthStat() == working) {
+        p1s->focus("working on placing sub");
     }
-    if (us->getFifthStat() == overlapping) {
-        us->overlap("sub get overlapped");
+    if (p1s->getFifthStat() == overlapping) {
+        p1s->overlap("sub get overlapped");
     }
-    if (ur->getThirdStat() == out) {
-        ur->outBoard("cruiser is out of board");
+    if (p1r->getThirdStat() == out) {
+        p1r->outBoard("cruiser is out of board");
     }
-    if (ur->getForthStat() == working) {
-        ur->focus("working on placing cruiser");
+    if (p1r->getForthStat() == working) {
+        p1r->focus("working on placing cruiser");
     }
-    if (ur->getFifthStat() == overlapping) {
-        ur->overlap("cruiser get overlapped");
+    if (p1r->getFifthStat() == overlapping) {
+        p1r->overlap("cruiser get overlapped");
     }
 
     if (doneOnHover) {
         cells.hoverDone("once click, ship can't be moving again");
     }
 
-    if (uc->getFleetStat() == ready && ub->getFleetStat() == ready && ud->getFleetStat() == ready
-        && us->getFleetStat() == ready && ur->getFleetStat() == ready) {
+    if (p1c->getFleetStat() == ready && p1b->getFleetStat() == ready && p1d->getFleetStat() == ready
+        && p1s->getFleetStat() == ready && p1r->getFleetStat() == ready) {
         curr = game;
     }
 
@@ -231,31 +236,31 @@ void kbdS(int key, int x, int y) {
 
 void cursor(int x, int y) {
     // when fleet state is selected, it can be moved
-    if (uc->getFleetStat() == selected) {
-        uc->drag(uc,x,y);
+    if (p1c->getFleetStat() == selected && curr == playerOneSet) {
+        p1c->drag(p1c,x,y);
         glutPostRedisplay();
     }
-    if (ub->getFleetStat() == selected) {
-        ub->drag(ub,x,y);
+    if (p1b->getFleetStat() == selected && curr == playerOneSet) {
+        p1b->drag(p1b,x,y);
         glutPostRedisplay();
     }
-    if (ud->getFleetStat() == selected) {
-        ud->drag(ud,x,y);
+    if (p1d->getFleetStat() == selected && curr == playerOneSet) {
+        p1d->drag(p1d,x,y);
         glutPostRedisplay();
     }
-    if (us->getFleetStat() == selected) {
-        us->drag(us,x,y);
+    if (p1s->getFleetStat() == selected && curr == playerOneSet) {
+        p1s->drag(p1s,x,y);
         glutPostRedisplay();
     }
-    if (ur->getFleetStat() == selected) {
-        ur->drag(ur,x,y);
+    if (p1r->getFleetStat() == selected && curr == playerOneSet) {
+        p1r->drag(p1r,x,y);
         glutPostRedisplay();
     }
 
-    doneOnHover = cells.inDone(x, y) && (uc->getFleetStat() == placedHo || uc->getFleetStat() == placedVe
-                                         || ub->getFleetStat() == placedHo || ub->getFleetStat() == placedVe || ud->getFleetStat() == placedHo
-                                         || ud->getFleetStat() == placedVe || us->getFleetStat() == placedHo || us->getFleetStat() == placedVe
-                                         || ur->getFleetStat() == placedVe || ur->getFleetStat() == placedHo);
+    doneOnHover = cells.inDone(x, y) && (p1c->getFleetStat() == placedHo || p1c->getFleetStat() == placedVe
+                                         || p1b->getFleetStat() == placedHo || p1b->getFleetStat() == placedVe || p1d->getFleetStat() == placedHo
+                                         || p1d->getFleetStat() == placedVe || p1s->getFleetStat() == placedHo || p1s->getFleetStat() == placedVe
+                                         || p1r->getFleetStat() == placedVe || p1r->getFleetStat() == placedHo);
     glutPostRedisplay();
 }
 
@@ -282,633 +287,633 @@ void mouse(int button, int state, int x, int y) {
 
             // user carrier
             // -------------------------------------------------------------------------------------------------------------
-            if (state == GLUT_DOWN && uc->getFleetStat() == moveable  ) {
-                if (x >= uc->getLeftX() && x <= uc->getRightX() && y >= uc->getTopY() && y <= uc->getBottomY()) {
-                    uc->setFleetStat(selected);
-                    uc->setThirdStat(noWord);
-                    uc->setForthStat(working);
-                    uc->setFifthStat(noWord);
-                    if (ub->getFleetStat() != ready)
-                        ub->setFleetStat(No);
-                    if (ud->getFleetStat() != ready)
-                        ud->setFleetStat(No);
-                    if (us->getFleetStat() != ready)
-                        us->setFleetStat(No);
-                    if (ur->getFleetStat() != ready)
-                        ur->setFleetStat(No);
+            if (state == GLUT_DOWN && p1c->getFleetStat() == moveable && curr == playerOneSet) {
+                if (x >= p1c->getLeftX() && x <= p1c->getRightX() && y >= p1c->getTopY() && y <= p1c->getBottomY()) {
+                    p1c->setFleetStat(selected);
+                    p1c->setThirdStat(noWord);
+                    p1c->setForthStat(working);
+                    p1c->setFifthStat(noWord);
+                    if (p1b->getFleetStat() != ready)
+                        p1b->setFleetStat(No);
+                    if (p1d->getFleetStat() != ready)
+                        p1d->setFleetStat(No);
+                    if (p1s->getFleetStat() != ready)
+                        p1s->setFleetStat(No);
+                    if (p1r->getFleetStat() != ready)
+                        p1r->setFleetStat(No);
                     glutPostRedisplay();
                 }
-            } else if (state == GLUT_DOWN && uc->getFleetStat() == selected ) {
+            } else if (state == GLUT_DOWN && p1c->getFleetStat() == selected ) {
                 occupiedCellsTemp.clear();
-                if (uc->inBoard(uboardL,uboardR,uboardT,uboardB)) {
-                    uc->setCenterX(userBoard.getCellX(cellNumber - 1));
-                    uc->setCenterY(userBoard.getCellY(cellNumber - 1));
-                    if (uc->getWidth() == 30 && uc->getHeight() == 149) {
-                        uc->setFleetStat(placedHo);
-                        ocNumber = userBoard.cellNum(uc->getCenterX(),uc->getCenterY());
+                if (p1c->inBoard(uboardL,uboardR,uboardT,uboardB)) {
+                    p1c->setCenterX(userBoard.getCellX(cellNumber - 1));
+                    p1c->setCenterY(userBoard.getCellY(cellNumber - 1));
+                    if (p1c->getWidth() == 30 && p1c->getHeight() == 149) {
+                        p1c->setFleetStat(placedHo);
+                        ocNumber = userBoard.cellNum(p1c->getCenterX(),p1c->getCenterY());
                         for (int i = ocNumber - 20; i <= ocNumber + 20; i += 10) {
                             occupiedCellsTemp.push_back(i);
                         }
                         if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
-                            uc->setCenterX(100);
-                            uc->setCenterY(500);
-                            uc->setFleetStat(moveable);
-                            uc->setFifthStat(overlapping);
+                            p1c->setCenterX(100);
+                            p1c->setCenterY(500);
+                            p1c->setFleetStat(moveable);
+                            p1c->setFifthStat(overlapping);
                         }
                     }
                     else {
-                        uc->setFleetStat(placedVe);
-                        ocNumber = userBoard.cellNum(uc->getCenterX(),uc->getCenterY());
+                        p1c->setFleetStat(placedVe);
+                        ocNumber = userBoard.cellNum(p1c->getCenterX(),p1c->getCenterY());
                         for (int i = ocNumber - 2; i <= ocNumber + 2; i += 1) {
                             occupiedCellsTemp.push_back(i);
                         }
                         if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
-                            uc->setCenterX(100);
-                            uc->setCenterY(500);
-                            uc->setFleetStat(moveable);
-                            uc->setFifthStat(overlapping);
+                            p1c->setCenterX(100);
+                            p1c->setCenterY(500);
+                            p1c->setFleetStat(moveable);
+                            p1c->setFifthStat(overlapping);
                         }
                     }
-                    uc->setAdditionStat(placed);
+                    p1c->setAdditionStat(placed);
                 } else {
-                    uc->setCenterX(100);
-                    uc->setCenterY(500);
-                    uc->setFleetStat(moveable);
-                    uc->setThirdStat(out);
+                    p1c->setCenterX(100);
+                    p1c->setCenterY(500);
+                    p1c->setFleetStat(moveable);
+                    p1c->setThirdStat(out);
                 }
-            } else if (state == GLUT_DOWN && cells.inButton(x,y) && uc->getFleetStat() == placedHo ) {
+            } else if (state == GLUT_DOWN && cells.inButton(x,y) && p1c->getFleetStat() == placedHo ) {
                 occupiedCellsTemp.clear();
-                uc->setWidth(149);
-                uc->setHeight(30);
-                uc->setFleetStat(placedVe);
-                uc->setAdditionStat(placed);
-                ocNumber = userBoard.cellNum(uc->getCenterX(),uc->getCenterY());
+                p1c->setWidth(149);
+                p1c->setHeight(30);
+                p1c->setFleetStat(placedVe);
+                p1c->setAdditionStat(placed);
+                ocNumber = userBoard.cellNum(p1c->getCenterX(),p1c->getCenterY());
                 for (int i = ocNumber - 2; i <= ocNumber + 2; i += 1) {
                     occupiedCellsTemp.push_back(i);
                 }
                 if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
-                    uc->setCenterX(100);
-                    uc->setCenterY(500);
-                    uc->setFleetStat(moveable);
-                    uc->setFifthStat(overlapping);
-                } else if (!uc->inBoard(uboardL,uboardR,uboardT,uboardB)) {
-                    uc->setWidth(30);
-                    uc->setHeight(149);
-                    uc->setCenterX(100);
-                    uc->setCenterY(500);
-                    uc->setFleetStat(moveable);
-                    uc->setThirdStat(out);
+                    p1c->setCenterX(100);
+                    p1c->setCenterY(500);
+                    p1c->setFleetStat(moveable);
+                    p1c->setFifthStat(overlapping);
+                } else if (!p1c->inBoard(uboardL,uboardR,uboardT,uboardB)) {
+                    p1c->setWidth(30);
+                    p1c->setHeight(149);
+                    p1c->setCenterX(100);
+                    p1c->setCenterY(500);
+                    p1c->setFleetStat(moveable);
+                    p1c->setThirdStat(out);
                 }
-            } else if (state == GLUT_DOWN && cells.inButton(x,y) && uc->getFleetStat() == placedVe ) {
+            } else if (state == GLUT_DOWN && cells.inButton(x,y) && p1c->getFleetStat() == placedVe ) {
                 occupiedCellsTemp.clear();
-                uc->setWidth(30);
-                uc->setHeight(149);
-                uc->setFleetStat(placedHo);
-                uc->setAdditionStat(placed);
-                ocNumber = userBoard.cellNum(uc->getCenterX(),uc->getCenterY());
+                p1c->setWidth(30);
+                p1c->setHeight(149);
+                p1c->setFleetStat(placedHo);
+                p1c->setAdditionStat(placed);
+                ocNumber = userBoard.cellNum(p1c->getCenterX(),p1c->getCenterY());
                 for (int i = ocNumber - 20; i <= ocNumber + 20; i += 10) {
                     occupiedCellsTemp.push_back(i);
                 }
                 if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
-                    uc->setCenterX(100);
-                    uc->setCenterY(500);
-                    uc->setFleetStat(moveable);
-                    uc->setFifthStat(overlapping);
-                } else if (!uc->inBoard(uboardL,uboardR,uboardT,uboardB)) {
-                    uc->setWidth(30);
-                    uc->setHeight(149);
-                    uc->setCenterX(100);
-                    uc->setCenterY(500);
-                    uc->setFleetStat(moveable);
-                    uc->setThirdStat(out);
+                    p1c->setCenterX(100);
+                    p1c->setCenterY(500);
+                    p1c->setFleetStat(moveable);
+                    p1c->setFifthStat(overlapping);
+                } else if (!p1c->inBoard(uboardL,uboardR,uboardT,uboardB)) {
+                    p1c->setWidth(30);
+                    p1c->setHeight(149);
+                    p1c->setCenterX(100);
+                    p1c->setCenterY(500);
+                    p1c->setFleetStat(moveable);
+                    p1c->setThirdStat(out);
                 }
-            } else if (state == GLUT_DOWN && cells.inDone(x,y) && (uc->getFleetStat() == placedHo
-                                                                   || uc->getFleetStat() == placedVe) ) {
+            } else if (state == GLUT_DOWN && cells.inDone(x,y) && (p1c->getFleetStat() == placedHo
+                                                                   || p1c->getFleetStat() == placedVe) ) {
                 for (int num : occupiedCellsTemp) {
                     uOccupiedCells.push_back(num);
                 }
-                uc->setFleetStat(ready);
-                uc->setAdditionStat(addNull);
-                uc->setForthStat(noWord);
+                p1c->setFleetStat(ready);
+                p1c->setAdditionStat(addNull);
+                p1c->setForthStat(noWord);
                 doneOnHover = false;
-                if (ub->getFleetStat() == No)
-                    ub->setFleetStat(moveable);
-                if (ud->getFleetStat() == No)
-                    ud->setFleetStat(moveable);
-                if (us->getFleetStat() == No)
-                    us->setFleetStat(moveable);
-                if (ur->getFleetStat() == No)
-                    ur->setFleetStat(moveable);
-            } else if (state == GLUT_DOWN && uc->getAdditionStat() == placed ) {
-                uc->setFleetStat(selected);
+                if (p1b->getFleetStat() == No)
+                    p1b->setFleetStat(moveable);
+                if (p1d->getFleetStat() == No)
+                    p1d->setFleetStat(moveable);
+                if (p1s->getFleetStat() == No)
+                    p1s->setFleetStat(moveable);
+                if (p1r->getFleetStat() == No)
+                    p1r->setFleetStat(moveable);
+            } else if (state == GLUT_DOWN && p1c->getAdditionStat() == placed ) {
+                p1c->setFleetStat(selected);
             }
             // -------------------------------------------------------------------------------------------------------------
 
             // user battleship
             // -------------------------------------------------------------------------------------------------------------
-            if (state == GLUT_DOWN && ub->getFleetStat() == moveable ) {
-                if (x >= ub->getLeftX() && x <= ub->getRightX() && y >= ub->getTopY() && y <= ub->getBottomY()) {
-                    ub->setFleetStat(selected);
-                    ub->setThirdStat(noWord);
-                    ub->setForthStat(working);
-                    ub->setFifthStat(noWord);
-                    if (uc->getFleetStat() != ready)
-                        uc->setFleetStat(No);
-                    if (ud->getFleetStat() != ready)
-                        ud->setFleetStat(No);
-                    if (us->getFleetStat() != ready)
-                        us->setFleetStat(No);
-                    if (ur->getFleetStat() != ready)
-                        ur->setFleetStat(No);
+            if (state == GLUT_DOWN && p1b->getFleetStat() == moveable && curr == playerOneSet) {
+                if (x >= p1b->getLeftX() && x <= p1b->getRightX() && y >= p1b->getTopY() && y <= p1b->getBottomY()) {
+                    p1b->setFleetStat(selected);
+                    p1b->setThirdStat(noWord);
+                    p1b->setForthStat(working);
+                    p1b->setFifthStat(noWord);
+                    if (p1c->getFleetStat() != ready)
+                        p1c->setFleetStat(No);
+                    if (p1d->getFleetStat() != ready)
+                        p1d->setFleetStat(No);
+                    if (p1s->getFleetStat() != ready)
+                        p1s->setFleetStat(No);
+                    if (p1r->getFleetStat() != ready)
+                        p1r->setFleetStat(No);
                     glutPostRedisplay();
                 }
-            } else if (state == GLUT_DOWN && ub->getFleetStat() == selected) {
+            } else if (state == GLUT_DOWN && p1b->getFleetStat() == selected) {
                 occupiedCellsTemp.clear();
-                if (ub->inBoard(uboardL,uboardR,uboardT,uboardB)) {
-                    if (ub->getWidth() == 30 && ub->getHeight() == 119) {
-                        ub->setCenterX(userBoard.getCellX(cellNumber - 1));
-                        ub->setCenterY(userBoard.getCellY(cellNumber - 1) + cells.getWidth() / 2);
-                        ub->setFleetStat(placedHo);
-                        ocNumber = userBoard.cellNum(ub->getCenterX(),ub->getCenterY());
+                if (p1b->inBoard(uboardL,uboardR,uboardT,uboardB)) {
+                    if (p1b->getWidth() == 30 && p1b->getHeight() == 119) {
+                        p1b->setCenterX(userBoard.getCellX(cellNumber - 1));
+                        p1b->setCenterY(userBoard.getCellY(cellNumber - 1) + cells.getWidth() / 2);
+                        p1b->setFleetStat(placedHo);
+                        ocNumber = userBoard.cellNum(p1b->getCenterX(),p1b->getCenterY());
                         for (int i = ocNumber - 20; i <= ocNumber + 10; i += 10) {
                             occupiedCellsTemp.push_back(i);
                         }
                         if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
-                            ub->setCenterX(160);
-                            ub->setCenterY(500);
-                            ub->setFleetStat(moveable);
-                            ub->setFifthStat(overlapping);
+                            p1b->setCenterX(160);
+                            p1b->setCenterY(500);
+                            p1b->setFleetStat(moveable);
+                            p1b->setFifthStat(overlapping);
                         }
                     }
                     else {
-                        ub->setCenterX(userBoard.getCellX(cellNumber) - cells.getWidth() / 2);
-                        ub->setCenterY(userBoard.getCellY(cellNumber));
-                        ub->setFleetStat(placedVe);
-                        ocNumber = userBoard.cellNum(ub->getCenterX(),ub->getCenterY());
+                        p1b->setCenterX(userBoard.getCellX(cellNumber) - cells.getWidth() / 2);
+                        p1b->setCenterY(userBoard.getCellY(cellNumber));
+                        p1b->setFleetStat(placedVe);
+                        ocNumber = userBoard.cellNum(p1b->getCenterX(),p1b->getCenterY());
                         for (int i = ocNumber - 2; i <= ocNumber + 1; i += 1) {
                             occupiedCellsTemp.push_back(i);
                         }
                         if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
-                            ub->setCenterX(160);
-                            ub->setCenterY(500);
-                            ub->setFleetStat(moveable);
-                            ub->setFifthStat(overlapping);
+                            p1b->setCenterX(160);
+                            p1b->setCenterY(500);
+                            p1b->setFleetStat(moveable);
+                            p1b->setFifthStat(overlapping);
                         }
                     }
-                    ub->setAdditionStat(placed);
-                    ub->setThirdStat(noWord);
+                    p1b->setAdditionStat(placed);
+                    p1b->setThirdStat(noWord);
                 } else {
-                    ub->setCenterX(160);
-                    ub->setCenterY(500);
-                    ub->setFleetStat(moveable);
-                    ub->setThirdStat(out);
+                    p1b->setCenterX(160);
+                    p1b->setCenterY(500);
+                    p1b->setFleetStat(moveable);
+                    p1b->setThirdStat(out);
                 }
-            } else if (state == GLUT_DOWN && cells.inButton(x,y) && ub->getFleetStat() == placedHo) {
+            } else if (state == GLUT_DOWN && cells.inButton(x,y) && p1b->getFleetStat() == placedHo) {
                 occupiedCellsTemp.clear();
-                ub->setWidth(119);
-                ub->setHeight(30);
-                ub->setCenterX(userBoard.getCellX(cellNumber) - cells.getWidth() / 2);
-                ub->setCenterY(userBoard.getCellY(cellNumber));
-                ub->setFleetStat(placedVe);
-                ub->setAdditionStat(placed);
-                ocNumber = userBoard.cellNum(ub->getCenterX(),ub->getCenterY());
+                p1b->setWidth(119);
+                p1b->setHeight(30);
+                p1b->setCenterX(userBoard.getCellX(cellNumber) - cells.getWidth() / 2);
+                p1b->setCenterY(userBoard.getCellY(cellNumber));
+                p1b->setFleetStat(placedVe);
+                p1b->setAdditionStat(placed);
+                ocNumber = userBoard.cellNum(p1b->getCenterX(),p1b->getCenterY());
                 for (int i = ocNumber - 2; i <= ocNumber + 1; i += 1) {
                     occupiedCellsTemp.push_back(i);
                 } if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
-                    ub->setCenterX(160);
-                    ub->setCenterY(500);
-                    ub->setFleetStat(moveable);
-                    ub->setFifthStat(overlapping);
-                } else if (!ub->inBoard(uboardL,uboardR,uboardT,uboardB)) {
-                    ub->setWidth(30);
-                    ub->setHeight(119);
-                    ub->setCenterX(160);
-                    ub->setCenterY(500);
-                    ub->setFleetStat(moveable);
-                    ub->setThirdStat(out);
+                    p1b->setCenterX(160);
+                    p1b->setCenterY(500);
+                    p1b->setFleetStat(moveable);
+                    p1b->setFifthStat(overlapping);
+                } else if (!p1b->inBoard(uboardL,uboardR,uboardT,uboardB)) {
+                    p1b->setWidth(30);
+                    p1b->setHeight(119);
+                    p1b->setCenterX(160);
+                    p1b->setCenterY(500);
+                    p1b->setFleetStat(moveable);
+                    p1b->setThirdStat(out);
                 }
-            } else if (state == GLUT_DOWN && cells.inButton(x,y) && ub->getFleetStat() == placedVe) {
+            } else if (state == GLUT_DOWN && cells.inButton(x,y) && p1b->getFleetStat() == placedVe) {
                 occupiedCellsTemp.clear();
-                ub->setWidth(30);
-                ub->setHeight(119);
-                ub->setCenterX(userBoard.getCellX(cellNumber - 1));
-                ub->setCenterY(userBoard.getCellY(cellNumber - 1) + cells.getWidth() / 2);
-                ub->setFleetStat(placedHo);
-                ub->setAdditionStat(placed);
-                ocNumber = userBoard.cellNum(ub->getCenterX(),ub->getCenterY());
+                p1b->setWidth(30);
+                p1b->setHeight(119);
+                p1b->setCenterX(userBoard.getCellX(cellNumber - 1));
+                p1b->setCenterY(userBoard.getCellY(cellNumber - 1) + cells.getWidth() / 2);
+                p1b->setFleetStat(placedHo);
+                p1b->setAdditionStat(placed);
+                ocNumber = userBoard.cellNum(p1b->getCenterX(),p1b->getCenterY());
                 for (int i = ocNumber - 20; i <= ocNumber + 10; i += 10) {
                     occupiedCellsTemp.push_back(i);
                 } if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
-                    ub->setCenterX(160);
-                    ub->setCenterY(500);
-                    ub->setFleetStat(moveable);
-                    ub->setFifthStat(overlapping);
-                } else if (!ub->inBoard(uboardL,uboardR,uboardT,uboardB)) {
-                    ub->setWidth(30);
-                    ub->setHeight(119);
-                    ub->setCenterX(160);
-                    ub->setCenterY(500);
-                    ub->setFleetStat(moveable);
-                    ub->setThirdStat(out);
+                    p1b->setCenterX(160);
+                    p1b->setCenterY(500);
+                    p1b->setFleetStat(moveable);
+                    p1b->setFifthStat(overlapping);
+                } else if (!p1b->inBoard(uboardL,uboardR,uboardT,uboardB)) {
+                    p1b->setWidth(30);
+                    p1b->setHeight(119);
+                    p1b->setCenterX(160);
+                    p1b->setCenterY(500);
+                    p1b->setFleetStat(moveable);
+                    p1b->setThirdStat(out);
                 }
-            } else if (state == GLUT_DOWN && cells.inDone(x,y) && (ub->getFleetStat() == placedHo
-                                                                   || ub->getFleetStat() == placedVe)) {
+            } else if (state == GLUT_DOWN && cells.inDone(x,y) && (p1b->getFleetStat() == placedHo
+                                                                   || p1b->getFleetStat() == placedVe)) {
                 for (int num : occupiedCellsTemp) {
                     uOccupiedCells.push_back(num);
                     occupiedCellsTemp.clear();
                 }
-                ub->setFleetStat(ready);
-                ub->setAdditionStat(addNull);
-                ub->setForthStat(noWord);
+                p1b->setFleetStat(ready);
+                p1b->setAdditionStat(addNull);
+                p1b->setForthStat(noWord);
                 doneOnHover = false;
-                if (uc->getFleetStat() == No)
-                    uc->setFleetStat(moveable);
-                if (ud->getFleetStat() == No)
-                    ud->setFleetStat(moveable);
-                if (us->getFleetStat() == No)
-                    us->setFleetStat(moveable);
-                if (ur->getFleetStat() == No)
-                    ur->setFleetStat(moveable);
-            } else if (state == GLUT_DOWN && ub->getAdditionStat() == placed) {
-                ub->setFleetStat(selected);
+                if (p1c->getFleetStat() == No)
+                    p1c->setFleetStat(moveable);
+                if (p1d->getFleetStat() == No)
+                    p1d->setFleetStat(moveable);
+                if (p1s->getFleetStat() == No)
+                    p1s->setFleetStat(moveable);
+                if (p1r->getFleetStat() == No)
+                    p1r->setFleetStat(moveable);
+            } else if (state == GLUT_DOWN && p1b->getAdditionStat() == placed) {
+                p1b->setFleetStat(selected);
             }
             // -------------------------------------------------------------------------------------------------------------
 
             // user destroyer
             // -------------------------------------------------------------------------------------------------------------
-            if (state == GLUT_DOWN && ud->getFleetStat() == moveable) {
-                if (x >= ud->getLeftX() && x <= ud->getRightX() && y >= ud->getTopY() && y <= ud->getBottomY()) {
-                    ud->setFleetStat(selected);
-                    ud->setThirdStat(noWord);
-                    ud->setForthStat(working);
-                    ud->setFifthStat(noWord);
-                    if (uc->getFleetStat() != ready)
-                        uc->setFleetStat(No);
-                    if (ub->getFleetStat() != ready)
-                        ub->setFleetStat(No);
-                    if (us->getFleetStat() != ready)
-                        us->setFleetStat(No);
-                    if (ur->getFleetStat() != ready)
-                        ur->setFleetStat(No);
+            if (state == GLUT_DOWN && p1d->getFleetStat() == moveable && curr == playerOneSet) {
+                if (x >= p1d->getLeftX() && x <= p1d->getRightX() && y >= p1d->getTopY() && y <= p1d->getBottomY()) {
+                    p1d->setFleetStat(selected);
+                    p1d->setThirdStat(noWord);
+                    p1d->setForthStat(working);
+                    p1d->setFifthStat(noWord);
+                    if (p1c->getFleetStat() != ready)
+                        p1c->setFleetStat(No);
+                    if (p1b->getFleetStat() != ready)
+                        p1b->setFleetStat(No);
+                    if (p1s->getFleetStat() != ready)
+                        p1s->setFleetStat(No);
+                    if (p1r->getFleetStat() != ready)
+                        p1r->setFleetStat(No);
                     glutPostRedisplay();
                 }
-            } else if (state == GLUT_DOWN && ud->getFleetStat() == selected) {
-                if (ud->inBoard(uboardL,uboardR,uboardT,uboardB)) {
+            } else if (state == GLUT_DOWN && p1d->getFleetStat() == selected) {
+                if (p1d->inBoard(uboardL,uboardR,uboardT,uboardB)) {
                     occupiedCellsTemp.clear();
-                    ud->setCenterX(userBoard.getCellX(cellNumber - 1));
-                    ud->setCenterY(userBoard.getCellY(cellNumber - 1));
-                    if (ud->getWidth() == 30 && ud->getHeight() == 89) {
-                        ud->setFleetStat(placedHo);
-                        ocNumber = userBoard.cellNum(ud->getCenterX(),ud->getCenterY());
+                    p1d->setCenterX(userBoard.getCellX(cellNumber - 1));
+                    p1d->setCenterY(userBoard.getCellY(cellNumber - 1));
+                    if (p1d->getWidth() == 30 && p1d->getHeight() == 89) {
+                        p1d->setFleetStat(placedHo);
+                        ocNumber = userBoard.cellNum(p1d->getCenterX(),p1d->getCenterY());
                         for (int i = ocNumber - 10; i <= ocNumber + 10; i += 10) {
                             occupiedCellsTemp.push_back(i);
                         }
                         if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
-                            ud->setCenterX(220);
-                            ud->setCenterY(500);
-                            ud->setFleetStat(moveable);
-                            ud->setFifthStat(overlapping);
+                            p1d->setCenterX(220);
+                            p1d->setCenterY(500);
+                            p1d->setFleetStat(moveable);
+                            p1d->setFifthStat(overlapping);
                         }
                     }
                     else {
-                        ud->setFleetStat(placedVe);
-                        ocNumber = userBoard.cellNum(ud->getCenterX(),ud->getCenterY());
+                        p1d->setFleetStat(placedVe);
+                        ocNumber = userBoard.cellNum(p1d->getCenterX(),p1d->getCenterY());
                         for (int i = ocNumber - 1; i <= ocNumber + 1; i += 1) {
                             occupiedCellsTemp.push_back(i);
                         }
                         if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
-                            ud->setCenterX(220);
-                            ud->setCenterY(500);
-                            ud->setFleetStat(moveable);
-                            ud->setFifthStat(overlapping);
+                            p1d->setCenterX(220);
+                            p1d->setCenterY(500);
+                            p1d->setFleetStat(moveable);
+                            p1d->setFifthStat(overlapping);
                         }
                     }
-                    ud->setAdditionStat(placed);
-                    ud->setThirdStat(noWord);
+                    p1d->setAdditionStat(placed);
+                    p1d->setThirdStat(noWord);
                 } else {
-                    ud->setCenterX(220);
-                    ud->setCenterY(500);
-                    ud->setFleetStat(moveable);
-                    ud->setThirdStat(out);
+                    p1d->setCenterX(220);
+                    p1d->setCenterY(500);
+                    p1d->setFleetStat(moveable);
+                    p1d->setThirdStat(out);
                 }
-            } else if (state == GLUT_DOWN && cells.inButton(x,y) && ud->getFleetStat() == placedHo) {
+            } else if (state == GLUT_DOWN && cells.inButton(x,y) && p1d->getFleetStat() == placedHo) {
                 occupiedCellsTemp.clear();
-                ud->setWidth(89);
-                ud->setHeight(30);
-                ud->setFleetStat(placedVe);
-                ud->setAdditionStat(placed);
-                ocNumber = userBoard.cellNum(ud->getCenterX(),ud->getCenterY());
+                p1d->setWidth(89);
+                p1d->setHeight(30);
+                p1d->setFleetStat(placedVe);
+                p1d->setAdditionStat(placed);
+                ocNumber = userBoard.cellNum(p1d->getCenterX(),p1d->getCenterY());
                 for (int i = ocNumber - 1; i <= ocNumber + 1; i += 1) {
                     occupiedCellsTemp.push_back(i);
                 } if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
-                    ud->setCenterX(220);
-                    ud->setCenterY(500);
-                    ud->setFleetStat(moveable);
-                    ud->setFifthStat(overlapping);
-                } else if (!ud->inBoard(uboardL,uboardR,uboardT,uboardB)) {
-                    ud->setWidth(30);
-                    ud->setHeight(89);
-                    ud->setCenterX(220);
-                    ud->setCenterY(500);
-                    ud->setFleetStat(moveable);
-                    ud->setThirdStat(out);
+                    p1d->setCenterX(220);
+                    p1d->setCenterY(500);
+                    p1d->setFleetStat(moveable);
+                    p1d->setFifthStat(overlapping);
+                } else if (!p1d->inBoard(uboardL,uboardR,uboardT,uboardB)) {
+                    p1d->setWidth(30);
+                    p1d->setHeight(89);
+                    p1d->setCenterX(220);
+                    p1d->setCenterY(500);
+                    p1d->setFleetStat(moveable);
+                    p1d->setThirdStat(out);
                 }
-            } else if (state == GLUT_DOWN && cells.inButton(x,y) && ud->getFleetStat() == placedVe) {
+            } else if (state == GLUT_DOWN && cells.inButton(x,y) && p1d->getFleetStat() == placedVe) {
                 occupiedCellsTemp.clear();
-                ud->setWidth(30);
-                ud->setHeight(89);
-                ud->setFleetStat(placedHo);
-                ud->setAdditionStat(placed);
-                ocNumber = userBoard.cellNum(ud->getCenterX(),ud->getCenterY());
+                p1d->setWidth(30);
+                p1d->setHeight(89);
+                p1d->setFleetStat(placedHo);
+                p1d->setAdditionStat(placed);
+                ocNumber = userBoard.cellNum(p1d->getCenterX(),p1d->getCenterY());
                 for (int i = ocNumber - 10; i <= ocNumber + 10; i += 10) {
                     occupiedCellsTemp.push_back(i);
                 } if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
-                    ud->setCenterX(220);
-                    ud->setCenterY(500);
-                    ud->setFleetStat(moveable);
-                    ud->setFifthStat(overlapping);
-                } else if (!ud->inBoard(uboardL,uboardR,uboardT,uboardB)) {
-                    ud->setWidth(30);
-                    ud->setHeight(89);
-                    ud->setCenterX(220);
-                    ud->setCenterY(500);
-                    ud->setFleetStat(moveable);
-                    ud->setThirdStat(out);
+                    p1d->setCenterX(220);
+                    p1d->setCenterY(500);
+                    p1d->setFleetStat(moveable);
+                    p1d->setFifthStat(overlapping);
+                } else if (!p1d->inBoard(uboardL,uboardR,uboardT,uboardB)) {
+                    p1d->setWidth(30);
+                    p1d->setHeight(89);
+                    p1d->setCenterX(220);
+                    p1d->setCenterY(500);
+                    p1d->setFleetStat(moveable);
+                    p1d->setThirdStat(out);
                 }
-            } else if (state == GLUT_DOWN && cells.inDone(x,y) && (ud->getFleetStat() == placedHo
-                                                                   || ud->getFleetStat() == placedVe)) {
+            } else if (state == GLUT_DOWN && cells.inDone(x,y) && (p1d->getFleetStat() == placedHo
+                                                                   || p1d->getFleetStat() == placedVe)) {
                 for (int num : occupiedCellsTemp) {
                     uOccupiedCells.push_back(num);
                     occupiedCellsTemp.clear();
                 }
-                ud->setFleetStat(ready);
-                ud->setAdditionStat(addNull);
-                ud->setForthStat(noWord);
+                p1d->setFleetStat(ready);
+                p1d->setAdditionStat(addNull);
+                p1d->setForthStat(noWord);
                 doneOnHover = false;
-                if (uc->getFleetStat() == No)
-                    uc->setFleetStat(moveable);
-                if (ub->getFleetStat() == No)
-                    ub->setFleetStat(moveable);
-                if (us->getFleetStat() == No)
-                    us->setFleetStat(moveable);
-                if (ur->getFleetStat() == No)
-                    ur->setFleetStat(moveable);
-            } else if (state == GLUT_DOWN && ud->getAdditionStat() == placed) {
-                ud->setFleetStat(selected);
+                if (p1c->getFleetStat() == No)
+                    p1c->setFleetStat(moveable);
+                if (p1b->getFleetStat() == No)
+                    p1b->setFleetStat(moveable);
+                if (p1s->getFleetStat() == No)
+                    p1s->setFleetStat(moveable);
+                if (p1r->getFleetStat() == No)
+                    p1r->setFleetStat(moveable);
+            } else if (state == GLUT_DOWN && p1d->getAdditionStat() == placed) {
+                p1d->setFleetStat(selected);
             }
             // -------------------------------------------------------------------------------------------------------------
 
             // user sub
             // -------------------------------------------------------------------------------------------------------------
-            if (state == GLUT_DOWN && us->getFleetStat() == moveable) {
-                if (x >= us->getLeftX() && x <= us->getRightX() && y >= us->getTopY() && y <= us->getBottomY()) {
-                    us->setFleetStat(selected);
-                    us->setThirdStat(noWord);
-                    us->setForthStat(working);
-                    us->setFifthStat(noWord);
-                    if (uc->getFleetStat() != ready)
-                        uc->setFleetStat(No);
-                    if (ub->getFleetStat() != ready)
-                        ub->setFleetStat(No);
-                    if (ud->getFleetStat() != ready)
-                        ud->setFleetStat(No);
-                    if (ur->getFleetStat() != ready)
-                        ur->setFleetStat(No);
+            if (state == GLUT_DOWN && p1s->getFleetStat() == moveable && curr == playerOneSet) {
+                if (x >= p1s->getLeftX() && x <= p1s->getRightX() && y >= p1s->getTopY() && y <= p1s->getBottomY()) {
+                    p1s->setFleetStat(selected);
+                    p1s->setThirdStat(noWord);
+                    p1s->setForthStat(working);
+                    p1s->setFifthStat(noWord);
+                    if (p1c->getFleetStat() != ready)
+                        p1c->setFleetStat(No);
+                    if (p1b->getFleetStat() != ready)
+                        p1b->setFleetStat(No);
+                    if (p1d->getFleetStat() != ready)
+                        p1d->setFleetStat(No);
+                    if (p1r->getFleetStat() != ready)
+                        p1r->setFleetStat(No);
                     glutPostRedisplay();
                 }
-            } else if (state == GLUT_DOWN && us->getFleetStat() == selected) {
-                if (us->inBoard(uboardL,uboardR,uboardT,uboardB)) {
+            } else if (state == GLUT_DOWN && p1s->getFleetStat() == selected) {
+                if (p1s->inBoard(uboardL,uboardR,uboardT,uboardB)) {
                     occupiedCellsTemp.clear();
-                    us->setCenterX(userBoard.getCellX(cellNumber - 1));
-                    us->setCenterY(userBoard.getCellY(cellNumber - 1));
-                    if (us->getWidth() == 30 && us->getHeight() == 89) {
-                        us->setFleetStat(placedHo);
-                        ocNumber = userBoard.cellNum(us->getCenterX(),us->getCenterY());
+                    p1s->setCenterX(userBoard.getCellX(cellNumber - 1));
+                    p1s->setCenterY(userBoard.getCellY(cellNumber - 1));
+                    if (p1s->getWidth() == 30 && p1s->getHeight() == 89) {
+                        p1s->setFleetStat(placedHo);
+                        ocNumber = userBoard.cellNum(p1s->getCenterX(),p1s->getCenterY());
                         for (int i = ocNumber - 10; i <= ocNumber + 10; i += 10) {
                             occupiedCellsTemp.push_back(i);
                         }
                         if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
-                            us->setCenterX(280);
-                            us->setCenterY(500);
-                            us->setFleetStat(moveable);
-                            us->setFifthStat(overlapping);
+                            p1s->setCenterX(280);
+                            p1s->setCenterY(500);
+                            p1s->setFleetStat(moveable);
+                            p1s->setFifthStat(overlapping);
                         }
                     }
                     else {
-                        us->setFleetStat(placedVe);
-                        ocNumber = userBoard.cellNum(us->getCenterX(),us->getCenterY());
+                        p1s->setFleetStat(placedVe);
+                        ocNumber = userBoard.cellNum(p1s->getCenterX(),p1s->getCenterY());
                         for (int i = ocNumber - 1; i <= ocNumber + 1; i += 1) {
                             occupiedCellsTemp.push_back(i);
                         }
                         if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
-                            us->setCenterX(280);
-                            us->setCenterY(500);
-                            us->setFleetStat(moveable);
-                            us->setFifthStat(overlapping);
+                            p1s->setCenterX(280);
+                            p1s->setCenterY(500);
+                            p1s->setFleetStat(moveable);
+                            p1s->setFifthStat(overlapping);
                         }
                     }
-                    us->setAdditionStat(placed);
-                    us->setThirdStat(noWord);
+                    p1s->setAdditionStat(placed);
+                    p1s->setThirdStat(noWord);
                 } else {
-                    us->setCenterX(280);
-                    us->setCenterY(500);
-                    us->setFleetStat(moveable);
-                    us->setThirdStat(out);
+                    p1s->setCenterX(280);
+                    p1s->setCenterY(500);
+                    p1s->setFleetStat(moveable);
+                    p1s->setThirdStat(out);
                 }
-            } else if (state == GLUT_DOWN && cells.inButton(x,y) && us->getFleetStat() == placedHo) {
+            } else if (state == GLUT_DOWN && cells.inButton(x,y) && p1s->getFleetStat() == placedHo) {
                 occupiedCellsTemp.clear();
-                us->setWidth(89);
-                us->setHeight(30);
-                us->setFleetStat(placedVe);
-                us->setAdditionStat(placed);
-                ocNumber = userBoard.cellNum(us->getCenterX(),us->getCenterY());
+                p1s->setWidth(89);
+                p1s->setHeight(30);
+                p1s->setFleetStat(placedVe);
+                p1s->setAdditionStat(placed);
+                ocNumber = userBoard.cellNum(p1s->getCenterX(),p1s->getCenterY());
                 for (int i = ocNumber - 1; i <= ocNumber + 1; i += 1) {
                     occupiedCellsTemp.push_back(i);
                 } if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
-                    us->setCenterX(280);
-                    us->setCenterY(500);
-                    us->setFleetStat(moveable);
-                    us->setFifthStat(overlapping);
-                } else if (!us->inBoard(uboardL,uboardR,uboardT,uboardB)) {
-                    us->setWidth(30);
-                    us->setHeight(89);
-                    us->setCenterX(280);
-                    us->setCenterY(500);
-                    us->setFleetStat(moveable);
-                    us->setThirdStat(out);
+                    p1s->setCenterX(280);
+                    p1s->setCenterY(500);
+                    p1s->setFleetStat(moveable);
+                    p1s->setFifthStat(overlapping);
+                } else if (!p1s->inBoard(uboardL,uboardR,uboardT,uboardB)) {
+                    p1s->setWidth(30);
+                    p1s->setHeight(89);
+                    p1s->setCenterX(280);
+                    p1s->setCenterY(500);
+                    p1s->setFleetStat(moveable);
+                    p1s->setThirdStat(out);
                 }
-            } else if (state == GLUT_DOWN && cells.inButton(x,y) && us->getFleetStat() == placedVe) {
+            } else if (state == GLUT_DOWN && cells.inButton(x,y) && p1s->getFleetStat() == placedVe) {
                 occupiedCellsTemp.clear();
-                us->setWidth(30);
-                us->setHeight(89);
-                us->setFleetStat(placedHo);
-                us->setAdditionStat(placed);
-                ocNumber = userBoard.cellNum(us->getCenterX(),us->getCenterY());
+                p1s->setWidth(30);
+                p1s->setHeight(89);
+                p1s->setFleetStat(placedHo);
+                p1s->setAdditionStat(placed);
+                ocNumber = userBoard.cellNum(p1s->getCenterX(),p1s->getCenterY());
                 for (int i = ocNumber - 10; i <= ocNumber + 10; i += 10) {
                     occupiedCellsTemp.push_back(i);
                 } if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
-                    us->setCenterX(280);
-                    us->setCenterY(500);
-                    us->setFleetStat(moveable);
-                    us->setFifthStat(overlapping);
-                } else if (!us->inBoard(uboardL,uboardR,uboardT,uboardB)) {
-                    us->setWidth(30);
-                    us->setHeight(89);
-                    us->setCenterX(280);
-                    us->setCenterY(500);
-                    us->setFleetStat(moveable);
-                    us->setThirdStat(out);
+                    p1s->setCenterX(280);
+                    p1s->setCenterY(500);
+                    p1s->setFleetStat(moveable);
+                    p1s->setFifthStat(overlapping);
+                } else if (!p1s->inBoard(uboardL,uboardR,uboardT,uboardB)) {
+                    p1s->setWidth(30);
+                    p1s->setHeight(89);
+                    p1s->setCenterX(280);
+                    p1s->setCenterY(500);
+                    p1s->setFleetStat(moveable);
+                    p1s->setThirdStat(out);
                 }
-            } else if (state == GLUT_DOWN && cells.inDone(x,y) && (us->getFleetStat() == placedHo
-                                                                   || us->getFleetStat() == placedVe)) {
+            } else if (state == GLUT_DOWN && cells.inDone(x,y) && (p1s->getFleetStat() == placedHo
+                                                                   || p1s->getFleetStat() == placedVe)) {
                 for (int num : occupiedCellsTemp) {
                     uOccupiedCells.push_back(num);
                     occupiedCellsTemp.clear();
                 }
-                us->setFleetStat(ready);
-                us->setAdditionStat(addNull);
-                us->setForthStat(noWord);
+                p1s->setFleetStat(ready);
+                p1s->setAdditionStat(addNull);
+                p1s->setForthStat(noWord);
                 doneOnHover = false;
-                if (uc->getFleetStat() == No)
-                    uc->setFleetStat(moveable);
-                if (ub->getFleetStat() == No)
-                    ub->setFleetStat(moveable);
-                if (ud->getFleetStat() == No)
-                    ud->setFleetStat(moveable);
-                if (ur->getFleetStat() == No)
-                    ur->setFleetStat(moveable);
-            } else if (state == GLUT_DOWN && us->getAdditionStat() == placed) {
-                us->setFleetStat(selected);
+                if (p1c->getFleetStat() == No)
+                    p1c->setFleetStat(moveable);
+                if (p1b->getFleetStat() == No)
+                    p1b->setFleetStat(moveable);
+                if (p1d->getFleetStat() == No)
+                    p1d->setFleetStat(moveable);
+                if (p1r->getFleetStat() == No)
+                    p1r->setFleetStat(moveable);
+            } else if (state == GLUT_DOWN && p1s->getAdditionStat() == placed) {
+                p1s->setFleetStat(selected);
             }
             // -------------------------------------------------------------------------------------------------------------
 
             // user cruiser
             // -------------------------------------------------------------------------------------------------------------
-            if (state == GLUT_DOWN && ur->getFleetStat() == moveable) {
-                if (x >= ur->getLeftX() && x <= ur->getRightX() && y >= ur->getTopY() && y <= ur->getBottomY()) {
-                    ur->setFleetStat(selected);
-                    ur->setThirdStat(noWord);
-                    ur->setForthStat(working);
-                    ur->setFifthStat(noWord);
-                    if (uc->getFleetStat() != ready)
-                        uc->setFleetStat(No);
-                    if (ub->getFleetStat() != ready)
-                        ub->setFleetStat(No);
-                    if (ud->getFleetStat() != ready)
-                        ud->setFleetStat(No);
-                    if (us->getFleetStat() != ready)
-                        us->setFleetStat(No);
+            if (state == GLUT_DOWN && p1r->getFleetStat() == moveable && curr == playerOneSet) {
+                if (x >= p1r->getLeftX() && x <= p1r->getRightX() && y >= p1r->getTopY() && y <= p1r->getBottomY()) {
+                    p1r->setFleetStat(selected);
+                    p1r->setThirdStat(noWord);
+                    p1r->setForthStat(working);
+                    p1r->setFifthStat(noWord);
+                    if (p1c->getFleetStat() != ready)
+                        p1c->setFleetStat(No);
+                    if (p1b->getFleetStat() != ready)
+                        p1b->setFleetStat(No);
+                    if (p1d->getFleetStat() != ready)
+                        p1d->setFleetStat(No);
+                    if (p1s->getFleetStat() != ready)
+                        p1s->setFleetStat(No);
                     glutPostRedisplay();
                 }
-            } else if (state == GLUT_DOWN && ur->getFleetStat() == selected) {
-                if (ur->inBoard(uboardL,uboardR,uboardT,uboardB)) {
+            } else if (state == GLUT_DOWN && p1r->getFleetStat() == selected) {
+                if (p1r->inBoard(uboardL,uboardR,uboardT,uboardB)) {
                     occupiedCellsTemp.clear();
-                    if (ur->getWidth() == 30 && ur->getHeight() == 59) {
-                        ur->setCenterX(userBoard.getCellX(cellNumber - 1));
-                        ur->setCenterY(userBoard.getCellY(cellNumber - 1) + cells.getWidth() / 2);
-                        ur->setFleetStat(placedHo);
-                        ocNumber = userBoard.cellNum(ur->getCenterX(),ur->getCenterY());
+                    if (p1r->getWidth() == 30 && p1r->getHeight() == 59) {
+                        p1r->setCenterX(userBoard.getCellX(cellNumber - 1));
+                        p1r->setCenterY(userBoard.getCellY(cellNumber - 1) + cells.getWidth() / 2);
+                        p1r->setFleetStat(placedHo);
+                        ocNumber = userBoard.cellNum(p1r->getCenterX(),p1r->getCenterY());
                         for (int i = ocNumber - 10; i <= ocNumber; i += 10) {
                             occupiedCellsTemp.push_back(i);
                         }
                         if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
-                            ur->setCenterX(340);
-                            ur->setCenterY(500);
-                            ur->setFleetStat(moveable);
-                            ur->setFifthStat(overlapping);
+                            p1r->setCenterX(340);
+                            p1r->setCenterY(500);
+                            p1r->setFleetStat(moveable);
+                            p1r->setFifthStat(overlapping);
                         }
                     }
                     else {
-                        ur->setCenterX(userBoard.getCellX(cellNumber) - cells.getWidth() / 2);
-                        ur->setCenterY(userBoard.getCellY(cellNumber));
-                        ur->setFleetStat(placedVe);
-                        ocNumber = userBoard.cellNum(ur->getCenterX(),ur->getCenterY());
+                        p1r->setCenterX(userBoard.getCellX(cellNumber) - cells.getWidth() / 2);
+                        p1r->setCenterY(userBoard.getCellY(cellNumber));
+                        p1r->setFleetStat(placedVe);
+                        ocNumber = userBoard.cellNum(p1r->getCenterX(),p1r->getCenterY());
                         for (int i = ocNumber - 1; i <= ocNumber; i += 1) {
                             occupiedCellsTemp.push_back(i);
                         }
                         if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
-                            ur->setCenterX(340);
-                            ur->setCenterY(500);
-                            ur->setFleetStat(moveable);
-                            ur->setFifthStat(overlapping);
+                            p1r->setCenterX(340);
+                            p1r->setCenterY(500);
+                            p1r->setFleetStat(moveable);
+                            p1r->setFifthStat(overlapping);
                         }
                     }
-                    ur->setAdditionStat(placed);
-                    ur->setThirdStat(noWord);
+                    p1r->setAdditionStat(placed);
+                    p1r->setThirdStat(noWord);
                 } else {
-                    ur->setCenterX(340);
-                    ur->setCenterY(500);
-                    ur->setFleetStat(moveable);
-                    ur->setThirdStat(out);
+                    p1r->setCenterX(340);
+                    p1r->setCenterY(500);
+                    p1r->setFleetStat(moveable);
+                    p1r->setThirdStat(out);
                 }
-            } else if (state == GLUT_DOWN && cells.inButton(x,y) && ur->getFleetStat() == placedHo) {
+            } else if (state == GLUT_DOWN && cells.inButton(x,y) && p1r->getFleetStat() == placedHo) {
                 occupiedCellsTemp.clear();
-                ur->setWidth(59);
-                ur->setHeight(30);
-                ur->setCenterX(userBoard.getCellX(cellNumber) - cells.getWidth() / 2);
-                ur->setCenterY(userBoard.getCellY(cellNumber));
-                ur->setFleetStat(placedVe);
-                ur->setAdditionStat(placed);
-                ocNumber = userBoard.cellNum(ur->getCenterX(),ur->getCenterY());
+                p1r->setWidth(59);
+                p1r->setHeight(30);
+                p1r->setCenterX(userBoard.getCellX(cellNumber) - cells.getWidth() / 2);
+                p1r->setCenterY(userBoard.getCellY(cellNumber));
+                p1r->setFleetStat(placedVe);
+                p1r->setAdditionStat(placed);
+                ocNumber = userBoard.cellNum(p1r->getCenterX(),p1r->getCenterY());
                 for (int i = ocNumber - 1; i <= ocNumber; i += 1) {
                     occupiedCellsTemp.push_back(i);
                 } if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
-                    ur->setCenterX(340);
-                    ur->setCenterY(500);
-                    ur->setFleetStat(moveable);
-                    ur->setFifthStat(overlapping);
-                } else if (!ur->inBoard(uboardL,uboardR,uboardT,uboardB)) {
-                    ur->setWidth(30);
-                    ur->setHeight(59);
-                    ur->setCenterX(340);
-                    ur->setCenterY(500);
-                    ur->setFleetStat(moveable);
-                    ur->setThirdStat(out);
+                    p1r->setCenterX(340);
+                    p1r->setCenterY(500);
+                    p1r->setFleetStat(moveable);
+                    p1r->setFifthStat(overlapping);
+                } else if (!p1r->inBoard(uboardL,uboardR,uboardT,uboardB)) {
+                    p1r->setWidth(30);
+                    p1r->setHeight(59);
+                    p1r->setCenterX(340);
+                    p1r->setCenterY(500);
+                    p1r->setFleetStat(moveable);
+                    p1r->setThirdStat(out);
                 }
-            } else if (state == GLUT_DOWN && cells.inButton(x,y) && ur->getFleetStat() == placedVe) {
+            } else if (state == GLUT_DOWN && cells.inButton(x,y) && p1r->getFleetStat() == placedVe) {
                 occupiedCellsTemp.clear();
-                ur->setWidth(30);
-                ur->setHeight(59);
-                ur->setCenterX(userBoard.getCellX(cellNumber - 1));
-                ur->setCenterY(userBoard.getCellY(cellNumber - 1) + cells.getWidth() / 2);
-                ur->setFleetStat(placedHo);
-                ur->setAdditionStat(placed);
-                ocNumber = userBoard.cellNum(ur->getCenterX(),ur->getCenterY());
+                p1r->setWidth(30);
+                p1r->setHeight(59);
+                p1r->setCenterX(userBoard.getCellX(cellNumber - 1));
+                p1r->setCenterY(userBoard.getCellY(cellNumber - 1) + cells.getWidth() / 2);
+                p1r->setFleetStat(placedHo);
+                p1r->setAdditionStat(placed);
+                ocNumber = userBoard.cellNum(p1r->getCenterX(),p1r->getCenterY());
                 for (int i = ocNumber - 10; i <= ocNumber; i += 10) {
                     occupiedCellsTemp.push_back(i);
                 } if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
-                    ur->setCenterX(340);
-                    ur->setCenterY(500);
-                    ur->setFleetStat(moveable);
-                    ur->setFifthStat(overlapping);
-                } else if (!ur->inBoard(uboardL,uboardR,uboardT,uboardB)) {
-                    ur->setWidth(30);
-                    ur->setHeight(59);
-                    ur->setCenterX(340);
-                    ur->setCenterY(500);
-                    ur->setFleetStat(moveable);
-                    ur->setThirdStat(out);
+                    p1r->setCenterX(340);
+                    p1r->setCenterY(500);
+                    p1r->setFleetStat(moveable);
+                    p1r->setFifthStat(overlapping);
+                } else if (!p1r->inBoard(uboardL,uboardR,uboardT,uboardB)) {
+                    p1r->setWidth(30);
+                    p1r->setHeight(59);
+                    p1r->setCenterX(340);
+                    p1r->setCenterY(500);
+                    p1r->setFleetStat(moveable);
+                    p1r->setThirdStat(out);
                 }
-            } else if (state == GLUT_DOWN && cells.inDone(x,y) && (ur->getFleetStat() == placedHo
-                                                                   || ur->getFleetStat() == placedVe)) {
+            } else if (state == GLUT_DOWN && cells.inDone(x,y) && (p1r->getFleetStat() == placedHo
+                                                                   || p1r->getFleetStat() == placedVe)) {
                 for (int num : occupiedCellsTemp) {
                     uOccupiedCells.push_back(num);
                     occupiedCellsTemp.clear();
                 }
-                ur->setFleetStat(ready);
-                ur->setAdditionStat(addNull);
-                ur->setForthStat(noWord);
+                p1r->setFleetStat(ready);
+                p1r->setAdditionStat(addNull);
+                p1r->setForthStat(noWord);
                 doneOnHover = false;
-                if (uc->getFleetStat() == No)
-                    uc->setFleetStat(moveable);
-                if (ub->getFleetStat() == No)
-                    ub->setFleetStat(moveable);
-                if (ud->getFleetStat() == No)
-                    ud->setFleetStat(moveable);
-                if (us->getFleetStat() == No)
-                    us->setFleetStat(moveable);
-            } else if (state == GLUT_DOWN && ur->getAdditionStat() == placed) {
-                ur->setFleetStat(selected);
+                if (p1c->getFleetStat() == No)
+                    p1c->setFleetStat(moveable);
+                if (p1b->getFleetStat() == No)
+                    p1b->setFleetStat(moveable);
+                if (p1d->getFleetStat() == No)
+                    p1d->setFleetStat(moveable);
+                if (p1s->getFleetStat() == No)
+                    p1s->setFleetStat(moveable);
+            } else if (state == GLUT_DOWN && p1r->getAdditionStat() == placed) {
+                p1r->setFleetStat(selected);
             }
             // -------------------------------------------------------------------------------------------------------------
 
