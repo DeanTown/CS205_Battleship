@@ -22,23 +22,34 @@ GLint wd, cellNumber,ocNumber;
 GLint uboardL,uboardR,uboardT,uboardB,
         gUserBoardL,gUserBoardR,gUserBoardT,gUserBoardB;
 GLint hitCellX, hitCellY, notHitX, notHitY;
+GLint hitP1c = 0, hitP1b = 0, hitP1d = 0, hitP1s = 0, hitP1r = 0;
 screen curr = Start;
 Cell cells;
-Board userBoard;
-Board gameUserBoard;
-UCarrier* p1c = new UCarrier;
-UBattleship* p1b = new UBattleship;
-UDestroyer* p1d = new UDestroyer;
-USub* p1s = new USub;
-UCruiser* p1r = new UCruiser;
+Board player1Board;
+Board gamePlayer1Board;
+// player 1 fleets
+UCarrier* p1c = new UCarrier; // on set
+UCarrier* p1cG = new UCarrier; // on game
+UBattleship* p1b = new UBattleship;// on set
+UBattleship* p1bG = new UBattleship;// on game
+UDestroyer* p1d = new UDestroyer;// on set
+UDestroyer* p1dG = new UDestroyer;// on game
+USub* p1s = new USub;// on set
+USub* p1sG = new USub;// on game
+UCruiser* p1r = new UCruiser;// on set
+UCruiser* p1rG = new UCruiser;// on game
+// player 2 fleets
+// computer fleets
 bool mouseInput = false;
 bool doneOnHover = false;
 bool gameOver = false;
+bool drawSunk = false;
 
 vector<int> uOccupiedCells;
 vector<int> occupiedCellsTemp;
 vector<int> gHitCells;
 vector<int> gNotHit;
+vector<int> p1cHit,p1bHit,p1dHit,p1sHit,p1rHit;
 
 bool checkCommon(vector<int> &v1, vector<int> &v2) {
     bool tf = false;
@@ -57,6 +68,18 @@ bool checkEquality(vector<int> &v1, vector<int> &v2) {
     sort(v1.begin(),v1.end());
     sort(v2.begin(),v2.end());
     return v1 == v2;
+}
+
+int numOfCommon(vector<int> &v1, vector<int> &v2) {
+    int hitN = 0;
+    sort(v1.begin(),v1.end());
+    sort(v2.begin(),v2.end());
+    vector<int> v(v1.size() + v2.size());
+    vector<int>::iterator it, st;
+    it = set_intersection(v1.begin(),v1.end(),v2.begin(),v2.end(),v.begin());
+    for (st = v.begin(); st != it; ++st)
+        ++hitN;
+    return hitN;
 }
 
 void init() {
@@ -92,11 +115,11 @@ void display(){
             cells.drawPVP("fight a friend");
             break;
         case playerOneSet:
-            userBoard.drawBoard();
-            uboardL = userBoard.getLeftX();
-            uboardR = userBoard.getRightX();
-            uboardT = userBoard.getTopY();
-            uboardB = userBoard.getBottomY();
+            player1Board.drawBoard();
+            uboardL = player1Board.getLeftX();
+            uboardR = player1Board.getRightX();
+            uboardT = player1Board.getTopY();
+            uboardB = player1Board.getBottomY();
             p1c->draw();
             p1b->draw();
             p1d->draw();
@@ -104,26 +127,38 @@ void display(){
             p1r->draw();
             break;
         case game:
-            gameUserBoard.drawBoard();
-            gUserBoardL = gameUserBoard.getLeftX();
-            gUserBoardR = gameUserBoard.getRightX();
-            gUserBoardT = gameUserBoard.getTopY();
-            gUserBoardB = gameUserBoard.getBottomY();
-            p1c->draw();
-            p1b->draw();
-            p1d->draw();
-            p1s->draw();
-            p1r->draw();
+            gamePlayer1Board.drawBoard();
+            gUserBoardL = gamePlayer1Board.getLeftX();
+            gUserBoardR = gamePlayer1Board.getRightX();
+            gUserBoardT = gamePlayer1Board.getTopY();
+            gUserBoardB = gamePlayer1Board.getBottomY();
+            p1cG->draw();
+            p1bG->draw();
+            p1dG->draw();
+            p1sG->draw();
+            p1rG->draw();
             for (int num : gHitCells) {
-                hitCellX = gameUserBoard.getCellX(num - 1);
-                hitCellY = gameUserBoard.getCellY(num - 1);
+                hitCellX = gamePlayer1Board.getCellX(num - 1);
+                hitCellY = gamePlayer1Board.getCellY(num - 1);
                 cells.drawHit(hitCellX,hitCellY);
             }
             for (int num : gNotHit) {
-                notHitX = gameUserBoard.getCellX(num - 1);
-                notHitY = gameUserBoard.getCellY(num - 1);
+                notHitX = gamePlayer1Board.getCellX(num - 1);
+                notHitY = gamePlayer1Board.getCellY(num - 1);
                 cells.drawNotHit(notHitX,notHitY);
             }
+            hitP1c = numOfCommon(gHitCells,p1cHit);
+            p1cG->drawHit(hitP1c);
+
+            hitP1b = numOfCommon(gHitCells,p1bHit);
+            p1bG->drawHit(hitP1b);
+            hitP1d = numOfCommon(gHitCells,p1dHit);
+            p1dG->drawHit(hitP1d);
+
+            hitP1s = numOfCommon(gHitCells,p1sHit);
+            p1sG->drawHit(hitP1s);
+            hitP1r = numOfCommon(gHitCells,p1rHit);
+            p1rG->drawHit(hitP1r);
             break;
         case finished:
             cells.drawWelcom("end of Game");
@@ -279,9 +314,9 @@ void mouse(int button, int state, int x, int y) {
 
             // player one set ships-----------------------------------------------------------------------------------------
             // check if the mouse clicked on board--------------------------------------------------------------------------
-            if (state == GLUT_DOWN && x >= userBoard.getLeftX() && x <= userBoard.getRightX() && y >= userBoard.getTopY() &&
-                y <= userBoard.getBottomY() ) {
-                cellNumber = userBoard.cellNum(x,y);
+            if (state == GLUT_DOWN && x >= player1Board.getLeftX() && x <= player1Board.getRightX() && y >= player1Board.getTopY() &&
+                y <= player1Board.getBottomY() ) {
+                cellNumber = player1Board.cellNum(x,y);
             }
             // -------------------------------------------------------------------------------------------------------------
 
@@ -306,11 +341,11 @@ void mouse(int button, int state, int x, int y) {
             } else if (state == GLUT_DOWN && p1c->getFleetStat() == selected ) {
                 occupiedCellsTemp.clear();
                 if (p1c->inBoard(uboardL,uboardR,uboardT,uboardB)) {
-                    p1c->setCenterX(userBoard.getCellX(cellNumber - 1));
-                    p1c->setCenterY(userBoard.getCellY(cellNumber - 1));
+                    p1c->setCenterX(player1Board.getCellX(cellNumber - 1));
+                    p1c->setCenterY(player1Board.getCellY(cellNumber - 1));
                     if (p1c->getWidth() == 30 && p1c->getHeight() == 149) {
                         p1c->setFleetStat(placedHo);
-                        ocNumber = userBoard.cellNum(p1c->getCenterX(),p1c->getCenterY());
+                        ocNumber = player1Board.cellNum(p1c->getCenterX(),p1c->getCenterY());
                         for (int i = ocNumber - 20; i <= ocNumber + 20; i += 10) {
                             occupiedCellsTemp.push_back(i);
                         }
@@ -323,7 +358,7 @@ void mouse(int button, int state, int x, int y) {
                     }
                     else {
                         p1c->setFleetStat(placedVe);
-                        ocNumber = userBoard.cellNum(p1c->getCenterX(),p1c->getCenterY());
+                        ocNumber = player1Board.cellNum(p1c->getCenterX(),p1c->getCenterY());
                         for (int i = ocNumber - 2; i <= ocNumber + 2; i += 1) {
                             occupiedCellsTemp.push_back(i);
                         }
@@ -347,7 +382,7 @@ void mouse(int button, int state, int x, int y) {
                 p1c->setHeight(30);
                 p1c->setFleetStat(placedVe);
                 p1c->setAdditionStat(placed);
-                ocNumber = userBoard.cellNum(p1c->getCenterX(),p1c->getCenterY());
+                ocNumber = player1Board.cellNum(p1c->getCenterX(),p1c->getCenterY());
                 for (int i = ocNumber - 2; i <= ocNumber + 2; i += 1) {
                     occupiedCellsTemp.push_back(i);
                 }
@@ -370,7 +405,7 @@ void mouse(int button, int state, int x, int y) {
                 p1c->setHeight(149);
                 p1c->setFleetStat(placedHo);
                 p1c->setAdditionStat(placed);
-                ocNumber = userBoard.cellNum(p1c->getCenterX(),p1c->getCenterY());
+                ocNumber = player1Board.cellNum(p1c->getCenterX(),p1c->getCenterY());
                 for (int i = ocNumber - 20; i <= ocNumber + 20; i += 10) {
                     occupiedCellsTemp.push_back(i);
                 }
@@ -391,6 +426,7 @@ void mouse(int button, int state, int x, int y) {
                                                                    || p1c->getFleetStat() == placedVe) ) {
                 for (int num : occupiedCellsTemp) {
                     uOccupiedCells.push_back(num);
+                    p1cHit.push_back(num);
                 }
                 p1c->setFleetStat(ready);
                 p1c->setAdditionStat(addNull);
@@ -431,10 +467,10 @@ void mouse(int button, int state, int x, int y) {
                 occupiedCellsTemp.clear();
                 if (p1b->inBoard(uboardL,uboardR,uboardT,uboardB)) {
                     if (p1b->getWidth() == 30 && p1b->getHeight() == 119) {
-                        p1b->setCenterX(userBoard.getCellX(cellNumber - 1));
-                        p1b->setCenterY(userBoard.getCellY(cellNumber - 1) + cells.getWidth() / 2);
+                        p1b->setCenterX(player1Board.getCellX(cellNumber - 1));
+                        p1b->setCenterY(player1Board.getCellY(cellNumber - 1) + cells.getWidth() / 2);
                         p1b->setFleetStat(placedHo);
-                        ocNumber = userBoard.cellNum(p1b->getCenterX(),p1b->getCenterY());
+                        ocNumber = player1Board.cellNum(p1b->getCenterX(),p1b->getCenterY());
                         for (int i = ocNumber - 20; i <= ocNumber + 10; i += 10) {
                             occupiedCellsTemp.push_back(i);
                         }
@@ -446,10 +482,10 @@ void mouse(int button, int state, int x, int y) {
                         }
                     }
                     else {
-                        p1b->setCenterX(userBoard.getCellX(cellNumber) - cells.getWidth() / 2);
-                        p1b->setCenterY(userBoard.getCellY(cellNumber));
+                        p1b->setCenterX(player1Board.getCellX(cellNumber) - cells.getWidth() / 2);
+                        p1b->setCenterY(player1Board.getCellY(cellNumber));
                         p1b->setFleetStat(placedVe);
-                        ocNumber = userBoard.cellNum(p1b->getCenterX(),p1b->getCenterY());
+                        ocNumber = player1Board.cellNum(p1b->getCenterX(),p1b->getCenterY());
                         for (int i = ocNumber - 2; i <= ocNumber + 1; i += 1) {
                             occupiedCellsTemp.push_back(i);
                         }
@@ -472,11 +508,11 @@ void mouse(int button, int state, int x, int y) {
                 occupiedCellsTemp.clear();
                 p1b->setWidth(119);
                 p1b->setHeight(30);
-                p1b->setCenterX(userBoard.getCellX(cellNumber) - cells.getWidth() / 2);
-                p1b->setCenterY(userBoard.getCellY(cellNumber));
+                p1b->setCenterX(player1Board.getCellX(cellNumber) - cells.getWidth() / 2);
+                p1b->setCenterY(player1Board.getCellY(cellNumber));
                 p1b->setFleetStat(placedVe);
                 p1b->setAdditionStat(placed);
-                ocNumber = userBoard.cellNum(p1b->getCenterX(),p1b->getCenterY());
+                ocNumber = player1Board.cellNum(p1b->getCenterX(),p1b->getCenterY());
                 for (int i = ocNumber - 2; i <= ocNumber + 1; i += 1) {
                     occupiedCellsTemp.push_back(i);
                 } if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
@@ -496,11 +532,11 @@ void mouse(int button, int state, int x, int y) {
                 occupiedCellsTemp.clear();
                 p1b->setWidth(30);
                 p1b->setHeight(119);
-                p1b->setCenterX(userBoard.getCellX(cellNumber - 1));
-                p1b->setCenterY(userBoard.getCellY(cellNumber - 1) + cells.getWidth() / 2);
+                p1b->setCenterX(player1Board.getCellX(cellNumber - 1));
+                p1b->setCenterY(player1Board.getCellY(cellNumber - 1) + cells.getWidth() / 2);
                 p1b->setFleetStat(placedHo);
                 p1b->setAdditionStat(placed);
-                ocNumber = userBoard.cellNum(p1b->getCenterX(),p1b->getCenterY());
+                ocNumber = player1Board.cellNum(p1b->getCenterX(),p1b->getCenterY());
                 for (int i = ocNumber - 20; i <= ocNumber + 10; i += 10) {
                     occupiedCellsTemp.push_back(i);
                 } if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
@@ -520,7 +556,7 @@ void mouse(int button, int state, int x, int y) {
                                                                    || p1b->getFleetStat() == placedVe)) {
                 for (int num : occupiedCellsTemp) {
                     uOccupiedCells.push_back(num);
-                    occupiedCellsTemp.clear();
+                    p1bHit.push_back(num);
                 }
                 p1b->setFleetStat(ready);
                 p1b->setAdditionStat(addNull);
@@ -560,11 +596,11 @@ void mouse(int button, int state, int x, int y) {
             } else if (state == GLUT_DOWN && p1d->getFleetStat() == selected) {
                 if (p1d->inBoard(uboardL,uboardR,uboardT,uboardB)) {
                     occupiedCellsTemp.clear();
-                    p1d->setCenterX(userBoard.getCellX(cellNumber - 1));
-                    p1d->setCenterY(userBoard.getCellY(cellNumber - 1));
+                    p1d->setCenterX(player1Board.getCellX(cellNumber - 1));
+                    p1d->setCenterY(player1Board.getCellY(cellNumber - 1));
                     if (p1d->getWidth() == 30 && p1d->getHeight() == 89) {
                         p1d->setFleetStat(placedHo);
-                        ocNumber = userBoard.cellNum(p1d->getCenterX(),p1d->getCenterY());
+                        ocNumber = player1Board.cellNum(p1d->getCenterX(),p1d->getCenterY());
                         for (int i = ocNumber - 10; i <= ocNumber + 10; i += 10) {
                             occupiedCellsTemp.push_back(i);
                         }
@@ -577,7 +613,7 @@ void mouse(int button, int state, int x, int y) {
                     }
                     else {
                         p1d->setFleetStat(placedVe);
-                        ocNumber = userBoard.cellNum(p1d->getCenterX(),p1d->getCenterY());
+                        ocNumber = player1Board.cellNum(p1d->getCenterX(),p1d->getCenterY());
                         for (int i = ocNumber - 1; i <= ocNumber + 1; i += 1) {
                             occupiedCellsTemp.push_back(i);
                         }
@@ -602,7 +638,7 @@ void mouse(int button, int state, int x, int y) {
                 p1d->setHeight(30);
                 p1d->setFleetStat(placedVe);
                 p1d->setAdditionStat(placed);
-                ocNumber = userBoard.cellNum(p1d->getCenterX(),p1d->getCenterY());
+                ocNumber = player1Board.cellNum(p1d->getCenterX(),p1d->getCenterY());
                 for (int i = ocNumber - 1; i <= ocNumber + 1; i += 1) {
                     occupiedCellsTemp.push_back(i);
                 } if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
@@ -624,7 +660,7 @@ void mouse(int button, int state, int x, int y) {
                 p1d->setHeight(89);
                 p1d->setFleetStat(placedHo);
                 p1d->setAdditionStat(placed);
-                ocNumber = userBoard.cellNum(p1d->getCenterX(),p1d->getCenterY());
+                ocNumber = player1Board.cellNum(p1d->getCenterX(),p1d->getCenterY());
                 for (int i = ocNumber - 10; i <= ocNumber + 10; i += 10) {
                     occupiedCellsTemp.push_back(i);
                 } if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
@@ -644,7 +680,7 @@ void mouse(int button, int state, int x, int y) {
                                                                    || p1d->getFleetStat() == placedVe)) {
                 for (int num : occupiedCellsTemp) {
                     uOccupiedCells.push_back(num);
-                    occupiedCellsTemp.clear();
+                    p1dHit.push_back(num);
                 }
                 p1d->setFleetStat(ready);
                 p1d->setAdditionStat(addNull);
@@ -684,11 +720,11 @@ void mouse(int button, int state, int x, int y) {
             } else if (state == GLUT_DOWN && p1s->getFleetStat() == selected) {
                 if (p1s->inBoard(uboardL,uboardR,uboardT,uboardB)) {
                     occupiedCellsTemp.clear();
-                    p1s->setCenterX(userBoard.getCellX(cellNumber - 1));
-                    p1s->setCenterY(userBoard.getCellY(cellNumber - 1));
+                    p1s->setCenterX(player1Board.getCellX(cellNumber - 1));
+                    p1s->setCenterY(player1Board.getCellY(cellNumber - 1));
                     if (p1s->getWidth() == 30 && p1s->getHeight() == 89) {
                         p1s->setFleetStat(placedHo);
-                        ocNumber = userBoard.cellNum(p1s->getCenterX(),p1s->getCenterY());
+                        ocNumber = player1Board.cellNum(p1s->getCenterX(),p1s->getCenterY());
                         for (int i = ocNumber - 10; i <= ocNumber + 10; i += 10) {
                             occupiedCellsTemp.push_back(i);
                         }
@@ -701,7 +737,7 @@ void mouse(int button, int state, int x, int y) {
                     }
                     else {
                         p1s->setFleetStat(placedVe);
-                        ocNumber = userBoard.cellNum(p1s->getCenterX(),p1s->getCenterY());
+                        ocNumber = player1Board.cellNum(p1s->getCenterX(),p1s->getCenterY());
                         for (int i = ocNumber - 1; i <= ocNumber + 1; i += 1) {
                             occupiedCellsTemp.push_back(i);
                         }
@@ -726,7 +762,7 @@ void mouse(int button, int state, int x, int y) {
                 p1s->setHeight(30);
                 p1s->setFleetStat(placedVe);
                 p1s->setAdditionStat(placed);
-                ocNumber = userBoard.cellNum(p1s->getCenterX(),p1s->getCenterY());
+                ocNumber = player1Board.cellNum(p1s->getCenterX(),p1s->getCenterY());
                 for (int i = ocNumber - 1; i <= ocNumber + 1; i += 1) {
                     occupiedCellsTemp.push_back(i);
                 } if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
@@ -748,7 +784,7 @@ void mouse(int button, int state, int x, int y) {
                 p1s->setHeight(89);
                 p1s->setFleetStat(placedHo);
                 p1s->setAdditionStat(placed);
-                ocNumber = userBoard.cellNum(p1s->getCenterX(),p1s->getCenterY());
+                ocNumber = player1Board.cellNum(p1s->getCenterX(),p1s->getCenterY());
                 for (int i = ocNumber - 10; i <= ocNumber + 10; i += 10) {
                     occupiedCellsTemp.push_back(i);
                 } if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
@@ -768,7 +804,7 @@ void mouse(int button, int state, int x, int y) {
                                                                    || p1s->getFleetStat() == placedVe)) {
                 for (int num : occupiedCellsTemp) {
                     uOccupiedCells.push_back(num);
-                    occupiedCellsTemp.clear();
+                    p1sHit.push_back(num);
                 }
                 p1s->setFleetStat(ready);
                 p1s->setAdditionStat(addNull);
@@ -809,10 +845,10 @@ void mouse(int button, int state, int x, int y) {
                 if (p1r->inBoard(uboardL,uboardR,uboardT,uboardB)) {
                     occupiedCellsTemp.clear();
                     if (p1r->getWidth() == 30 && p1r->getHeight() == 59) {
-                        p1r->setCenterX(userBoard.getCellX(cellNumber - 1));
-                        p1r->setCenterY(userBoard.getCellY(cellNumber - 1) + cells.getWidth() / 2);
+                        p1r->setCenterX(player1Board.getCellX(cellNumber - 1));
+                        p1r->setCenterY(player1Board.getCellY(cellNumber - 1) + cells.getWidth() / 2);
                         p1r->setFleetStat(placedHo);
-                        ocNumber = userBoard.cellNum(p1r->getCenterX(),p1r->getCenterY());
+                        ocNumber = player1Board.cellNum(p1r->getCenterX(),p1r->getCenterY());
                         for (int i = ocNumber - 10; i <= ocNumber; i += 10) {
                             occupiedCellsTemp.push_back(i);
                         }
@@ -824,10 +860,10 @@ void mouse(int button, int state, int x, int y) {
                         }
                     }
                     else {
-                        p1r->setCenterX(userBoard.getCellX(cellNumber) - cells.getWidth() / 2);
-                        p1r->setCenterY(userBoard.getCellY(cellNumber));
+                        p1r->setCenterX(player1Board.getCellX(cellNumber) - cells.getWidth() / 2);
+                        p1r->setCenterY(player1Board.getCellY(cellNumber));
                         p1r->setFleetStat(placedVe);
-                        ocNumber = userBoard.cellNum(p1r->getCenterX(),p1r->getCenterY());
+                        ocNumber = player1Board.cellNum(p1r->getCenterX(),p1r->getCenterY());
                         for (int i = ocNumber - 1; i <= ocNumber; i += 1) {
                             occupiedCellsTemp.push_back(i);
                         }
@@ -850,11 +886,11 @@ void mouse(int button, int state, int x, int y) {
                 occupiedCellsTemp.clear();
                 p1r->setWidth(59);
                 p1r->setHeight(30);
-                p1r->setCenterX(userBoard.getCellX(cellNumber) - cells.getWidth() / 2);
-                p1r->setCenterY(userBoard.getCellY(cellNumber));
+                p1r->setCenterX(player1Board.getCellX(cellNumber) - cells.getWidth() / 2);
+                p1r->setCenterY(player1Board.getCellY(cellNumber));
                 p1r->setFleetStat(placedVe);
                 p1r->setAdditionStat(placed);
-                ocNumber = userBoard.cellNum(p1r->getCenterX(),p1r->getCenterY());
+                ocNumber = player1Board.cellNum(p1r->getCenterX(),p1r->getCenterY());
                 for (int i = ocNumber - 1; i <= ocNumber; i += 1) {
                     occupiedCellsTemp.push_back(i);
                 } if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
@@ -874,11 +910,11 @@ void mouse(int button, int state, int x, int y) {
                 occupiedCellsTemp.clear();
                 p1r->setWidth(30);
                 p1r->setHeight(59);
-                p1r->setCenterX(userBoard.getCellX(cellNumber - 1));
-                p1r->setCenterY(userBoard.getCellY(cellNumber - 1) + cells.getWidth() / 2);
+                p1r->setCenterX(player1Board.getCellX(cellNumber - 1));
+                p1r->setCenterY(player1Board.getCellY(cellNumber - 1) + cells.getWidth() / 2);
                 p1r->setFleetStat(placedHo);
                 p1r->setAdditionStat(placed);
-                ocNumber = userBoard.cellNum(p1r->getCenterX(),p1r->getCenterY());
+                ocNumber = player1Board.cellNum(p1r->getCenterX(),p1r->getCenterY());
                 for (int i = ocNumber - 10; i <= ocNumber; i += 10) {
                     occupiedCellsTemp.push_back(i);
                 } if (checkCommon(occupiedCellsTemp,uOccupiedCells)) {
@@ -898,7 +934,7 @@ void mouse(int button, int state, int x, int y) {
                                                                    || p1r->getFleetStat() == placedVe)) {
                 for (int num : occupiedCellsTemp) {
                     uOccupiedCells.push_back(num);
-                    occupiedCellsTemp.clear();
+                    p1rHit.push_back(num);
                 }
                 p1r->setFleetStat(ready);
                 p1r->setAdditionStat(addNull);
@@ -917,9 +953,9 @@ void mouse(int button, int state, int x, int y) {
             }
             // -------------------------------------------------------------------------------------------------------------
 
-            if (state == GLUT_DOWN && x >= gameUserBoard.getLeftX() && x <= gameUserBoard.getRightX() && y >= gameUserBoard.getTopY() &&
-                y <= gameUserBoard.getBottomY() && curr == game) {
-                cellNumber = gameUserBoard.cellNum(x,y);
+            if (state == GLUT_DOWN && x >= gamePlayer1Board.getLeftX() && x <= gamePlayer1Board.getRightX() && y >= gamePlayer1Board.getTopY() &&
+                y <= gamePlayer1Board.getBottomY() && curr == game) {
+                cellNumber = gamePlayer1Board.cellNum(x,y);
                 if (find(uOccupiedCells.begin(),uOccupiedCells.end(),cellNumber) != uOccupiedCells.end()){
                     gHitCells.push_back(cellNumber);
                     gameOver = checkEquality(gHitCells,uOccupiedCells);

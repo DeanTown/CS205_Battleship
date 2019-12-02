@@ -49,6 +49,46 @@ void UBattleship::draw() {
     glEnd();
 }
 
+void UBattleship::drawHit(int num) {
+    glColor3f(0.0,0.0,1.0);
+    switch (num){
+        default:
+            break;
+        case 1:
+            glBegin(GL_QUADS);
+            glVertex2d(getLeftX() + 1,getTopY() + 1);
+            glVertex2d(getRightX() - 1,getTopY() + 1);
+            glVertex2d(getRightX() - 1,getTopY() + 31);
+            glVertex2d(getLeftX() + 1,getTopY() + 31);
+            glEnd();
+            break;
+        case 2:
+            glBegin(GL_QUADS);
+            glVertex2d(getLeftX() + 1,getTopY() + 1);
+            glVertex2d(getRightX() - 1,getTopY() + 1);
+            glVertex2d(getRightX() - 1,getTopY() + 61);
+            glVertex2d(getLeftX() + 1,getTopY() + 61);
+            glEnd();
+            break;
+        case 3:
+            glBegin(GL_QUADS);
+            glVertex2d(getLeftX() + 1,getTopY() + 1);
+            glVertex2d(getRightX() - 1,getTopY() + 1);
+            glVertex2d(getRightX() - 1,getTopY() + 91);
+            glVertex2d(getLeftX() + 1,getTopY() + 91);
+            glEnd();
+            break;
+        case 4:
+            glBegin(GL_QUADS);
+            glVertex2d(getLeftX() + 1,getTopY() + 1);
+            glVertex2d(getRightX() - 1,getTopY() + 1);
+            glVertex2d(getRightX() - 1,getBottomY() - 1);
+            glVertex2d(getLeftX() + 1,getBottomY() - 1);
+            glEnd();
+            break;
+    }
+}
+
 bool UBattleship::inBoard(int lx, int rx, int ty, int by) {
     return getLeftX() > lx && getRightX() < rx && getTopY() > ty && getBottomY() < by;
 }

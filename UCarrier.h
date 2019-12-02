@@ -25,6 +25,7 @@ public:
     void setHeight(int he);
 
     void draw();
+    void drawHit(int num);
     bool inBoard(int lx, int rx, int ty, int by);
     UCarrier* drag(UCarrier* uc, int x, int y);
 
