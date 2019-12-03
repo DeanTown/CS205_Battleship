@@ -27,6 +27,7 @@ UserBoard::UserBoard() : Board() {
     lastHit=Nothing;
 }
 void UserBoard::square(int x, int y){
+    glColor3f(1.0,1.0,1.0);
     glBegin(GL_LINE_LOOP);
     glVertex2i(x, y);
     glVertex2i(x, y + 30);

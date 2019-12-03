@@ -40,8 +40,8 @@ gameState screen;
 
 void init() {
     screen= hitSelection;
-    width = 500;
-    height = 500;
+    width = 900;
+    height = 600;
 }
 
 /* Initialize OpenGL Graphics */
@@ -316,6 +316,7 @@ void display(){
             break;
         case hitSelection:
             hs.draw(width, height);
+            userboard.drawBoard();
             // get cell clicked
             // update hitSelection board
             cout<<"hs"<<endl;
@@ -537,7 +538,7 @@ int main(int argc, char** argv) {
 
     // Position the window's initial top-left corner
     /* create the window and store the handle to it */
-    glutInitWindowPosition(-200,-100);
+    glutInitWindowPosition(200,100);
 
     wd = glutCreateWindow("BATTLESHIP" /* title */ );
 

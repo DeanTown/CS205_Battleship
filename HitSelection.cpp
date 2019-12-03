@@ -14,7 +14,7 @@ HitSelection::HitSelection() {
     for (int i = 0; i < 10; i++) {
         for (int j = 0; j < 10; j++) {
             point p = {i,j};
-            cell = Tangle(30, 30, {i*30+115,j*30+115},p);
+            cell = Tangle(30, 30, {i*30+515,j*30+115},p); // x: i * 30 + 115
             cell.setFillColor(0,0,100);
             temp.push_back(cell);
         }
