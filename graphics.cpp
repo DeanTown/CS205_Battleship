@@ -278,7 +278,7 @@ void infoMenu() {
 }
 
 void selectPosition() {
-    userboard.draw(300,300);
+    g.getUserBoard().draw(300,300);
 //    fleet.getCarrier().setCenterY(470);
 //    fleet.getCarrier().setCenterY(140);
     fleet.getCarrier().drawShip_car();
@@ -432,6 +432,8 @@ void mouse(int button, int state, int x, int y) {
         cout << "UNSELECTED" << endl;
         fleet.setCarrierStatus(unselected);
         dragging=false;
+        point p = g.getUserBoard().cells[5][5].getBoardCell();
+        g.placeShip(Carrier,p.x,p.y,0);
     }
 
 //    while (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && screen == shipPosition ){

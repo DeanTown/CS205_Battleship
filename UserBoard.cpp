@@ -22,12 +22,17 @@ UserBoard::UserBoard() : Board() {
     }
 }
 void UserBoard::draw(int width, int height) {
-
+    int i = 0;
     for (vector<Tangle> row : cells) {
+        int j = 0;
         for (Tangle cell : row) {
-
+            if(board[i][j] == Carrier) {
+                cell.setFillColor({1,0,0});
+            }
             cell.draw();
+            j++;
         }
+        i++;
     }
 }
 
@@ -261,7 +266,7 @@ void UserBoard::placePieces() {
         placed++;
     }
 }
-
+// North South East West, 0 1 2 3
 void UserBoard::setBoardValues(cellStatus shipType,position pos, int size, int direction){
     int row=pos.row;
     int col=pos.col;

@@ -32,7 +32,7 @@ Board Game::getComputerBoard() {
     return compBoard;
 }
 
-Board Game::getUserBoard() {
+UserBoard Game::getUserBoard() {
     return userBoard;
 }
 
@@ -119,5 +119,35 @@ void Game::playGame(){
         wait(new int(1));
 
         while(!userBoard.compMove());
+    }
+}
+
+void Game::placeShip(cellStatus ship, int x, int y, int direction) {
+    switch(ship) {
+        case Destroyer:
+            if(userBoard.checkClear(x,y,3,direction)) {
+                userBoard.setBoardValues(Destroyer,{x,y},3,direction);
+            }
+            break;
+        case Sub:
+            if(userBoard.checkClear(x,y,3,direction)) {
+                userBoard.setBoardValues(Sub,{x,y},3,direction);
+            }
+            break;
+        case Carrier:
+            if(userBoard.checkClear(x,y,5,direction)) {
+                userBoard.setBoardValues(Carrier,{x,y},5,direction);
+            }
+            break;
+        case Cruiser:
+            if(userBoard.checkClear(x,y,2,direction)) {
+                userBoard.setBoardValues(Cruiser,{x,y},2,direction);
+            }
+            break;
+        case Battleship:
+            if(userBoard.checkClear(x,y,4,direction)) {
+                userBoard.setBoardValues(Battleship,{x,y},4,direction);
+            }
+            break;
     }
 }

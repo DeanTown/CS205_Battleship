@@ -18,8 +18,9 @@ private:
     cellStatus lastHit;
     vector<position> possiblePositions;
     vector<position> possibleHits;
-    vector<vector<Tangle>> cells;
+//    vector<vector<Tangle>> cells;
 public:
+    vector<vector<Tangle>> cells;
     UserBoard();
     void square(int x, int y);
     void draw(int width, int height);
