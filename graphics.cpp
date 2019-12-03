@@ -318,7 +318,8 @@ void display(){
             hs.draw(width, height);
             // get cell clicked
             // update hitSelection board
-            hs.update(g.getComputerBoard());
+            cout<<"hs"<<endl;
+            //hs.update(g.getComputerBoard());
             break;
         case bye:
             break;
@@ -344,6 +345,10 @@ void kbd(unsigned char key, int x, int y)
 
         glutDestroyWindow(wd);
         exit(0);
+    }
+    if (key == 112) {
+        g.placePiecesDebug();
+
     }
 
     glutPostRedisplay();
@@ -391,6 +396,16 @@ void mouse(int button, int state, int x, int y) {
 //        // get cell that is clicked and provide user feedback
 //        point cell = hs.getCell(x,y);
 //    }
+    if(button==GLUT_LEFT_BUTTON && state== GLUT_DOWN && screen== hitSelection){
+        point p=hs.getCell(x,y);
+        cout<<p.x<<p.y<<endl;
+        g.userMove(p.x,p.y);
+
+        hs.update(g.getComputerBoard());
+        cout<<"working"<<endl;
+
+
+    }
 
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 184 && x < 286 && y > 249 && y < 351 && screen == menu ){
         screen = mode;

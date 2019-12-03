@@ -10,6 +10,8 @@
 
 using namespace std;
 
+
+
 int getIntInput(string input){
     input = "";
     int returnVal = 0;
@@ -28,13 +30,21 @@ Game::Game(){
     userBoard= UserBoard();
 }
 
-Board Game::getComputerBoard() {
+ComputerBoard Game::getComputerBoard() {
     return compBoard;
 }
 
 Board Game::getUserBoard() {
     return userBoard;
 }
+
+void Game::userMove(int row, int col){
+    compBoard.userMove(row,col);
+}
+void Game::placePiecesDebug(){
+    compBoard.placePieces();
+}
+
 
 //To Begin and end games
 bool Game::startGame(){

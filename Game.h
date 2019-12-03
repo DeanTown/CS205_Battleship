@@ -20,8 +20,10 @@ public:
     Game();
     // Get boards
     Board getUserBoard();
-    Board getComputerBoard();
+    ComputerBoard getComputerBoard();
     //To Begin and end games
+    void userMove(int row, int col);
+    void placePiecesDebug();
     bool startGame();
     void resetGame();
     void endGame();
