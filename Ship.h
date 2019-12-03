@@ -35,7 +35,7 @@ public:
     int getCenterX_car() const;
     int getCenterY_car() const;
 
-    void setCenterX(int x);
+    void setCenter(int x,int y);
     void setCenterY(int y);
 
     void addHit();

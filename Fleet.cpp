@@ -46,7 +46,7 @@ Ship Fleet::getCarrier(){
     return carrier;
 }
 void Fleet::drag(int x, int y) {
-    carrier.setCenterX(x);
-    carrier.setCenterY(y);
+    carrier.setCenter(x,y);
+//    carrier.setCenterY(y);
     carrier.drawShip_car();
 }
