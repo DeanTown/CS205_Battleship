@@ -13,7 +13,7 @@
 class HitSelection {
 private:
     vector<vector<Tangle>> hitOptions;
-    Tangle window;
+
 public:
     HitSelection();
     void draw(int width, int height);

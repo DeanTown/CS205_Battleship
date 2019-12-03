@@ -39,7 +39,7 @@ gameState screen;
 
 
 void init() {
-    screen= menu;
+    screen= hitSelection;
     width = 500;
     height = 500;
 }
