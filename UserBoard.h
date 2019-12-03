@@ -10,6 +10,8 @@
 
 class UserBoard : public Board{
 private:
+    int x = 50, y = 50;
+    bool isBlack = true;
     vector<position> hits;
     vector<position> attempts;
     cellStatus lastHit;
@@ -17,6 +19,9 @@ private:
     vector<position> possibleHits;
 public:
     UserBoard();
+    void square(int x, int y);
+
+    void drawBoard();
     bool compMove();
     bool alreadyHit(int row, int col);
     void updateBoard(int row, int col);

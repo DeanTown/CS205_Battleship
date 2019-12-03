@@ -13,6 +13,7 @@
 #include "Game.h"
 #include "HitSelection.h"
 #include <sstream>
+#include "UserBoard.h"
 
 
 using namespace std;
@@ -26,10 +27,13 @@ Tangle helpButton;
 Tangle hhButton;
 Tangle hcButton;
 Tangle hMenu;
+Tangle legend;
+UserBoard userboard;
+Tangle exitButton;
+Tangle infoButton;
+Tangle iMenu;
 
-
-
-enum gameState{menu,mode,hhGame,hcGame,game,hitSelection,bye,help};
+enum gameState{menu,mode,hhGame,shipPosition,hitSelection,bye,help,info};
 
 gameState screen;
 
@@ -64,6 +68,13 @@ void startMenu(){
 
     helpButton.draw();
 
+    infoButton.setDimensions(40, 40);
+    infoButton.setFillColor(0, 0, 0);
+    infoButton.setBorderColor(0,255,0);
+    infoButton.setCenter(80, 30);
+
+    infoButton.draw();
+
     glColor3f(0,255,0);
 
 
@@ -79,6 +90,7 @@ void startMenu(){
     string title = "Battleship";
 
     string help = "?";
+    string info = "i";
 
 
     glColor3f(1.0, 1.0, 1.0);
@@ -90,6 +102,12 @@ void startMenu(){
     glColor3f(0, 255, 0);
     glRasterPos2i(25, 35);
     for (char h :help) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, h);
+    }
+
+    glColor3f(0, 255, 0);
+    glRasterPos2i(78, 35);
+    for (char h :info) {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, h);
     }
 
@@ -149,28 +167,114 @@ void compStart() {
 }
 
 void helpMenu() {
-    hMenu.setDimensions(200, 400);
+    hMenu.setDimensions(160, 400);
     hMenu.setFillColor(0, 0, 0);
     hMenu.setBorderColor(0,255,0);
-    hMenu.setCenter(250, 200);
+    hMenu.setCenter(250, 180);
 
     hMenu.draw();
 
+    exitButton.setDimensions(30, 30);
+    exitButton.setFillColor(0, 0, 0);
+    exitButton.setBorderColor(0,255,0);
+    exitButton.setCenter(470, 30);
+
+    exitButton.draw();
+
+    char exit = 'X';
     string help = "Help";
-    string instructions = "Guess the position of your enemy's ship by clicking on a cell to destroy their ships";
+    string instructions = "Begin by placing your ships onto the board. You can choose what ";
+    string instructions2 = "direction you want the ship to be facing. Once your board is ready ";
+    string instructions3 = "to go guess where your opponents ship is by clicking on a square. ";
+    string instructions4 = "You will either hit or miss their ship. The first to sink all their ";
+    string instructions5 = "opponents ships will win.";
+
 
     glColor3f(0, 255, 0);
-    glRasterPos2i(140, 150);
+    glRasterPos2i(463, 35);
+    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, exit);
+
+
+    glColor3f(0, 255, 0);
+    glRasterPos2i(230, 130);
     for (char c : help) {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
     }
 
     glColor3f(0, 255, 0);
-    glRasterPos2i(140, 300);
+    glRasterPos2i(60, 160);
     for (char c : instructions) {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+    }
+    glColor3f(0, 255, 0);
+    glRasterPos2i(60, 175);
+    for (char c : instructions2) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+    }
+    glColor3f(0, 255, 0);
+    glRasterPos2i(60, 190);
+    for (char c : instructions3) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+    }
+    glColor3f(0, 255, 0);
+    glRasterPos2i(60, 205);
+    for (char c : instructions4) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+    }
+    glColor3f(0, 255, 0);
+    glRasterPos2i(60, 220);
+    for (char c : instructions5) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
     }
 }
+
+void infoMenu() {
+    iMenu.setDimensions(160, 400);
+    iMenu.setFillColor(0, 0, 0);
+    iMenu.setBorderColor(0,255,0);
+    iMenu.setCenter(250, 180);
+
+    iMenu.draw();
+
+    helpButton.setDimensions(30, 30);
+    helpButton.setFillColor(0, 0, 0);
+    helpButton.setBorderColor(0,255,0);
+    helpButton.setCenter(470, 30);
+
+    helpButton.draw();
+
+    char exit = 'X';
+    string info = "Battleship was programmed by Oliver Groten, Harry Makovsky, ";
+    string info2 = "Hannah Meharg, and Teemo Xu for our final project in CS205. ";
+    string info3 = "We hope you have fun playing!";
+
+    glColor3f(0, 255, 0);
+    glRasterPos2i(463, 35);
+    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, exit);
+
+    glColor3f(0, 255, 0);
+    glRasterPos2i(60, 145);
+    for (char c : info) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+    }
+
+    glColor3f(0, 255, 0);
+    glRasterPos2i(60, 160);
+    for (char c : info2) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+    }
+    glColor3f(0, 255, 0);
+    glRasterPos2i(60, 175);
+    for (char c : info3) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+    }
+
+}
+
+void selectPosition() {
+    userboard.drawBoard();
+}
+
 void display(){
     glViewport(0, 0, width, height);
     // do an orthographic parallel projection with the coordinate
@@ -207,8 +311,8 @@ void display(){
         case hhGame:
             humanStart();
             break;
-        case hcGame:
-            hs.draw(width, height);
+        case shipPosition:
+            selectPosition();
             break;
         case hitSelection:
             hs.draw(width, height);
@@ -220,6 +324,9 @@ void display(){
             break;
         case help:
             helpMenu();
+            break;
+        case info:
+            infoMenu();
             break;
 
     }
@@ -293,14 +400,26 @@ void mouse(int button, int state, int x, int y) {
         screen = help;
     }
 
-    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 121 && x < 221 && y > 249 && y < 351 && screen == mode ){
-        screen = hhGame;
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 59 && x < 101 && y > 9 && y < 51 && screen == menu ){
+        screen = info;
     }
 
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 454 && x < 486 && y > 14 && y < 46 && screen == help ){
+        screen = menu;
+    }
+
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 454 && x < 486 && y > 14 && y < 46 && screen == info ){
+        screen = menu;
+    }
+//
+//    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 121 && x < 221 && y > 249 && y < 351 && screen == mode ){
+//        screen = hhGame;
+//    }
+//
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 281 && x < 381 && y > 249 && y < 351 && screen == mode ){
-        screen = hcGame;
+        screen = shipPosition;
     }
-
+//
 
     glutPostRedisplay();
 

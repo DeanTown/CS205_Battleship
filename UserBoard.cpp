@@ -1,8 +1,9 @@
 //
 // Created by Oliver Reckord Groten on 10/31/19.
-//
+
 
 #include "UserBoard.h"
+#include "Shapes.h"
 #include <iostream>
 
 using namespace std;
@@ -25,6 +26,30 @@ UserBoard::UserBoard() : Board() {
     }
     lastHit=Nothing;
 }
+void UserBoard::square(int x, int y){
+    glBegin(GL_LINE_LOOP);
+    glVertex2i(x, y);
+    glVertex2i(x, y + 30);
+    glVertex2i(x + 30, y + 30);
+    glVertex2i(x + 30, y);
+
+    glEnd();
+}
+
+void UserBoard::drawBoard() {
+    int incrementi = 30;
+    int incrementj = 30;
+    // i is x
+    for (int i = 150; i < 450; i++){
+        // j is y
+        for (int j = 60; j < 360; j++){
+            j = j+incrementj;
+            UserBoard::square(i,j);
+        }
+        i = i+incrementi;
+    }
+}
+
 
 bool UserBoard::compMove() {
     srand(time(nullptr));
