@@ -432,8 +432,16 @@ void mouse(int button, int state, int x, int y) {
         cout << "UNSELECTED" << endl;
         fleet.setCarrierStatus(unselected);
         dragging=false;
-        point p = g.getUserBoard().cells[5][5].getBoardCell();
-        g.placeShip(Carrier,p.x,p.y,0);
+        for (vector<Tangle> row : g.getUserBoard().cells) {
+            for (Tangle c : row) {
+                if (c.isOverlapping({x,y})) {
+                    point p = c.getBoardCell();
+                    g.placeShip(Carrier, p.x, p.y,0);
+                }
+            }
+        }
+//        point p = g.getUserBoard().cells[5][5].getBoardCell();
+//        g.placeShip(Carrier,p.x,p.y,0);
     }
 
 //    while (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && screen == shipPosition ){
