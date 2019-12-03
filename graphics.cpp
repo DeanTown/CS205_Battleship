@@ -38,9 +38,12 @@ Fleet fleet;
 enum gameState{menu,mode,hhGame,shipPosition,hitSelection,bye,help,info};
 
 gameState screen;
+bool dragging;
 
 
 void init() {
+    dragging=false;
+
     screen= menu;
     width = 900;
     height = 600;
@@ -417,10 +420,18 @@ void mouse(int button, int state, int x, int y) {
         screen = shipPosition;
     }
 
-    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && fleet.getCarrier().carrierShip.isOverlapping({x,y}) && screen == shipPosition){
+
+    if (button == GLUT_LEFT_BUTTON && dragging==false &&state == GLUT_DOWN && fleet.getCarrier().carrierShip.isOverlapping({x,y})
+        && screen == shipPosition && fleet.getCarrierStatus() == unselected){
         cout << "DRAGGABLE" << endl;
         fleet.setCarrierStatus(selected);
-        cout << fleet.getCarrierStatus();
+        wait((int*)1);
+        dragging=true;
+    } else if(button == GLUT_LEFT_BUTTON && dragging==true && state == GLUT_DOWN && fleet.getCarrier().carrierShip.isOverlapping({x,y})
+        && screen == shipPosition && fleet.getCarrierStatus() == selected) {
+        cout << "UNSELECTED" << endl;
+        fleet.setCarrierStatus(unselected);
+        dragging=false;
     }
 
 //    while (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && screen == shipPosition ){
