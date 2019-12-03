@@ -20,6 +20,24 @@ UserBoard::UserBoard() : Board() {
         cells.push_back(temp);
         temp.clear();
     }
+
+    possiblePositions;
+    position tempP;
+    for(int i=1; i<10; i+=2){
+        for(int j=1; j<10; j+=2){
+            tempP.row=i;
+            tempP.col=j;
+            possiblePositions.push_back(tempP);
+        }
+    }
+    for(int i=0; i<10; i+=2){
+        for(int j=0; j<10; j+=2){
+            tempP.row=i;
+            tempP.col=j;
+            possiblePositions.push_back(tempP);
+        }
+    }
+    lastHit=Nothing;
 }
 void UserBoard::draw(int width, int height) {
     int i = 0;
@@ -35,6 +53,7 @@ void UserBoard::draw(int width, int height) {
         i++;
     }
 }
+
 
 bool UserBoard::compMove() {
     srand(time(nullptr));
@@ -266,7 +285,7 @@ void UserBoard::placePieces() {
         placed++;
     }
 }
-// North South East West, 0 1 2 3
+
 void UserBoard::setBoardValues(cellStatus shipType,position pos, int size, int direction){
     int row=pos.row;
     int col=pos.col;

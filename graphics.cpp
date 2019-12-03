@@ -278,14 +278,7 @@ void infoMenu() {
 }
 
 void selectPosition() {
-    g.getUserBoard().draw(300,300);
-//    fleet.getCarrier().setCenterY(470);
-//    fleet.getCarrier().setCenterY(140);
-    fleet.getCarrier().drawShip_car();
-//    battle.drawShip(140,470);
-//    cruiser.drawShip(200,470);
-//    sub.drawShip(260,470);
-//    destroyer.drawShip(320,470);
+    userboard.drawBoard();
 }
 
 void display(){
@@ -358,6 +351,10 @@ void kbd(unsigned char key, int x, int y)
         glutDestroyWindow(wd);
         exit(0);
     }
+    if (key == 112) {
+        g.placePiecesDebug();
+
+    }
 
     glutPostRedisplay();
 }
@@ -391,6 +388,16 @@ void kbdS(int key, int x, int y) {
 // button will be GLUT_LEFT_BUTTON or GLUT_RIGHT_BUTTON
 // state will be GLUT_UP or GLUT_DOWN
 void mouse(int button, int state, int x, int y) {
+
+//    while(state == GLUT_DOWN){
+//        drag(getShip(x,y),x,y);
+//        glutPostRedisplay();
+//    }
+
+//    if (button == GLUT_LEFT_BUTTON && state == GLUT_UP && hs.isOverlapping({x,y})) {
+//        // get cell that is clicked and provide user feedback
+//        point cell = hs.getCell(x,y);
+//    }
 
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 184 && x < 286 && y > 249 && y < 351 && screen == menu ){
         screen = mode;
