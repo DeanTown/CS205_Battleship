@@ -6,13 +6,23 @@
 #define CS205_FINALPROJECT_SHIP_H
 
 #include <vector>
+#include "Shapes.h"
+
+struct Point {
+    int x;
+    int y;
+
+};
 
 class Ship {
 private:
     int size;
     int hits;
     bool destroyed;
+    Point shipCenter;
+
 public:
+    Tangle carrierShip;
     /* Constructor */
     Ship(int size);
     /* Getters */
@@ -22,7 +32,15 @@ public:
     void setSize(int s);
     void setDestroyed(bool d);
 
+    int getCenterX_car() const;
+    int getCenterY_car() const;
+
+    void setCenterX(int x);
+    void setCenterY(int y);
+
     void addHit();
+    void drawShip_car();
+
 };
 
 

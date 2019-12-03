@@ -7,6 +7,13 @@
 
 Fleet::Fleet() {}
 
+void Fleet::setCarrierStatus(status carrierStatus){
+    this->carrierStatus = carrierStatus;
+}
+status Fleet::getCarrierStatus(){
+    return carrierStatus;
+}
+
 void Fleet::updateShip(int ship) {
     switch(ship) {
         case 1:
@@ -33,4 +40,13 @@ bool Fleet::sunk() {
            destroyer.getDestroyed() &&
            sub.getDestroyed() &&
            cruiser.getDestroyed();
+}
+
+Ship Fleet::getCarrier(){
+    return carrier;
+}
+void Fleet::drag(int x, int y) {
+    carrier.setCenterX(x);
+    carrier.setCenterY(y);
+    carrier.drawShip_car();
 }

@@ -33,6 +33,8 @@ Tangle exitButton;
 Tangle infoButton;
 Tangle iMenu;
 
+Fleet fleet;
+
 enum gameState{menu,mode,hhGame,shipPosition,hitSelection,bye,help,info};
 
 gameState screen;
@@ -40,8 +42,9 @@ gameState screen;
 
 void init() {
     screen= menu;
-    width = 500;
-    height = 500;
+    width = 900;
+    height = 600;
+    fleet.setCarrierStatus(unselected);
 }
 
 /* Initialize OpenGL Graphics */
@@ -272,7 +275,14 @@ void infoMenu() {
 }
 
 void selectPosition() {
-    userboard.drawBoard();
+    userboard.draw(300,300);
+//    fleet.getCarrier().setCenterY(470);
+//    fleet.getCarrier().setCenterY(140);
+    fleet.getCarrier().drawShip_car();
+//    battle.drawShip(140,470);
+//    cruiser.drawShip(200,470);
+//    sub.drawShip(260,470);
+//    destroyer.drawShip(320,470);
 }
 
 void display(){
@@ -373,24 +383,11 @@ void kbdS(int key, int x, int y) {
     glutPostRedisplay();
 }
 
-void cursor(int x, int y) {
 
-    glutPostRedisplay();
-}
 
 // button will be GLUT_LEFT_BUTTON or GLUT_RIGHT_BUTTON
 // state will be GLUT_UP or GLUT_DOWN
 void mouse(int button, int state, int x, int y) {
-
-//    while(state == GLUT_DOWN){
-//        drag(getShip(x,y),x,y);
-//        glutPostRedisplay();
-//    }
-
-//    if (button == GLUT_LEFT_BUTTON && state == GLUT_UP && hs.isOverlapping({x,y})) {
-//        // get cell that is clicked and provide user feedback
-//        point cell = hs.getCell(x,y);
-//    }
 
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 184 && x < 286 && y > 249 && y < 351 && screen == menu ){
         screen = mode;
@@ -419,9 +416,33 @@ void mouse(int button, int state, int x, int y) {
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 281 && x < 381 && y > 249 && y < 351 && screen == mode ){
         screen = shipPosition;
     }
+
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && fleet.getCarrier().carrierShip.isOverlapping({x,y}) && screen == shipPosition){
+        cout << "DRAGGABLE" << endl;
+        fleet.setCarrierStatus(selected);
+        cout << fleet.getCarrierStatus();
+    }
+
+//    while (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && screen == shipPosition ){
+//        cout << x << endl;
+//        cout << y << endl;
+//        fleet.drag(x,y);
+//
+//    }
 //
 
     glutPostRedisplay();
+
+}
+
+void cursor(int x, int y) {
+//    cout << x << endl;
+//    cout << y << endl;
+    if (fleet.getCarrierStatus() == selected) {
+        fleet.drag(x, y);
+        glutPostRedisplay();
+    }
+
 
 }
 void timer(int dummy) {
@@ -522,7 +543,7 @@ int main(int argc, char** argv) {
 
     // Position the window's initial top-left corner
     /* create the window and store the handle to it */
-    glutInitWindowPosition(-200,-100);
+    glutInitWindowPosition(200,100);
 
     wd = glutCreateWindow("BATTLESHIP" /* title */ );
 

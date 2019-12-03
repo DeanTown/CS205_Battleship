@@ -7,6 +7,7 @@
 
 #include "Board.h"
 #include <regex>
+#include "Shapes.h"
 
 class UserBoard : public Board{
 private:
@@ -17,11 +18,12 @@ private:
     cellStatus lastHit;
     vector<position> possiblePositions;
     vector<position> possibleHits;
+    vector<vector<Tangle>> cells;
 public:
     UserBoard();
     void square(int x, int y);
+    void draw(int width, int height);
 
-    void drawBoard();
     bool compMove();
     bool alreadyHit(int row, int col);
     void updateBoard(int row, int col);
