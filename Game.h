@@ -20,7 +20,7 @@ public:
     Game();
     // Get boards
     UserBoard getUserBoard();
-    Board getComputerBoard();
+    ComputerBoard getComputerBoard();
     // Place ship method
     void placeShip(cellStatus ship, int x, int y, int direction);
     //To Begin and end games

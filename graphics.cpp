@@ -278,7 +278,7 @@ void infoMenu() {
 }
 
 void selectPosition() {
-    userboard.drawBoard();
+//    userboard.drawBoard();
 }
 
 void display(){
