@@ -9,8 +9,23 @@ using namespace std;
 Ship::Ship(int size) {
     this->size = size;
     hits=0;
-    carrierShip = Tangle(30*5,30);
-    carrierShip.setCenter(100, 470);
+
+    // set carriers dimensions and starting center position
+    // do for each ship
+    carrierShipTang = Tangle(30*5,30);
+    carrierShipTang.setCenter(100, 470);
+
+    battleShipTang = Tangle(30*4,30);
+    battleShipTang.setCenter(145, 470);
+
+    cruiserShipTang = Tangle(30*3,30);
+    cruiserShipTang.setCenter(190, 470);
+
+    subShipTang = Tangle(30*3,30);
+    subShipTang.setCenter(235, 470);
+
+    destroyerShipTang = Tangle(30*2,30);
+    destroyerShipTang.setCenter(280, 470);
 }
 
 /* Getters */
@@ -37,9 +52,29 @@ void Ship::setDestroyed(bool d) {
 }
 
 // setters
-void Ship::setCenter(int x,int y) {
-    carrierShip.setCenter(x,y);
+void Ship::setCenterCarrier(int x,int y) {
+    carrierShipTang.setCenter(x,y);
 }
+
+void Ship::setCenterDestroyer(int x,int y) {
+    destroyerShipTang.setCenter(x,y);
+}
+
+void Ship::setCenterCruiser(int x,int y) {
+    cruiserShipTang.setCenter(x,y);
+}
+
+void Ship::setCenterSub(int x,int y) {
+    subShipTang.setCenter(x,y);
+}
+
+void Ship::setCenterBattle(int x,int y) {
+    battleShipTang.setCenter(x,y);
+}
+
+
+
+
 void Ship::setCenterY(int y) {
     shipCenter.y = y;
 }
@@ -50,12 +85,33 @@ void Ship::addHit() {
 
 void Ship::drawShip_car(){
 
-    int l = 5;
 //    carrierShip.setDimensions(30*l,30);
 //    int xC = 100;
 //    int yC = 470;
 //    carrierShip.setCenter(xC, yC);
-    carrierShip.setFillColor(100,0,0);
-    carrierShip.draw();
+    carrierShipTang.setFillColor(100,0,0);
+    carrierShipTang.draw();
 }
 
+void Ship::drawShip_battle(){
+
+//    carrierShip.setDimensions(30*l,30);
+//    int xC = 100;
+//    int yC = 470;
+//    carrierShip.setCenter(xC, yC);
+    battleShipTang.setFillColor(100,0,0);
+    battleShipTang.draw();
+}
+
+void Ship::drawShip_destroyer(){
+    destroyerShipTang.setFillColor(100,0,0);
+    destroyerShipTang.draw();
+}
+void Ship::drawShip_cruiser(){
+    cruiserShipTang.setFillColor(100,0,0);
+    cruiserShipTang.draw();
+}
+void Ship::drawShip_sub(){
+    subShipTang.setFillColor(100,0,0);
+    subShipTang.draw();
+}

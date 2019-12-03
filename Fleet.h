@@ -29,14 +29,34 @@ public:
     Ship cruiser = Ship(2);
 
     Ship getCarrier();
+    Ship getBattle();
+    Ship getDestroyer();
+    Ship getSub();
+    Ship getCruiser();
 
     void setCarrierStatus(status carrierStatus);
     status getCarrierStatus();
 
+    void setBattleStatus(status battleStatus);
+    status getBattleStatus();
+
+    void setDestroyerStatus(status destroyerStatus);
+    status getDestroyerStatus();
+
+    void setSubStatus(status subStatus);
+    status getSubStatus();
+
+    void setCruiserStatus(status cruiserStatus);
+    status getCruiserStatus();
+
     Fleet();
     void updateShip(int ship);
     bool sunk();
-    void drag(int x, int y);
+    void dragCarrier(int x, int y);
+    void dragBattle(int x, int y);
+    void dragDestroyer(int x, int y);
+    void dragSub(int x, int y);
+    void dragCruiser(int x, int y);
 };
 
 
