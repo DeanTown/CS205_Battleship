@@ -39,7 +39,7 @@ enum gameState{menu,mode,hhGame,shipPosition,hitSelection,bye,help,info};
 
 gameState screen;
 bool dragging;
-
+bool draggingD;
 
 void init() {
     dragging=false;
@@ -48,6 +48,10 @@ void init() {
     width = 900;
     height = 600;
     fleet.setCarrierStatus(unselected);
+    fleet.setBattleStatus(unselected);
+    fleet.setDestroyerStatus(unselected);
+    fleet.setSubStatus(unselected);
+    fleet.setCruiserStatus(unselected);
 }
 
 /* Initialize OpenGL Graphics */
@@ -278,7 +282,18 @@ void infoMenu() {
 }
 
 void selectPosition() {
-//    userboard.drawBoard();
+    userboard.draw(300,300);
+//    fleet.getCarrier().setCenterY(470);
+//    fleet.getCarrier().setCenterY(140);
+    fleet.getCarrier().drawShip_car();
+    fleet.getBattle().drawShip_battle();
+    fleet.getCruiser().drawShip_cruiser();
+    fleet.getSub().drawShip_sub();
+    fleet.getDestroyer().drawShip_destroyer();
+//    battle.drawShip(140,470);
+//    cruiser.drawShip(200,470);
+//    sub.drawShip(260,470);
+//    destroyer.drawShip(320,470);
 }
 
 void display(){
@@ -389,16 +404,6 @@ void kbdS(int key, int x, int y) {
 // state will be GLUT_UP or GLUT_DOWN
 void mouse(int button, int state, int x, int y) {
 
-//    while(state == GLUT_DOWN){
-//        drag(getShip(x,y),x,y);
-//        glutPostRedisplay();
-//    }
-
-//    if (button == GLUT_LEFT_BUTTON && state == GLUT_UP && hs.isOverlapping({x,y})) {
-//        // get cell that is clicked and provide user feedback
-//        point cell = hs.getCell(x,y);
-//    }
-
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 184 && x < 286 && y > 249 && y < 351 && screen == menu ){
         screen = mode;
     }
@@ -427,14 +432,21 @@ void mouse(int button, int state, int x, int y) {
         screen = shipPosition;
     }
 
+    // check if cursor is overlapping chip store bool
+    // if it is store ship type
+    // create variable isOverlappoingASHip?
+    // if it is go in and
+    // set status to whatever ship
+    // select unselect
 
-    if (button == GLUT_LEFT_BUTTON && dragging==false &&state == GLUT_DOWN && fleet.getCarrier().carrierShip.isOverlapping({x,y})
+    // for carrier
+    if (button == GLUT_LEFT_BUTTON && dragging==false &&state == GLUT_DOWN && fleet.getCarrier().carrierShipTang.isOverlapping({x,y})
         && screen == shipPosition && fleet.getCarrierStatus() == unselected){
-        cout << "DRAGGABLE" << endl;
+        cout << "DRAGGABLE carrier" << endl;
         fleet.setCarrierStatus(selected);
         wait((int*)1);
         dragging=true;
-    } else if(button == GLUT_LEFT_BUTTON && dragging==true && state == GLUT_DOWN && fleet.getCarrier().carrierShip.isOverlapping({x,y})
+    } else if(button == GLUT_LEFT_BUTTON && dragging==true && state == GLUT_DOWN && fleet.getCarrier().carrierShipTang.isOverlapping({x,y})
         && screen == shipPosition && fleet.getCarrierStatus() == selected) {
         cout << "UNSELECTED" << endl;
         fleet.setCarrierStatus(unselected);
@@ -450,6 +462,66 @@ void mouse(int button, int state, int x, int y) {
 //        point p = g.getUserBoard().cells[5][5].getBoardCell();
 //        g.placeShip(Carrier,p.x,p.y,0);
     }
+
+    // do if else for battle
+    if (button == GLUT_LEFT_BUTTON && dragging==false &&state == GLUT_DOWN && fleet.getBattle().battleShipTang.isOverlapping({x,y})
+        && screen == shipPosition && fleet.getBattleStatus() == unselected){
+        cout << "DRAGGABLE sub" << endl;
+        fleet.setBattleStatus(selected);
+        wait((int*)1);
+        dragging=true;
+    } else if(button == GLUT_LEFT_BUTTON && dragging==true && state == GLUT_DOWN && fleet.getBattle().battleShipTang.isOverlapping({x,y})
+              && screen == shipPosition && fleet.getBattleStatus() == selected) {
+        cout << "UNSELECTED" << endl;
+        fleet.setBattleStatus(unselected);
+        dragging=false;
+    }
+
+    // do if else for cruiser
+    if (button == GLUT_LEFT_BUTTON && dragging==false &&state == GLUT_DOWN && fleet.getCruiser().cruiserShipTang.isOverlapping({x,y})
+        && screen == shipPosition && fleet.getCruiserStatus() == unselected){
+        cout << "DRAGGABLE sub" << endl;
+        fleet.setCruiserStatus(selected);
+        wait((int*)1);
+        dragging=true;
+    } else if(button == GLUT_LEFT_BUTTON && dragging==true && state == GLUT_DOWN && fleet.getCruiser().cruiserShipTang.isOverlapping({x,y})
+              && screen == shipPosition && fleet.getCruiserStatus() == selected) {
+        cout << "UNSELECTED" << endl;
+        fleet.setCruiserStatus(unselected);
+        dragging=false;
+    }
+
+    // do if else for sub
+    if (button == GLUT_LEFT_BUTTON && dragging==false &&state == GLUT_DOWN && fleet.getSub().subShipTang.isOverlapping({x,y})
+        && screen == shipPosition && fleet.getSubStatus() == unselected){
+        cout << "DRAGGABLE sub" << endl;
+        fleet.setSubStatus(selected);
+        wait((int*)1);
+        dragging=true;
+    } else if(button == GLUT_LEFT_BUTTON && dragging==true && state == GLUT_DOWN && fleet.getSub().subShipTang.isOverlapping({x,y})
+              && screen == shipPosition && fleet.getSubStatus() == selected) {
+        cout << "UNSELECTED" << endl;
+        fleet.setSubStatus(unselected);
+        dragging=false;
+    }
+
+    // do if else for destroyer
+    if (button == GLUT_LEFT_BUTTON && dragging==false &&state == GLUT_DOWN && fleet.getDestroyer().destroyerShipTang.isOverlapping({x,y})
+        && screen == shipPosition && fleet.getDestroyerStatus() == unselected){
+        cout << "DRAGGABLE destroyer" << endl;
+        fleet.setDestroyerStatus(selected);
+        wait((int*)1);
+        dragging=true;
+    } else if(button == GLUT_LEFT_BUTTON && dragging==true && state == GLUT_DOWN && fleet.getDestroyer().destroyerShipTang.isOverlapping({x,y})
+              && screen == shipPosition && fleet.getDestroyerStatus() == selected) {
+        cout << "UNSELECTED" << endl;
+        fleet.setDestroyerStatus(unselected);
+        dragging=false;
+    }
+
+
+
+
 
 //    while (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && screen == shipPosition ){
 //        cout << x << endl;
@@ -467,10 +539,26 @@ void cursor(int x, int y) {
 //    cout << x << endl;
 //    cout << y << endl;
     if (fleet.getCarrierStatus() == selected) {
-        fleet.drag(x, y);
-        glutPostRedisplay();
+        fleet.dragCarrier(x, y);
     }
 
+    if (fleet.getBattleStatus() == selected) {
+        fleet.dragBattle(x, y);
+    }
+
+    if (fleet.getCruiserStatus() == selected) {
+        fleet.dragCruiser(x, y);
+    }
+
+    if (fleet.getSubStatus() == selected) {
+        fleet.dragSub(x, y);
+    }
+
+    if (fleet.getDestroyerStatus() == selected) {
+        fleet.dragDestroyer(x, y);
+    }
+
+    glutPostRedisplay();
 
 }
 void timer(int dummy) {

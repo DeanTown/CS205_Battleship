@@ -22,7 +22,11 @@ private:
     Point shipCenter;
 
 public:
-    Tangle carrierShip;
+    Tangle carrierShipTang;
+    Tangle battleShipTang;
+    Tangle destroyerShipTang;
+    Tangle cruiserShipTang;
+    Tangle subShipTang;
     /* Constructor */
     Ship(int size);
     /* Getters */
@@ -35,11 +39,19 @@ public:
     int getCenterX_car() const;
     int getCenterY_car() const;
 
-    void setCenter(int x,int y);
+    void setCenterCarrier(int x,int y);
+    void setCenterDestroyer(int x,int y);
+    void setCenterCruiser(int x,int y);
+    void setCenterSub(int x,int y);
+    void setCenterBattle(int x,int y);
     void setCenterY(int y);
 
     void addHit();
     void drawShip_car();
+    void drawShip_battle();
+    void drawShip_destroyer();
+    void drawShip_cruiser();
+    void drawShip_sub();
 
 };
 
