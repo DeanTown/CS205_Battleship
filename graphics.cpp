@@ -380,6 +380,15 @@ void display(){
             g.getUserBoard().draw(900, 600);
             g.getComputerBoard().draw();
 
+            if(g.getComputerBoard().getFleet().sunk() or g.getUserBoard().getFleet().sunk()){
+                screen=menu;
+                if(g.getComputerBoard().getFleet().sunk()){
+                    cout<<"USER WON"<<endl;
+                }else{
+                    cout<<"COMP WON"<<endl;
+                }
+            }
+
             nuke.setDimensions(40, 80);
             nuke.setBorderColor({0, 255, 0});
             nuke.setCenter({600, 500});
@@ -859,8 +868,7 @@ void mouse(int button, int state, int x, int y) {
 }
 
 void cursor(int x, int y) {
-    cout << x << endl;
-    cout << y << endl;
+
     if (fleet.getCarrierStatus() == selected) {
         fleet.dragCarrier(x, y);
     }
