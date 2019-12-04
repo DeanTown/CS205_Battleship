@@ -14,7 +14,7 @@ HitSelection::HitSelection() {
     for (int i = 0; i < 10; i++) {
         for (int j = 0; j < 10; j++) {
             point p = {i,j};
-            cell = Tangle(30, 30, {i*30+515,j*30+115},p); // x: i * 30 + 115
+            cell = Tangle(50, 50, {i*50+200,j*50+75},p); // x: i * 30 + 115
             cell.setFillColor(0,0,100);
             temp.push_back(cell);
         }
@@ -27,7 +27,6 @@ void HitSelection::draw(int width, int height) {
 
     for (vector<Tangle> row : hitOptions) {
         for (Tangle cell : row) {
-
             cell.draw();
         }
     }
@@ -52,9 +51,12 @@ void HitSelection::update(Board b) {
             if (c == DestroyerHit || c == SubHit || c == CarrierHit
                 || c == CruiserHit || c == BattleshipHit) {
                 hitOptions[i][j].setFillColor({100,0,0});
+             
             } else if (c == NothingHit) {
                 hitOptions[i][j].setFillColor({0,100,0});
+
             }
         }
     }
+    
 }

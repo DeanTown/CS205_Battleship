@@ -38,8 +38,12 @@ UserBoard Game::getUserBoard() {
     return userBoard;
 }
 
-void Game::userMove(int row, int col){
-    compBoard.userMove(row,col);
+bool Game::userMove(int row, int col){
+    return compBoard.userMove(row,col);
+}
+
+void Game::compMove(){
+    userBoard.compMove();
 }
 void Game::placePiecesDebug(){
     compBoard.placePieces();

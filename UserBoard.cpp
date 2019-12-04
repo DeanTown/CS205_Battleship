@@ -13,7 +13,7 @@ UserBoard::UserBoard() : Board() {
     for (int i = 0; i < 10; i++) {
         for (int j = 0; j < 10; j++) {
             point p = {i,j};
-            cell = Tangle(30, 30, {i*30+75,j*30+75},p);
+            cell = Tangle(30, 30, {i*30+75,j*30+115},p);
             cell.setBorderColor(0,100,0);
             temp.push_back(cell);
         }
@@ -59,6 +59,27 @@ void UserBoard::draw(int width, int height) {
             if(board[i][j] == Destroyer) {
                 cell.setFillColor({1,0,0});
             }
+            if(board[i][j] == CarrierHit) {
+                cell.setFillColor({1,0,1});
+            }
+            if(board[i][j] == CruiserHit) {
+                cell.setFillColor({1,0,1});
+            }
+            if(board[i][j] == BattleshipHit) {
+                cell.setFillColor({1,0,1});
+            }
+            if(board[i][j] == SubHit) {
+                cell.setFillColor({1,0,1});
+            }
+            if(board[i][j] == DestroyerHit) {
+                cell.setFillColor({1,0,1});
+            }
+            if(board[i][j] == NothingHit) {
+                cell.setFillColor({1,1,1});
+            }
+
+
+
             cell.draw();
             j++;
         }

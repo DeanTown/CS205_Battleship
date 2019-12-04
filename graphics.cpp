@@ -33,16 +33,29 @@ Tangle exitButton;
 Tangle infoButton;
 Tangle iMenu;
 
+
+Tangle nuke;
+Tangle nukeSelect;
+
+Tangle finishPlacing;
+
 Fleet fleet;
 
-enum gameState{menu,mode,hhGame,shipPosition,hitSelection,bye,help,info};
+
+bool moveSelected;
+
+int numOfShipsPlaced;
+
+enum gameState{menu,mode,hhGame,shipPosition,hitSelection,bye,help,info,idleGame};
 
 gameState screen;
 bool dragging;
 bool draggingD;
 
 void init() {
+    moveSelected=false;
     dragging=false;
+    numOfShipsPlaced=0;
     fleet=Fleet();
 
     screen= menu;
@@ -284,17 +297,41 @@ void infoMenu() {
 
 void selectPosition() {
     g.getUserBoard().draw(300,300);
-//    fleet.getCarrier().setCenterY(470);
-//    fleet.getCarrier().setCenterY(140);
+
+    finishPlacing.setDimensions(40,80);
+    finishPlacing.setBorderColor({0,255,0});
+    finishPlacing.setCenter({470,350});
+    finishPlacing.draw();
+
+    string fin="DONE";
+
+    glColor3f(0,255,0);
+    glRasterPos2i(450,350);
+
+    for(char c : fin){
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12,c);
+    }
+
+    if(numOfShipsPlaced<5){
+        string message="MUST PLACE ALL SHIPS BEFORE CONTINUING";
+
+        glColor3f(0,255,0);
+        glRasterPos2i(500,300);
+
+        for(char c : message){
+            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12,c);
+        }
+    }
+
+
+
+
     fleet.getCarrier().drawShip_car();
     fleet.getBattle().drawShip_battle();
     fleet.getCruiser().drawShip_cruiser();
     fleet.getSub().drawShip_sub();
     fleet.getDestroyer().drawShip_destroyer();
-//    battle.drawShip(140,470);
-//    cruiser.drawShip(200,470);
-//    sub.drawShip(260,470);
-//    destroyer.drawShip(320,470);
+
 }
 
 void display(){
@@ -339,12 +376,47 @@ void display(){
 
 
             break;
-        case hitSelection:
+        case idleGame: {
+            g.getUserBoard().draw(900, 600);
+            g.getComputerBoard().draw();
+
+            nuke.setDimensions(40, 80);
+            nuke.setBorderColor({0, 255, 0});
+            nuke.setCenter({600, 500});
+            nuke.draw();
+
+            string fin = "PEARL";
+
+            glColor3f(0, 255, 0);
+            glRasterPos2i(600, 500);
+            for (char c : fin) {
+                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+            }
+
+
+            break;
+        }
+        case hitSelection: {
+            //hs.draw(width, height);
             hs.draw(width, height);
+
+            nukeSelect.setDimensions(40, 80);
+            nukeSelect.setBorderColor({0, 255, 0});
+            nukeSelect.setCenter({800, 300});
+            nukeSelect.draw();
+
+            string fin = "DONE";
+
+            glColor3f(0, 255, 0);
+            glRasterPos2i(800, 300);
+            for (char c : fin) {
+                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+            }
             // get cell clicked
             // update hitSelection board
-            hs.update(g.getComputerBoard());
+            //hs.update(g.getComputerBoard());
             break;
+        }
         case bye:
             break;
         case help:
@@ -475,6 +547,19 @@ void kbdS(int key, int x, int y) {
 // state will be GLUT_UP or GLUT_DOWN
 void mouse(int button, int state, int x, int y) {
 
+
+    if(button==GLUT_LEFT_BUTTON && state== GLUT_DOWN && screen== hitSelection && x> 175 && x<675 && y>50 && y<550 && !moveSelected){
+        point p=hs.getCell(x,y);
+
+        if(g.userMove(p.x,p.y)){
+            hs.update(g.getComputerBoard());
+            moveSelected=true;
+        }
+        //g.userMove(p.x,p.y);
+//        hs.update(g.getComputerBoard());
+//        moveSelected=true;
+    }
+
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 184 && x < 286 && y > 249 && y < 351 && screen == menu ){
         screen = mode;
     }
@@ -501,6 +586,21 @@ void mouse(int button, int state, int x, int y) {
 //
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 281 && x < 381 && y > 249 && y < 351 && screen == mode ){
         screen = shipPosition;
+    }
+
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 410 && x < 490 && y > 330 && y < 370 && screen == shipPosition && numOfShipsPlaced==5) {
+        g.placePiecesDebug();
+        screen = idleGame;
+    }
+
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 560 && x < 640 && y > 480 && y < 520 && screen == idleGame){
+        screen = hitSelection;
+    }
+
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 760 && x < 840 && y > 280 && y < 320 && screen == hitSelection && moveSelected){
+        screen = idleGame;
+        g.compMove();
+        moveSelected=false;
     }
 
     // check if cursor is overlapping chip store bool
@@ -537,6 +637,7 @@ void mouse(int button, int state, int x, int y) {
                             Ship n= fleet.getCarrier();
                             n.carrierShipTang.setDimensions(0,0);
                             fleet.setCarrier(n);
+                            numOfShipsPlaced++;
                         }
 
                     }
@@ -548,6 +649,7 @@ void mouse(int button, int state, int x, int y) {
                             Ship n= fleet.getCarrier();
                             n.carrierShipTang.setDimensions(0,0);
                             fleet.setCarrier(n);
+                            numOfShipsPlaced++;
                         }
 
                     }
@@ -583,6 +685,7 @@ void mouse(int button, int state, int x, int y) {
                             Ship n= fleet.getBattle();
                             n.battleShipTang.setDimensions(0,0);
                             fleet.setBattle(n);
+                            numOfShipsPlaced++;
                         }
 
                     }
@@ -594,6 +697,7 @@ void mouse(int button, int state, int x, int y) {
                             Ship n= fleet.getBattle();
                             n.battleShipTang.setDimensions(0,0);
                             fleet.setBattle(n);
+                            numOfShipsPlaced++;
                         }
 
                     }
@@ -628,6 +732,7 @@ void mouse(int button, int state, int x, int y) {
                             Ship n= fleet.getCruiser();
                             n.cruiserShipTang.setDimensions(0,0);
                             fleet.setCruiser(n);
+                            numOfShipsPlaced++;
                         }
 
                     }
@@ -639,6 +744,7 @@ void mouse(int button, int state, int x, int y) {
                             Ship n= fleet.getCruiser();
                             n.cruiserShipTang.setDimensions(0,0);
                             fleet.setCruiser(n);
+                            numOfShipsPlaced++;
                         }
 
                     }
@@ -671,6 +777,7 @@ void mouse(int button, int state, int x, int y) {
                             Ship n= fleet.getSub();
                             n.subShipTang.setDimensions(0,0);
                             fleet.setSub(n);
+                            numOfShipsPlaced++;
                         }
 
                     }
@@ -682,6 +789,7 @@ void mouse(int button, int state, int x, int y) {
                             Ship n= fleet.getSub();
                             n.subShipTang.setDimensions(0,0);
                             fleet.setSub(n);
+                            numOfShipsPlaced++;
                         }
 
                     }
@@ -713,6 +821,7 @@ void mouse(int button, int state, int x, int y) {
                             Ship n= fleet.getDestroyer();
                             n.destroyerShipTang.setDimensions(0,0);
                             fleet.setDestroyer(n);
+                            numOfShipsPlaced++;
                         }
 
                     }
@@ -724,6 +833,7 @@ void mouse(int button, int state, int x, int y) {
                             Ship n= fleet.getDestroyer();
                             n.destroyerShipTang.setDimensions(0,0);
                             fleet.setDestroyer(n);
+                            numOfShipsPlaced++;
                         }
 
                     }
@@ -749,8 +859,8 @@ void mouse(int button, int state, int x, int y) {
 }
 
 void cursor(int x, int y) {
-//    cout << x << endl;
-//    cout << y << endl;
+    cout << x << endl;
+    cout << y << endl;
     if (fleet.getCarrierStatus() == selected) {
         fleet.dragCarrier(x, y);
     }

@@ -10,9 +10,11 @@
 class ComputerBoard : public Board {
 private:
 public:
+    vector<vector<Tangle>> cells;
     ComputerBoard();
     bool userMove(int row, int col);
     void placePieces();
+    void draw();
 
     int getDirection(int row, int col, int size);
     bool checkClear(int row, int col, int size, int direction);

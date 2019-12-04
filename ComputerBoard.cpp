@@ -13,7 +13,45 @@
  *
  */
 ComputerBoard::ComputerBoard(): Board(){
+    Tangle cell;
+    vector<Tangle> temp;
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 10; j++) {
+            point p = {i,j};
+            cell = Tangle(30, 30, {i*30+515,j*30+115},p);
+            cell.setBorderColor(0,100,0);
+            temp.push_back(cell);
+        }
+        cells.push_back(temp);
+        temp.clear();
+    }
 
+}
+void ComputerBoard::draw() {
+    int i = 0;
+    for (vector<Tangle> row : cells) {
+        int j = 0;
+        for (Tangle cell : row) {
+            if(board[i][j] == CarrierHit) {
+                cell.setFillColor({1,0,0});
+            }
+            if(board[i][j] == CruiserHit) {
+                cell.setFillColor({1,0,0});
+            }
+            if(board[i][j] == BattleshipHit) {
+                cell.setFillColor({1,0,0});
+            }
+            if(board[i][j] == SubHit) {
+                cell.setFillColor({1,0,0});
+            }
+            if(board[i][j] == DestroyerHit) {
+                cell.setFillColor({1,0,0});
+            }
+            cell.draw();
+            j++;
+        }
+        i++;
+    }
 }
 bool ComputerBoard::userMove(int row, int col) {
     // get cell status
