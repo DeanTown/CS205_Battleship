@@ -18,19 +18,19 @@ Ship::Ship(int size) {
     // set carriers dimensions and starting center position
     // do for each ship
     carrierShipTang = Tangle(30*5,30);
-    carrierShipTang.setCenter(100, 470);
+    carrierShipTang.setCenter(100, 500);
 
     battleShipTang = Tangle(30*4,30);
-    battleShipTang.setCenter(145, 470);
+    battleShipTang.setCenter(145, 500);
 
     cruiserShipTang = Tangle(30*2,30);
-    cruiserShipTang.setCenter(190, 470);
+    cruiserShipTang.setCenter(190, 500);
 
     subShipTang = Tangle(30*3,30);
-    subShipTang.setCenter(235, 470);
+    subShipTang.setCenter(235, 500);
 
     destroyerShipTang = Tangle(30*3,30);
-    destroyerShipTang.setCenter(280, 470);
+    destroyerShipTang.setCenter(280, 500);
 }
 bool Ship::getVert(){
     return isVertical;
@@ -109,7 +109,7 @@ void Ship::drawShip_car(){
 //    int xC = 100;
 //    int yC = 470;
 //    carrierShip.setCenter(xC, yC);
-    carrierShipTang.setFillColor(100,0,0);
+    carrierShipTang.setFillColor(0.4, 0.4, 0.4);
 
     carrierShipTang.draw();
 }
@@ -120,19 +120,19 @@ void Ship::drawShip_battle(){
 //    int xC = 100;
 //    int yC = 470;
 //    carrierShip.setCenter(xC, yC);
-    battleShipTang.setFillColor(100,0,0);
+    battleShipTang.setFillColor(0.4, 0.4, 0.4);
     battleShipTang.draw();
 }
 
 void Ship::drawShip_destroyer(){
-    destroyerShipTang.setFillColor(100,0,0);
+    destroyerShipTang.setFillColor(0.4, 0.4, 0.4);
     destroyerShipTang.draw();
 }
 void Ship::drawShip_cruiser(){
-    cruiserShipTang.setFillColor(100,0,0);
+    cruiserShipTang.setFillColor(0.4, 0.4, 0.4);
     cruiserShipTang.draw();
 }
 void Ship::drawShip_sub(){
-    subShipTang.setFillColor(100,0,0);
+    subShipTang.setFillColor(0.4, 0.4, 0.4);
     subShipTang.draw();
 }

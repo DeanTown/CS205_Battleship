@@ -15,7 +15,7 @@ HitSelection::HitSelection() {
         for (int j = 0; j < 10; j++) {
             point p = {i,j};
             cell = Tangle(50, 50, {i*50+200,j*50+75},p); // x: i * 30 + 115
-            cell.setFillColor(0,0,100);
+            cell.setFillColor(0.0f, 0.5f, 1.0f);
             temp.push_back(cell);
         }
         hitOptions.push_back(temp);
@@ -53,7 +53,7 @@ void HitSelection::update(Board b) {
                 hitOptions[i][j].setFillColor({100,0,0});
              
             } else if (c == NothingHit) {
-                hitOptions[i][j].setFillColor({0,100,0});
+                hitOptions[i][j].setFillColor({0,0,100});
 
             }
         }
