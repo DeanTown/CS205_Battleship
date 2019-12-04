@@ -313,96 +313,141 @@ point Tangle::mouse(int x, int y)
     int windowWidth = 400, windowHeight = 400;
     return point(float(x)/windowWidth, 1.0 - float(y)/windowHeight);
 }
-/*
-Tangle* Tangle::drag(Tangle *sqr, point *mouse)
-{
-    sqr->center.x = mouse->x - 0.1;
-    sqr->pts[0].y = mouse->y - 0.1;
-    sqr->pts[1].x = mouse->x + 0.1;
-    sqr->pts[1].y = mouse->y - 0.1;
 
-    sqr->pts[3].x = mouse->x - 0.1;
-    sqr->pts[3].y = mouse->y + 0.1;
-
-    sqr->pts[2].x = mouse->x + 0.1;
-    sqr->pts[2].y = mouse->y + 0.1;
-
-    return sqr;
+void Tangle::squarePierce(Tangle t, int x, int y){
+    t.setDimensions(20,20);
+    t.setCenter(x,y);
+    t.setFillColor(0,255,0);
+    t.draw();
 }
-*/
-//bool isOverlappingTangle(const std::unique_ptr<Shape> &s, const Tangle &r) {
-//    if (s->getType() == 't') {
-//        return r.isOverlappingTangle(dynamic_cast<Tangle&>(*s));
-//    } else {
-//        return isOverlappingTangleCircle(r, dynamic_cast<Circle&>(*s));
-//    }
-//}
 
-//
-///******************** Triangle class ********************/
-//
-//Triangle::Triangle() : Shape(), length(0), width(0) { }
-//
-//Triangle::Triangle(double l, double w) : Shape() {
-//    setDimensions(l, w);
-//}
-//
-//Triangle::Triangle(double l, double w, color b, color f, point c) : Shape(c, b, f) {
-//    setDimensions(l, w);
-//}
-//
-//Triangle::Triangle(double l, double w, point c, point boardCell) {
-//    setDimensions(l, w);
-//    setCenter(c);
-//    this->boardCell = boardCell;
-//}
-//
-//double Triangle::getLength() const {
-//    return length;
-//}
-//
-//double Triangle::getWidth() const {
-//    return width;
-//}
-//
-//point Triangle::getBoardCell() const {
-//    return boardCell;
-//}
-//
-//void Triangle::setDimensions(double l, double w) {
-//    // we don't want to accept negative values for length and width
-//    length = (l < 0) ? 0 : l;
-//    width = (w < 0) ? 0 : w;
-//    // update area and perimeter
-//
-//}
-//
-//void Triangle::draw() const {
-//    // draw fill
-//    glColor3f(fill.red, fill.green, fill.blue);
-//    glBegin(GL_TRIANGLES);
-//
-//    glVertex2f(300.0,210.0);
-//    glVertex2f(340.0,215.0);
-//    glVertex2f(320.0,250.0);
-//    glEnd();
-//}
-//
-//bool Triangle::isOverlapping(const point &p) const {
-//    return (p.x >= center.x-(width/2.0) && // left side
-//            p.x <= center.x+(width/2.0) && // right side
-//            p.y >= center.y-(length/2.0) && // top
-//            p.y <= center.y+(length/2.0)); // bottom
-//}
-//
-//bool Triangle::isOverlappingTriangle(const Triangle &trian) const {
-//    return !(center.x+(width/2.0) < trian.center.x-(trian.width/2.0) || // self is left of rectangle
-//                                                                        trian.center.x+(trian.width/2.0) < center.x-(width/2.0) || // rectangle is left of self
-//             center.y-(length/2.0) > trian.center.y+(trian.length/2.0) || // self is below rectangle
-//                                                                          trian.center.y-(trian.length/2.0) > center.y+(length/2.0)); // rectangle is below self
-//}
-//point Triangle::mouse(int x, int y)
-//{
-//    int windowWidth = 400, windowHeight = 400;
-//    return point(float(x)/windowWidth, 1.0 - float(y)/windowHeight);
-//}
+void Tangle::startingScreen(Tangle b){
+    b.squarePierce(b,80,100);
+    b.squarePierce(b,80,120);
+    b.squarePierce(b,80,140);
+    b.squarePierce(b,80,160);
+    b.squarePierce(b,80,180);
+
+    b.squarePierce(b,120,100);
+    b.squarePierce(b,120,120);
+    b.squarePierce(b,120,140);
+    b.squarePierce(b,120,160);
+    b.squarePierce(b,120,180);
+
+    b.squarePierce(b,100,100);
+    b.squarePierce(b,100,140);
+    b.squarePierce(b,100,180);
+
+    // A
+    b.squarePierce(b,160,100);
+    b.squarePierce(b,160,120);
+    b.squarePierce(b,160,140);
+    b.squarePierce(b,160,160);
+    b.squarePierce(b,160,180);
+
+    b.squarePierce(b,200,100);
+    b.squarePierce(b,200,120);
+    b.squarePierce(b,200,140);
+    b.squarePierce(b,200,160);
+    b.squarePierce(b,200,180);
+
+    b.squarePierce(b,180,100);
+    b.squarePierce(b,180,140);
+
+    // T
+    b.squarePierce(b,240,100);
+    b.squarePierce(b,260,100);
+    b.squarePierce(b,280,100);
+
+
+    b.squarePierce(b,260,120);
+    b.squarePierce(b,260,140);
+    b.squarePierce(b,260,160);
+    b.squarePierce(b,260,180);
+
+    // T
+    b.squarePierce(b,320,100);
+    b.squarePierce(b,340,100);
+    b.squarePierce(b,360,100);
+
+
+    b.squarePierce(b,340,120);
+    b.squarePierce(b,340,140);
+    b.squarePierce(b,340,160);
+    b.squarePierce(b,340,180);
+
+    // L
+    b.squarePierce(b,400,100);
+    b.squarePierce(b,400,120);
+    b.squarePierce(b,400,140);
+    b.squarePierce(b,400,160);
+    b.squarePierce(b,400,180);
+
+    b.squarePierce(b,420,180);
+    b.squarePierce(b,440,180);
+
+    //E
+    b.squarePierce(b,480,100);
+    b.squarePierce(b,480,120);
+    b.squarePierce(b,480,140);
+    b.squarePierce(b,480,160);
+    b.squarePierce(b,480,180);
+
+    b.squarePierce(b,500,100);
+    b.squarePierce(b,520,100);
+    b.squarePierce(b,500,140);
+    b.squarePierce(b,520,140);
+    b.squarePierce(b,500,180);
+    b.squarePierce(b,520,180);
+
+    // S
+    b.squarePierce(b,560,100);
+    b.squarePierce(b,580,100);
+    b.squarePierce(b,600,100);
+
+    b.squarePierce(b,560,120);
+    b.squarePierce(b,560,140);
+
+    b.squarePierce(b,580,140);
+    b.squarePierce(b,600,140);
+
+    b.squarePierce(b,600,160);
+    b.squarePierce(b,600,180);
+
+    b.squarePierce(b,580,180);
+    b.squarePierce(b,560,180);
+
+    //H
+    b.squarePierce(b,640,100);
+    b.squarePierce(b,640,120);
+    b.squarePierce(b,640,140);
+    b.squarePierce(b,640,160);
+    b.squarePierce(b,640,180);
+
+    b.squarePierce(b,660,140);
+
+    b.squarePierce(b,680,100);
+    b.squarePierce(b,680,120);
+    b.squarePierce(b,680,140);
+    b.squarePierce(b,680,160);
+    b.squarePierce(b,680,180);
+
+    // I
+    b.squarePierce(b,720,100);
+    b.squarePierce(b,720,120);
+    b.squarePierce(b,720,140);
+    b.squarePierce(b,720,160);
+    b.squarePierce(b,720,180);
+
+    // P
+    b.squarePierce(b,760,100);
+    b.squarePierce(b,780,100);
+    b.squarePierce(b,800,100);
+    b.squarePierce(b,760,120);
+    b.squarePierce(b,800,120);
+    b.squarePierce(b,760,140);
+    b.squarePierce(b,780,140);
+    b.squarePierce(b,800,140);
+    b.squarePierce(b,760,160);
+    b.squarePierce(b,760,180);
+}

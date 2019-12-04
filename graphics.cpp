@@ -32,8 +32,13 @@ Tangle legend;
 UserBoard userboard;
 User2Board user2Board;
 Tangle exitButton;
+Tangle exitButton2;
+Tangle exitButton3;
 Tangle infoButton;
 Tangle iMenu;
+Tangle square;
+Tangle playGame;
+Tangle b;
 
 
 Tangle nuke;
@@ -80,10 +85,12 @@ void initGL() {
  whenever the window needs to be re-painted. */
 
 void startMenu(){
+    b.startingScreen(b);
+
     startButton.setDimensions(100, 100);
     startButton.setFillColor(0, 0, 0);
     startButton.setBorderColor(0,255,0);
-    startButton.setCenter(235, 300);
+    startButton.setCenter(450, 300);
 
     startButton.draw();
 
@@ -106,24 +113,16 @@ void startMenu(){
 
     glBegin(GL_TRIANGLES);
 
-    glVertex2f(215,270);
-    glVertex2f(260,300);
-    glVertex2f(215,330);
+    glVertex2f(425,270);
+    glVertex2f(485,300);
+    glVertex2f(425,330);
+
 
     glEnd();
-
-
-    string title = "Battleship";
 
     string help = "?";
     string info = "i";
 
-
-    glColor3f(1.0, 1.0, 1.0);
-    glRasterPos2i(190, 175);
-    for (char c : title) {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
-    }
 
     glColor3f(0, 255, 0);
     glRasterPos2i(25, 35);
@@ -193,17 +192,17 @@ void compStart() {
 }
 
 void helpMenu() {
-    hMenu.setDimensions(160, 400);
+    hMenu.setDimensions(240, 600);
     hMenu.setFillColor(0, 0, 0);
     hMenu.setBorderColor(0,255,0);
-    hMenu.setCenter(250, 180);
+    hMenu.setCenter(470, 235);
 
     hMenu.draw();
 
     exitButton.setDimensions(30, 30);
     exitButton.setFillColor(0, 0, 0);
     exitButton.setBorderColor(0,255,0);
-    exitButton.setCenter(470, 30);
+    exitButton.setCenter(850, 30);
 
     exitButton.draw();
 
@@ -217,55 +216,55 @@ void helpMenu() {
 
 
     glColor3f(0, 255, 0);
-    glRasterPos2i(463, 35);
+    glRasterPos2i(843, 35);
     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, exit);
 
 
     glColor3f(0, 255, 0);
-    glRasterPos2i(230, 130);
+    glRasterPos2i(430, 150);
     for (char c : help) {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
     }
 
     glColor3f(0, 255, 0);
-    glRasterPos2i(60, 160);
+    glRasterPos2i(195, 190);
     for (char c : instructions) {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
     }
     glColor3f(0, 255, 0);
-    glRasterPos2i(60, 175);
+    glRasterPos2i(195, 220);
     for (char c : instructions2) {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
     }
     glColor3f(0, 255, 0);
-    glRasterPos2i(60, 190);
+    glRasterPos2i(195, 250);
     for (char c : instructions3) {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
     }
     glColor3f(0, 255, 0);
-    glRasterPos2i(60, 205);
+    glRasterPos2i(195, 280);
     for (char c : instructions4) {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
     }
     glColor3f(0, 255, 0);
-    glRasterPos2i(60, 220);
+    glRasterPos2i(195, 310);
     for (char c : instructions5) {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
     }
 }
 
 void infoMenu() {
-    iMenu.setDimensions(160, 400);
+    iMenu.setDimensions(200, 600);
     iMenu.setFillColor(0, 0, 0);
     iMenu.setBorderColor(0,255,0);
-    iMenu.setCenter(250, 180);
+    iMenu.setCenter(470, 205);
 
     iMenu.draw();
 
     helpButton.setDimensions(30, 30);
     helpButton.setFillColor(0, 0, 0);
     helpButton.setBorderColor(0,255,0);
-    helpButton.setCenter(470, 30);
+    helpButton.setCenter(850, 30);
 
     helpButton.draw();
 
@@ -275,24 +274,24 @@ void infoMenu() {
     string info3 = "We hope you have fun playing!";
 
     glColor3f(0, 255, 0);
-    glRasterPos2i(463, 35);
+    glRasterPos2i(843, 35);
     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, exit);
 
     glColor3f(0, 255, 0);
-    glRasterPos2i(60, 145);
+    glRasterPos2i(195, 145);
     for (char c : info) {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
     }
 
     glColor3f(0, 255, 0);
-    glRasterPos2i(60, 160);
+    glRasterPos2i(195, 175);
     for (char c : info2) {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
     }
     glColor3f(0, 255, 0);
-    glRasterPos2i(60, 175);
+    glRasterPos2i(195, 205);
     for (char c : info3) {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
     }
 
 }
@@ -306,6 +305,7 @@ void selectPosition() {
     finishPlacing.draw();
 
     string fin="DONE";
+    string rotateString = "*to rotate a ship, select it then click 'r' on your keyboard.";
 
     glColor3f(0,255,0);
     glRasterPos2i(450,350);
@@ -314,11 +314,17 @@ void selectPosition() {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12,c);
     }
 
+    glColor3f(0, 255, 0);
+    glRasterPos2i(50, 415);
+    for (char r : rotateString) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, r);
+    }
+
     if(numOfShipsPlaced<5){
         string message="MUST PLACE ALL SHIPS BEFORE CONTINUING";
 
         glColor3f(0,255,0);
-        glRasterPos2i(500,300);
+        glRasterPos2i(420,300);
 
         for(char c : message){
             glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12,c);
@@ -431,7 +437,7 @@ void display(){
             g.getComputerBoard().draw();
 
             if(g.getComputerBoard().getFleet().sunk() or g.getUserBoard().getFleet().sunk()){
-                screen=menu;
+                screen=bye;
                 if(g.getComputerBoard().getFleet().sunk()){
                     cout<<"USER WON"<<endl;
                 }else{
@@ -444,10 +450,10 @@ void display(){
             nuke.setCenter({600, 500});
             nuke.draw();
 
-            string fin = "PEARL";
+            string fin = "ATTACK";
 
             glColor3f(0, 255, 0);
-            glRasterPos2i(600, 500);
+            glRasterPos2i(570, 500);
             for (char c : fin) {
                 glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
             }
@@ -467,7 +473,7 @@ void display(){
             string fin = "DONE";
 
             glColor3f(0, 255, 0);
-            glRasterPos2i(800, 300);
+            glRasterPos2i(780, 300);
             for (char c : fin) {
                 glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
             }
@@ -477,6 +483,51 @@ void display(){
             break;
         }
         case bye:
+            if(g.getComputerBoard().getFleet().sunk()){
+                // print user won on screen
+                string ending = "USER WON!";
+                glColor3f(0, 255, 0);
+                glRasterPos2i(400, 75);
+                for (char r : ending) {
+                    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, r);
+                }
+
+                // exit button to return to main menu
+                exitButton2.setDimensions(30, 30);
+                exitButton2.setFillColor(0, 0, 0);
+                exitButton2.setBorderColor(0,255,0);
+                exitButton2.setCenter(850, 30);
+
+                exitButton2.draw();
+
+                char exit = 'X';
+                glColor3f(0, 255, 0);
+                glRasterPos2i(843, 35);
+                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, exit);
+
+
+            }else{
+                // print computer won on screen
+                string ending = "COMPUTER WON!";
+                glColor3f(0, 255, 0);
+                glRasterPos2i(400, 75);
+                for (char r : ending) {
+                    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, r);
+                }
+
+                // exit button to return to menu can start new game
+                exitButton3.setDimensions(30, 30);
+                exitButton3.setFillColor(0, 0, 0);
+                exitButton3.setBorderColor(0,255,0);
+                exitButton3.setCenter(850, 30);
+
+                exitButton3.draw();
+
+                char exit = 'X';
+                glColor3f(0, 255, 0);
+                glRasterPos2i(843, 35);
+                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, exit);
+            }
             break;
         case help:
             helpMenu();
@@ -621,9 +672,10 @@ void mouse(int button, int state, int x, int y) {
 //        moveSelected=true;
     }
 
-    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 184 && x < 286 && y > 249 && y < 351 && screen == menu ){
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 399 && x < 501 && y > 249 && y < 351 && screen == menu ){
         screen = mode;
     }
+
 
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 9 && x < 51 && y > 9 && y < 51 && screen == menu ){
         screen = help;
@@ -633,11 +685,15 @@ void mouse(int button, int state, int x, int y) {
         screen = info;
     }
 
-    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 454 && x < 486 && y > 14 && y < 46 && screen == help ){
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 834 && x < 886 && y > 14 && y < 46 && screen == help ){
+        screen = menu;
+    }
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 834 && x < 886 && y > 14 && y < 46 && screen == bye ){
         screen = menu;
     }
 
-    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 454 && x < 486 && y > 14 && y < 46 && screen == info ){
+
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 834 && x < 886 && y > 14 && y < 46 && screen == info ){
         screen = menu;
     }
 
@@ -731,58 +787,6 @@ void mouse(int button, int state, int x, int y) {
 //        point p = g.getUserBoard().cells[5][5].getBoardCell();
 //        g.placeShip(Carrier,p.x,p.y,0);
     }
-
-
-//    if (button == GLUT_LEFT_BUTTON && dragging==false &&state == GLUT_DOWN && fleet.getCarrier().carrierShipTang.isOverlapping({x,y})
-//        && screen == setPlayerOne && fleet.getCarrierStatus() == unselected){
-//        cout << "DRAGGABLE carrier" << endl;
-//        fleet.setCarrierStatus(selected);
-//        wait((int*)1);
-//        dragging=true;
-//    } else if(button == GLUT_LEFT_BUTTON && dragging==true && state == GLUT_DOWN && fleet.getCarrier().carrierShipTang.isOverlapping({x,y})
-//              && screen == setPlayerOne && fleet.getCarrierStatus() == selected) {
-//        cout << "UNSELECTED" << endl;
-//        fleet.setCarrierStatus(unselected);
-//        dragging=false;
-//
-//        //get top or side pos
-//
-//
-//        for (vector<Tangle> row : g.getUserBoard().cells) {
-//            for (Tangle c : row) {
-//                if(fleet.getCarrier().getVert()){
-//                    if (c.isOverlapping({x,y-60})) {
-//                        point p = c.getBoardCell();
-//
-//                        if(g.getUserBoard().checkClear(p.x,p.y,5,2)){
-//                            g.placeShip(Carrier, p.x, p.y,2);
-//                            Ship n= fleet.getCarrier();
-//                            n.carrierShipTang.setDimensions(0,0);
-//                            fleet.setCarrier(n);
-//                            numOfShipsPlaced++;
-//                        }
-//
-//                    }
-//                }else{
-//                    if (c.isOverlapping({x+60,y})) {
-//                        point p = c.getBoardCell();
-//                        if(g.getUserBoard().checkClear(p.x,p.y,5,0)){
-//                            g.placeShip(Carrier, p.x, p.y,0);
-//                            Ship n= fleet.getCarrier();
-//                            n.carrierShipTang.setDimensions(0,0);
-//                            fleet.setCarrier(n);
-//                            numOfShipsPlaced++;
-//                        }
-//
-//                    }
-//                }
-//            }
-//        }
-//
-////        point p = g.getUserBoard().cells[5][5].getBoardCell();
-////        g.placeShip(Carrier,p.x,p.y,0);
-//    }
-
 
     // do if else for battle
     if (button == GLUT_LEFT_BUTTON && dragging==false &&state == GLUT_DOWN && fleet.getBattle().battleShipTang.isOverlapping({x,y})

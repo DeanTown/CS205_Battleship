@@ -163,6 +163,8 @@ public:
 
     point mouse(int x, int y);
 
+    void squarePierce(Tangle t, int x, int y);
+    void startingScreen(Tangle b);
 };
 //
 //class Triangle : public Shape {

@@ -119,7 +119,7 @@ void Ship::drawShip_car(){
 //    int xC = 100;
 //    int yC = 470;
 //    carrierShip.setCenter(xC, yC);
-    carrierShipTang.setFillColor(100,0,0);
+    carrierShipTang.setFillColor(0.4, 0.4, 0.4);
 
     carrierShipTang.draw();
 }
@@ -130,20 +130,20 @@ void Ship::drawShip_battle(){
 //    int xC = 100;
 //    int yC = 470;
 //    carrierShip.setCenter(xC, yC);
-    battleShipTang.setFillColor(100,0,0);
+    battleShipTang.setFillColor(0.4, 0.4, 0.4);
     battleShipTang.draw();
 }
 
 void Ship::drawShip_destroyer(){
-    destroyerShipTang.setFillColor(100,0,0);
+    destroyerShipTang.setFillColor(0.4, 0.4, 0.4);
     destroyerShipTang.draw();
 }
 void Ship::drawShip_cruiser(){
-    cruiserShipTang.setFillColor(100,0,0);
+    cruiserShipTang.setFillColor(0.4, 0.4, 0.4);
     cruiserShipTang.draw();
 }
 void Ship::drawShip_sub(){
-    subShipTang.setFillColor(100,0,0);
+    subShipTang.setFillColor(0.4, 0.4, 0.4);
     subShipTang.draw();
 }
 
