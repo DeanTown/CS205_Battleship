@@ -145,6 +145,7 @@ void Game::placeShip(cellStatus ship, int x, int y, int direction) {
             }
             break;
         case Carrier:
+
             if(userBoard.checkClear(x,y,5,direction)) {
                 userBoard.setBoardValues(Carrier,{x,y},5,direction);
             }

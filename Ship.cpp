@@ -6,9 +6,14 @@
 using namespace std;
 
 /* Constructor */
+
+Ship::Ship(){
+
+}
 Ship::Ship(int size) {
     this->size = size;
     hits=0;
+    isVertical=true;
 
     // set carriers dimensions and starting center position
     // do for each ship
@@ -18,15 +23,30 @@ Ship::Ship(int size) {
     battleShipTang = Tangle(30*4,30);
     battleShipTang.setCenter(145, 470);
 
-    cruiserShipTang = Tangle(30*3,30);
+    cruiserShipTang = Tangle(30*2,30);
     cruiserShipTang.setCenter(190, 470);
 
     subShipTang = Tangle(30*3,30);
     subShipTang.setCenter(235, 470);
 
-    destroyerShipTang = Tangle(30*2,30);
+    destroyerShipTang = Tangle(30*3,30);
     destroyerShipTang.setCenter(280, 470);
 }
+bool Ship::getVert(){
+    return isVertical;
+}
+void Ship::setVert(bool vert){
+    isVertical=vert;
+}
+void Ship::rotate(){
+    if(isVertical){
+        isVertical=false;
+    }else{
+        isVertical=true;
+    }
+}
+
+
 
 /* Getters */
 int Ship::getSize() {
@@ -90,6 +110,7 @@ void Ship::drawShip_car(){
 //    int yC = 470;
 //    carrierShip.setCenter(xC, yC);
     carrierShipTang.setFillColor(100,0,0);
+
     carrierShipTang.draw();
 }
 

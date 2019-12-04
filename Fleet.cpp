@@ -5,7 +5,31 @@
 #include <string>
 #include "Fleet.h"
 
-Fleet::Fleet() {}
+
+Fleet::Fleet(){
+    carrier=Ship(5);
+    battleship=Ship(4);
+    destroyer=Ship(3);
+    sub=Ship(3);
+    cruiser=Ship(2);
+}
+
+void Fleet::setCarrier(Ship sh){
+    carrier=sh;
+
+}
+void Fleet::setCruiser(Ship sh){
+    cruiser=sh;
+}
+void Fleet::setSub(Ship sh){
+    sub=sh;
+}
+void Fleet::setBattle(Ship sh){
+    battleship=sh;
+}
+void Fleet::setDestroyer(Ship sh){
+    destroyer=sh;
+}
 
 void Fleet::setCarrierStatus(status carrierStatus){
     this->carrierStatus = carrierStatus;

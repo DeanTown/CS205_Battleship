@@ -43,6 +43,7 @@ bool draggingD;
 
 void init() {
     dragging=false;
+    fleet=Fleet();
 
     screen= menu;
     width = 900;
@@ -282,7 +283,7 @@ void infoMenu() {
 }
 
 void selectPosition() {
-    userboard.draw(300,300);
+    g.getUserBoard().draw(300,300);
 //    fleet.getCarrier().setCenterY(470);
 //    fleet.getCarrier().setCenterY(140);
     fleet.getCarrier().drawShip_car();
@@ -334,6 +335,9 @@ void display(){
             break;
         case shipPosition:
             selectPosition();
+
+
+
             break;
         case hitSelection:
             hs.draw(width, height);
@@ -368,6 +372,73 @@ void kbd(unsigned char key, int x, int y)
     }
     if (key == 112) {
         g.placePiecesDebug();
+
+    }
+    if (key == 114 && dragging==true) {
+        cout<<"rotate"<<endl;
+
+        if (fleet.getCarrierStatus() == selected) {
+
+
+            int w=fleet.getCarrier().carrierShipTang.getLength();
+            int l=fleet.getCarrier().carrierShipTang.getWidth();
+            Ship n= fleet.getCarrier();
+            n.carrierShipTang.setDimensions(l,w);
+            n.rotate();
+
+
+            fleet.setCarrier(n);
+
+
+
+
+
+        }
+
+        if (fleet.getBattleStatus() == selected) {
+            int w=fleet.getBattle().battleShipTang.getLength();
+            int l=fleet.getBattle().battleShipTang.getWidth();
+
+            Ship n= fleet.getBattle();
+            n.battleShipTang.setDimensions(l,w);
+            n.rotate();
+
+            fleet.setBattle(n);
+        }
+
+        if (fleet.getCruiserStatus() == selected) {
+            int w=fleet.getCruiser().cruiserShipTang.getLength();
+            int l=fleet.getCruiser().cruiserShipTang.getWidth();
+
+            Ship n= fleet.getCruiser();
+            n.cruiserShipTang.setDimensions(l,w);
+            n.rotate();
+
+            fleet.setCruiser(n);
+        }
+
+        if (fleet.getSubStatus() == selected) {
+            int w=fleet.getSub().subShipTang.getLength();
+            int l=fleet.getSub().subShipTang.getWidth();
+
+            Ship n= fleet.getSub();
+            n.subShipTang.setDimensions(l,w);
+            n.rotate();
+
+            fleet.setSub(n);
+        }
+
+        if (fleet.getDestroyerStatus() == selected) {
+            int w=fleet.getDestroyer().destroyerShipTang.getLength();
+            int l=fleet.getDestroyer().destroyerShipTang.getWidth();
+
+            Ship n= fleet.getDestroyer();
+            n.destroyerShipTang.setDimensions(l,w);
+            n.rotate();
+
+            fleet.setDestroyer(n);
+        }
+
 
     }
 
@@ -451,14 +522,39 @@ void mouse(int button, int state, int x, int y) {
         cout << "UNSELECTED" << endl;
         fleet.setCarrierStatus(unselected);
         dragging=false;
+
+        //get top or side pos
+
+
         for (vector<Tangle> row : g.getUserBoard().cells) {
             for (Tangle c : row) {
-                if (c.isOverlapping({x,y})) {
-                    point p = c.getBoardCell();
-                    g.placeShip(Carrier, p.x, p.y,0);
+                if(fleet.getCarrier().getVert()){
+                    if (c.isOverlapping({x,y-60})) {
+                        point p = c.getBoardCell();
+
+                        if(g.getUserBoard().checkClear(p.x,p.y,5,2)){
+                            g.placeShip(Carrier, p.x, p.y,2);
+                            Ship n= fleet.getCarrier();
+                            n.carrierShipTang.setDimensions(0,0);
+                            fleet.setCarrier(n);
+                        }
+
+                    }
+                }else{
+                    if (c.isOverlapping({x+60,y})) {
+                        point p = c.getBoardCell();
+                        if(g.getUserBoard().checkClear(p.x,p.y,5,0)){
+                            g.placeShip(Carrier, p.x, p.y,0);
+                            Ship n= fleet.getCarrier();
+                            n.carrierShipTang.setDimensions(0,0);
+                            fleet.setCarrier(n);
+                        }
+
+                    }
                 }
             }
         }
+
 //        point p = g.getUserBoard().cells[5][5].getBoardCell();
 //        g.placeShip(Carrier,p.x,p.y,0);
     }
@@ -475,7 +571,38 @@ void mouse(int button, int state, int x, int y) {
         cout << "UNSELECTED" << endl;
         fleet.setBattleStatus(unselected);
         dragging=false;
+
+        for (vector<Tangle> row : g.getUserBoard().cells) {
+            for (Tangle c : row) {
+                if(fleet.getBattle().getVert()){
+                    if (c.isOverlapping({x,y-45})) {
+                        point p = c.getBoardCell();
+
+                        if(g.getUserBoard().checkClear(p.x,p.y,4,2)){
+                            g.placeShip(Battleship, p.x, p.y,2);
+                            Ship n= fleet.getBattle();
+                            n.battleShipTang.setDimensions(0,0);
+                            fleet.setBattle(n);
+                        }
+
+                    }
+                }else{
+                    if (c.isOverlapping({x+45,y})) {
+                        point p = c.getBoardCell();
+                        if(g.getUserBoard().checkClear(p.x,p.y,4,0)){
+                            g.placeShip(Battleship, p.x, p.y,0);
+                            Ship n= fleet.getBattle();
+                            n.battleShipTang.setDimensions(0,0);
+                            fleet.setBattle(n);
+                        }
+
+                    }
+                }
+            }
+        }
     }
+
+
 
     // do if else for cruiser
     if (button == GLUT_LEFT_BUTTON && dragging==false &&state == GLUT_DOWN && fleet.getCruiser().cruiserShipTang.isOverlapping({x,y})
@@ -489,6 +616,35 @@ void mouse(int button, int state, int x, int y) {
         cout << "UNSELECTED" << endl;
         fleet.setCruiserStatus(unselected);
         dragging=false;
+
+        for (vector<Tangle> row : g.getUserBoard().cells) {
+            for (Tangle c : row) {
+                if(fleet.getCruiser().getVert()){
+                    if (c.isOverlapping({x,y-15})) {
+                        point p = c.getBoardCell();
+
+                        if(g.getUserBoard().checkClear(p.x,p.y,2,2)){
+                            g.placeShip(Cruiser, p.x, p.y,2);
+                            Ship n= fleet.getCruiser();
+                            n.cruiserShipTang.setDimensions(0,0);
+                            fleet.setCruiser(n);
+                        }
+
+                    }
+                }else{
+                    if (c.isOverlapping({x+15,y})) {
+                        point p = c.getBoardCell();
+                        if(g.getUserBoard().checkClear(p.x,p.y,2,0)){
+                            g.placeShip(Cruiser, p.x, p.y,0);
+                            Ship n= fleet.getCruiser();
+                            n.cruiserShipTang.setDimensions(0,0);
+                            fleet.setCruiser(n);
+                        }
+
+                    }
+                }
+            }
+        }
     }
 
     // do if else for sub
@@ -503,6 +659,35 @@ void mouse(int button, int state, int x, int y) {
         cout << "UNSELECTED" << endl;
         fleet.setSubStatus(unselected);
         dragging=false;
+
+        for (vector<Tangle> row : g.getUserBoard().cells) {
+            for (Tangle c : row) {
+                if(fleet.getSub().getVert()){
+                    if (c.isOverlapping({x,y-30})) {
+                        point p = c.getBoardCell();
+
+                        if(g.getUserBoard().checkClear(p.x,p.y,3,2)){
+                            g.placeShip(Sub, p.x, p.y,2);
+                            Ship n= fleet.getSub();
+                            n.subShipTang.setDimensions(0,0);
+                            fleet.setSub(n);
+                        }
+
+                    }
+                }else{
+                    if (c.isOverlapping({x+30,y})) {
+                        point p = c.getBoardCell();
+                        if(g.getUserBoard().checkClear(p.x,p.y,3,0)){
+                            g.placeShip(Sub, p.x, p.y,0);
+                            Ship n= fleet.getSub();
+                            n.subShipTang.setDimensions(0,0);
+                            fleet.setSub(n);
+                        }
+
+                    }
+                }
+            }
+        }
     }
 
     // do if else for destroyer
@@ -517,6 +702,34 @@ void mouse(int button, int state, int x, int y) {
         cout << "UNSELECTED" << endl;
         fleet.setDestroyerStatus(unselected);
         dragging=false;
+        for (vector<Tangle> row : g.getUserBoard().cells) {
+            for (Tangle c : row) {
+                if(fleet.getDestroyer().getVert()){
+                    if (c.isOverlapping({x,y-30})) {
+                        point p = c.getBoardCell();
+
+                        if(g.getUserBoard().checkClear(p.x,p.y,3,2)){
+                            g.placeShip(Destroyer, p.x, p.y,2);
+                            Ship n= fleet.getDestroyer();
+                            n.destroyerShipTang.setDimensions(0,0);
+                            fleet.setDestroyer(n);
+                        }
+
+                    }
+                }else{
+                    if (c.isOverlapping({x+30,y})) {
+                        point p = c.getBoardCell();
+                        if(g.getUserBoard().checkClear(p.x,p.y,3,0)){
+                            g.placeShip(Destroyer, p.x, p.y,0);
+                            Ship n= fleet.getDestroyer();
+                            n.destroyerShipTang.setDimensions(0,0);
+                            fleet.setDestroyer(n);
+                        }
+
+                    }
+                }
+            }
+        }
     }
 
 

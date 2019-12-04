@@ -21,18 +21,29 @@ private:
     status cruiserStatus;
     status subStatus;
     status destroyerStatus;
+
+    Ship carrier;
+    Ship battleship;
+    Ship destroyer;
+    Ship sub;
+    Ship cruiser;
+
 public:
-    Ship carrier = Ship(5);
-    Ship battleship = Ship(4);
-    Ship destroyer = Ship(3);
-    Ship sub = Ship(3);
-    Ship cruiser = Ship(2);
+
+
 
     Ship getCarrier();
     Ship getBattle();
     Ship getDestroyer();
     Ship getSub();
     Ship getCruiser();
+
+    void setCarrier(Ship sh);
+    void setCruiser(Ship sh);
+    void setSub(Ship sh);
+    void setBattle(Ship sh);
+    void setDestroyer(Ship sh);
+
 
     void setCarrierStatus(status carrierStatus);
     status getCarrierStatus();
@@ -50,6 +61,7 @@ public:
     status getCruiserStatus();
 
     Fleet();
+
     void updateShip(int ship);
     bool sunk();
     void dragCarrier(int x, int y);

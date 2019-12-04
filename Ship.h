@@ -21,13 +21,19 @@ private:
     bool destroyed;
     Point shipCenter;
 
+    bool isVertical;
+
+
 public:
     Tangle carrierShipTang;
     Tangle battleShipTang;
     Tangle destroyerShipTang;
     Tangle cruiserShipTang;
     Tangle subShipTang;
+
+
     /* Constructor */
+    Ship();
     Ship(int size);
     /* Getters */
     int getSize();
@@ -35,6 +41,10 @@ public:
     /* Setters */
     void setSize(int s);
     void setDestroyed(bool d);
+
+    bool getVert();
+    void setVert(bool vert);
+    void rotate();
 
     int getCenterX_car() const;
     int getCenterY_car() const;

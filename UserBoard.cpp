@@ -47,6 +47,18 @@ void UserBoard::draw(int width, int height) {
             if(board[i][j] == Carrier) {
                 cell.setFillColor({1,0,0});
             }
+            if(board[i][j] == Cruiser) {
+                cell.setFillColor({1,0,0});
+            }
+            if(board[i][j] == Battleship) {
+                cell.setFillColor({1,0,0});
+            }
+            if(board[i][j] == Sub) {
+                cell.setFillColor({1,0,0});
+            }
+            if(board[i][j] == Destroyer) {
+                cell.setFillColor({1,0,0});
+            }
             cell.draw();
             j++;
         }
@@ -75,19 +87,19 @@ bool UserBoard::compMove() {
 
     switch(lastHit){
         case Carrier:
-            sunk= fleet.carrier.getDestroyed();
+            sunk= fleet.getCarrier().getDestroyed();
             break;
         case Battleship:
-            sunk= fleet.battleship.getDestroyed();
+            sunk= fleet.getBattle().getDestroyed();
             break;
         case Destroyer:
-            sunk= fleet.destroyer.getDestroyed();
+            sunk= fleet.getDestroyer().getDestroyed();
             break;
         case Sub:
-            sunk= fleet.sub.getDestroyed();
+            sunk= fleet.getSub().getDestroyed();
             break;
         case Cruiser:
-            sunk= fleet.cruiser.getDestroyed();
+            sunk= fleet.getCruiser().getDestroyed();
             break;
         default:
             break;
