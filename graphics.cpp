@@ -341,6 +341,52 @@ void selectPosition() {
     fleet.getDestroyer().drawShip_destroyer();
 
 }
+void selectPosition1() {
+    g.getUserBoard().draw(300,300);
+
+    finishPlacing.setDimensions(40,80);
+    finishPlacing.setBorderColor({0,255,0});
+    finishPlacing.setCenter({470,350});
+    finishPlacing.draw();
+
+    string fin="DONE";
+    string rotateString = "*to rotate a ship, select it then click 'r' on your keyboard.";
+
+    glColor3f(0,255,0);
+    glRasterPos2i(450,350);
+
+    for(char c : fin){
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12,c);
+    }
+
+    glColor3f(0, 255, 0);
+    glRasterPos2i(50, 415);
+    for (char r : rotateString) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, r);
+    }
+
+    if(numOfShipsPlaced<5){
+        string message="MUST PLACE ALL SHIPS BEFORE CONTINUING";
+
+        glColor3f(0,255,0);
+        glRasterPos2i(420,300);
+
+        for(char c : message){
+            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12,c);
+        }
+    }
+
+
+
+
+    fleet.getCarrier().drawShip_car();
+    fleet.getBattle().drawShip_battle();
+    fleet.getCruiser().drawShip_cruiser();
+    fleet.getSub().drawShip_sub();
+    fleet.getDestroyer().drawShip_destroyer();
+
+
+}
 
 void selectPosition2() {
     numOfShipsPlaced = 0;
