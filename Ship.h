@@ -31,6 +31,12 @@ public:
     Tangle cruiserShipTang;
     Tangle subShipTang;
 
+    Tangle carrierShipP2;
+    Tangle battleShipP2;
+    Tangle destroyerShipP2;
+    Tangle cruiserShipP2;
+    Tangle subShipP2;
+
 
     /* Constructor */
     Ship();
@@ -62,6 +68,11 @@ public:
     void drawShip_destroyer();
     void drawShip_cruiser();
     void drawShip_sub();
+    void drawShip_car2();
+    void drawShip_battle2();
+    void drawShip_destroyer2();
+    void drawShip_cruiser2();
+    void drawShip_sub2();
 
 };
 

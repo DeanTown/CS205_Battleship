@@ -70,113 +70,114 @@ void Board::updateShip(cellStatus c) {
     }
 }
 
-void Board::printBoard() {
-    for(int i=0; i< rows ; i++){
-        for(int j=0; j<cols; j++){
+//void Board::printBoard() {
+//    for(int i=0; i< rows ; i++){
+//        for(int j=0; j<cols; j++){
+//
+//            //cout<<cellStatusToString(board[i][j]).substr(0,2)<<cellStatusToString(board[i][j]).substr(cellStatusToString(board[i][j]).length()-3,3)+" ";
+//
+//            switch(board[i][j]){
+//                case Nothing:
+//                    cout<<"o   ";
+//                    break;
+//                case NothingHit:
+//                    cout<<"x   ";
+//                    break;
+//                case Battleship:
+//                    cout<<"b   ";
+//                    break;
+//                case BattleshipHit:
+//                    cout<<"B   ";
+//                    break;
+//                case Cruiser:
+//                    cout<<"cr  ";
+//                    break;
+//                case CruiserHit:
+//                    cout<<"CR  ";
+//                    break;
+//                case Sub:
+//                    cout<<"s   ";
+//                    break;
+//                case SubHit:
+//                    cout<<"S   ";
+//                    break;
+//                case Destroyer:
+//                    cout<<"d   ";
+//                    break;
+//                case DestroyerHit:
+//                    cout<<"D   ";
+//                    break;
+//                case Carrier:
+//                    cout<<"c   ";
+//                    break;
+//                case CarrierHit:
+//                    cout<<"C   ";
+//                    break;
+//                default:
+//                    cout<<"0   ";
+//                    break;
+//
+//            }
+//
+//
+//        }
+//        cout<<"\n";
+//    }
+//}
+//void Board::printHiddenBoard() {
+//    for(int i=0; i< rows ; i++){
+//        for(int j=0; j<cols; j++){
+//
+//
+//            switch(board[i][j]){
+//                case Nothing:
+//                    cout<<"o   ";
+//                    break;
+//                case NothingHit:
+//                    cout<<"+   ";
+//                    break;
+//                case Battleship:
+//                    cout<<"o   ";
+//                    break;
+//                case BattleshipHit:
+//                    cout<<"X   ";
+//                    break;
+//                case Cruiser:
+//                    cout<<"o   ";
+//                    break;
+//                case CruiserHit:
+//                    cout<<"X   ";
+//                    break;
+//                case Sub:
+//                    cout<<"o   ";
+//                    break;
+//                case SubHit:
+//                    cout<<"X   ";
+//                    break;
+//                case Destroyer:
+//                    cout<<"o   ";
+//                    break;
+//                case DestroyerHit:
+//                    cout<<"X   ";
+//                    break;
+//                case Carrier:
+//                    cout<<"o   ";
+//                    break;
+//                case CarrierHit:
+//                    cout<<"X   ";
+//                    break;
+//                default:
+//                    cout<<"0   ";
+//                    break;
+//
+//            }
+//
+//
+//        }
+//        cout<<"\n";
+//    }
+//}
 
-            //cout<<cellStatusToString(board[i][j]).substr(0,2)<<cellStatusToString(board[i][j]).substr(cellStatusToString(board[i][j]).length()-3,3)+" ";
-
-            switch(board[i][j]){
-                case Nothing:
-                    cout<<"o   ";
-                    break;
-                case NothingHit:
-                    cout<<"x   ";
-                    break;
-                case Battleship:
-                    cout<<"b   ";
-                    break;
-                case BattleshipHit:
-                    cout<<"B   ";
-                    break;
-                case Cruiser:
-                    cout<<"cr  ";
-                    break;
-                case CruiserHit:
-                    cout<<"CR  ";
-                    break;
-                case Sub:
-                    cout<<"s   ";
-                    break;
-                case SubHit:
-                    cout<<"S   ";
-                    break;
-                case Destroyer:
-                    cout<<"d   ";
-                    break;
-                case DestroyerHit:
-                    cout<<"D   ";
-                    break;
-                case Carrier:
-                    cout<<"c   ";
-                    break;
-                case CarrierHit:
-                    cout<<"C   ";
-                    break;
-                default:
-                    cout<<"0   ";
-                    break;
-
-            }
-
-
-        }
-        cout<<"\n";
-    }
-}
-void Board::printHiddenBoard() {
-    for(int i=0; i< rows ; i++){
-        for(int j=0; j<cols; j++){
-
-
-            switch(board[i][j]){
-                case Nothing:
-                    cout<<"o   ";
-                    break;
-                case NothingHit:
-                    cout<<"+   ";
-                    break;
-                case Battleship:
-                    cout<<"o   ";
-                    break;
-                case BattleshipHit:
-                    cout<<"X   ";
-                    break;
-                case Cruiser:
-                    cout<<"o   ";
-                    break;
-                case CruiserHit:
-                    cout<<"X   ";
-                    break;
-                case Sub:
-                    cout<<"o   ";
-                    break;
-                case SubHit:
-                    cout<<"X   ";
-                    break;
-                case Destroyer:
-                    cout<<"o   ";
-                    break;
-                case DestroyerHit:
-                    cout<<"X   ";
-                    break;
-                case Carrier:
-                    cout<<"o   ";
-                    break;
-                case CarrierHit:
-                    cout<<"X   ";
-                    break;
-                default:
-                    cout<<"0   ";
-                    break;
-
-            }
-
-
-        }
-        cout<<"\n";
-    }
-}
 int Board::getIntInput(string input){
     input = "";
     int returnVal = 0;
