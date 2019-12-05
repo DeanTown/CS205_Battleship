@@ -925,14 +925,14 @@ void mouse(int button, int state, int x, int y) {
 
     // for carrier
     if (button == GLUT_LEFT_BUTTON && dragging==false &&state == GLUT_DOWN && (fleet.getCarrier().carrierShipTang.isOverlapping({x,y}) || user2fleet.getCarrier().carrierShipTang.isOverlapping({x,y}))
-        && (screen == shipPosition ||screen == setPlayerOne || screen == setPlayerTwo) && (fleet.getCarrierStatus() == unselected || user2fleet.getCarrier2Status() == unselected)){
+        && (screen == shipPosition ||screen == setPlayerOne || screen == setPlayerTwo) && (fleet.getCarrierStatus() == unselected || user2fleet.getCarrierStatus() == unselected)){
         // << "DRAGGABLE carrier" << endl;
         fleet.setCarrierStatus(selected);
         user2fleet.setCarrierStatus(selected);
         wait((int*)1);
         dragging=true;
     } else if(button == GLUT_LEFT_BUTTON && dragging==true && state == GLUT_DOWN && (fleet.getCarrier().carrierShipTang.isOverlapping({x,y}) || user2fleet.getCarrier().carrierShipTang.isOverlapping({x,y}))
-              && (screen == shipPosition ||screen == setPlayerOne || screen == setPlayerTwo) && (fleet.getCarrierStatus() == selected || user2fleet.getCarrier2Status() == selected)) {
+              && (screen == shipPosition ||screen == setPlayerOne || screen == setPlayerTwo) && (fleet.getCarrierStatus() == selected || user2fleet.getCarrierStatus() == selected)) {
         //cout << "UNSELECTED" << endl;
         fleet.setCarrierStatus(unselected);
         user2fleet.setCarrierStatus(unselected);
@@ -1041,14 +1041,14 @@ void mouse(int button, int state, int x, int y) {
 
     // do if else for battle
     if (button == GLUT_LEFT_BUTTON && dragging==false &&state == GLUT_DOWN && (fleet.getBattle().battleShipTang.isOverlapping({x,y}) || user2fleet.getBattle().battleShipTang.isOverlapping({x,y}))
-        && (screen == shipPosition ||screen == setPlayerOne || screen == setPlayerTwo) && (fleet.getBattleStatus() == unselected || user2fleet.getBattle2Status() == unselected)){
+        && (screen == shipPosition ||screen == setPlayerOne || screen == setPlayerTwo) && (fleet.getBattleStatus() == unselected || user2fleet.getBattleStatus() == unselected)){
         //cout << "DRAGGABLE sub" << endl;
         fleet.setBattleStatus(selected);
         user2fleet.setBattleStatus(selected);
         wait((int*)1);
         dragging=true;
     } else if(button == GLUT_LEFT_BUTTON && dragging==true && state == GLUT_DOWN && (fleet.getBattle().battleShipTang.isOverlapping({x,y}) || user2fleet.getBattle().battleShipTang.isOverlapping({x,y}))
-              && (screen == shipPosition ||screen == setPlayerOne || screen == setPlayerTwo) && (fleet.getBattleStatus() == selected || user2fleet.getBattle2Status() == selected)) {
+              && (screen == shipPosition ||screen == setPlayerOne || screen == setPlayerTwo) && (fleet.getBattleStatus() == selected || user2fleet.getBattleStatus() == selected)) {
         //cout << "UNSELECTED" << endl;
         fleet.setBattleStatus(unselected);
         user2fleet.setBattleStatus(unselected);
@@ -1140,7 +1140,7 @@ void mouse(int button, int state, int x, int y) {
                                 pvp.placePlayer2(Battleship, p.x, p.y,0);
                                 Ship n= user2fleet.getBattle();
                                 n.battleShipTang.setDimensions(0,0);
-                                fleet.setBattle(n);
+                                user2fleet.setBattle(n);
                                 numOfShipsPlaced2++;
                             }
 
@@ -1155,14 +1155,14 @@ void mouse(int button, int state, int x, int y) {
 
     // do if else for cruiser
     if (button == GLUT_LEFT_BUTTON && dragging==false &&state == GLUT_DOWN && (fleet.getCruiser().cruiserShipTang.isOverlapping({x,y}) || user2fleet.getCruiser().cruiserShipTang.isOverlapping({x,y}))
-        && (screen == shipPosition ||screen == setPlayerOne || screen == setPlayerTwo) && (fleet.getCruiserStatus() == unselected || user2fleet.getCruiser2Status() == unselected)){
+        && (screen == shipPosition ||screen == setPlayerOne || screen == setPlayerTwo) && (fleet.getCruiserStatus() == unselected || user2fleet.getCruiserStatus() == unselected)){
         //cout << "DRAGGABLE sub" << endl;
         fleet.setCruiserStatus(selected);
         user2fleet.setCruiserStatus(selected);
         wait((int*)1);
         dragging=true;
     } else if(button == GLUT_LEFT_BUTTON && dragging==true && state == GLUT_DOWN && (fleet.getCruiser().cruiserShipTang.isOverlapping({x,y}) || user2fleet.getCruiser().cruiserShipTang.isOverlapping({x,y}))
-              && (screen == shipPosition ||screen == setPlayerOne || screen == setPlayerTwo) && (fleet.getCruiserStatus() == selected || user2fleet.getCruiser2Status() == selected)) {
+              && (screen == shipPosition ||screen == setPlayerOne || screen == setPlayerTwo) && (fleet.getCruiserStatus() == selected || user2fleet.getCruiserStatus() == selected)) {
         //cout << "UNSELECTED" << endl;
         fleet.setCruiserStatus(unselected);
         user2fleet.setCruiserStatus(unselected);
@@ -1266,14 +1266,14 @@ void mouse(int button, int state, int x, int y) {
 
     // do if else for sub
     if (button == GLUT_LEFT_BUTTON && dragging==false &&state == GLUT_DOWN && (fleet.getSub().subShipTang.isOverlapping({x,y}) || user2fleet.getSub().subShipTang.isOverlapping({x,y}))
-        && (screen == shipPosition ||screen == setPlayerOne || screen == setPlayerTwo) && (fleet.getSubStatus() == unselected || user2fleet.getSub2Status() == unselected)){
+        && (screen == shipPosition ||screen == setPlayerOne || screen == setPlayerTwo) && (fleet.getSubStatus() == unselected || user2fleet.getSubStatus() == unselected)){
         //cout << "DRAGGABLE sub" << endl;
         fleet.setSubStatus(selected);
         user2fleet.setSubStatus(selected);
         wait((int*)1);
         dragging=true;
     } else if(button == GLUT_LEFT_BUTTON && dragging==true && state == GLUT_DOWN && (fleet.getSub().subShipTang.isOverlapping({x,y}) || user2fleet.getSub().subShipTang.isOverlapping({x,y}))
-              && (screen == shipPosition ||screen == setPlayerOne || screen == setPlayerTwo) && (fleet.getSubStatus() == selected || user2fleet.getSub2Status() == selected)) {
+              && (screen == shipPosition ||screen == setPlayerOne || screen == setPlayerTwo) && (fleet.getSubStatus() == selected || user2fleet.getSubStatus() == selected)) {
         //cout << "UNSELECTED" << endl;
         fleet.setSubStatus(unselected);
         user2fleet.setSubStatus(unselected);
@@ -1375,14 +1375,14 @@ void mouse(int button, int state, int x, int y) {
 
     // do if else for destroyer
     if (button == GLUT_LEFT_BUTTON && dragging==false &&state == GLUT_DOWN && (fleet.getDestroyer().destroyerShipTang.isOverlapping({x,y}) || user2fleet.getDestroyer().destroyerShipTang.isOverlapping({x,y}))
-        && (screen == shipPosition ||screen == setPlayerOne || screen == setPlayerTwo) && (fleet.getDestroyerStatus() == unselected || user2fleet.getDestroyer2Status() == unselected)){
+        && (screen == shipPosition ||screen == setPlayerOne || screen == setPlayerTwo) && (fleet.getDestroyerStatus() == unselected || user2fleet.getDestroyerStatus() == unselected)){
         //cout << "DRAGGABLE destroyer" << endl;
         fleet.setDestroyerStatus(selected);
         user2fleet.setDestroyerStatus(selected);
         wait((int*)1);
         dragging=true;
     } else if(button == GLUT_LEFT_BUTTON && dragging==true && state == GLUT_DOWN && (fleet.getDestroyer().destroyerShipTang.isOverlapping({x,y}) || user2fleet.getDestroyer().destroyerShipTang.isOverlapping({x,y}))
-              && (screen == shipPosition ||screen == setPlayerOne || screen == setPlayerTwo) && (fleet.getDestroyerStatus() == selected || user2fleet.getDestroyer2Status() == selected)) {
+              && (screen == shipPosition ||screen == setPlayerOne || screen == setPlayerTwo) && (fleet.getDestroyerStatus() == selected || user2fleet.getDestroyerStatus() == selected)) {
         //cout << "UNSELECTED" << endl;
         fleet.setDestroyerStatus(unselected);
         user2fleet.setDestroyerStatus(unselected);
