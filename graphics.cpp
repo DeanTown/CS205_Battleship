@@ -178,17 +178,17 @@ void startMenu(){
 }
 
 void modeMenu(){
-    hhButton.setDimensions(100, 100);
+    hhButton.setDimensions(50, 300);
     hhButton.setFillColor(0, 0, 0);
     hhButton.setBorderColor(0,255,0);
-    hhButton.setCenter(170, 300);
+    hhButton.setCenter(450, 200);
 
     hhButton.draw();
 
-    hcButton.setDimensions(100, 100);
+    hcButton.setDimensions(50, 300);
     hcButton.setFillColor(0, 0, 0);
     hcButton.setBorderColor(0,255,0);
-    hcButton.setCenter(330, 300);
+    hcButton.setCenter(450, 300);
 
     hcButton.draw();
 
@@ -196,16 +196,16 @@ void modeMenu(){
 
     string hcTitle = "vs. Computer";
 
-    glColor3f(1.0, 1.0, 1.0);
-    glRasterPos2i(140, 300);
+    glColor3f(0, 255, 0);
+    glRasterPos2i(400, 207);
     for (char c : hhTitle) {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
     }
 
 
-    glRasterPos2i(293, 300);
+    glRasterPos2i(390, 307);
     for (char c : hcTitle) {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
     }
 
 }
@@ -1145,12 +1145,12 @@ void mouse(int button, int state, int x, int y) {
         screen = menu;
     }
 
-    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 121 && x < 219 && y > 251 && y < 349 && screen == mode ){
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 299 && x < 601 && y > 274 && y < 326 && screen == mode ){
         placing=true;
         screen = setPlayerOne;
     }
 
-    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 281 && x < 381 && y > 249 && y < 351 && screen == mode ){
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 299 && x < 601 && y > 174 && y < 226 && screen == mode ){
         screen = shipPosition;
     }
 
