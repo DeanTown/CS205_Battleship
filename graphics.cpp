@@ -63,7 +63,7 @@ bool moveSelected;
 
 int numOfShipsPlaced, numOfShipsPlaced2;
 
-enum gameState{menu,mode,hhGame,shipPosition,hitSelection,bye,help,info,idleGame,PVP,setPlayerOne, setPlayerTwo};
+enum gameState{menu,mode,hhGame,shipPosition,hitSelection,bye,help,info,idleGame,PVP,setPlayerOne, setPlayerTwo,p2turn,p1turn,p1hs,p2hs,middle};
 
 gameState screen;
 bool dragging;
@@ -545,6 +545,16 @@ void display(){
             break;
         case setPlayerTwo:
             selectPosition2();
+            break;
+        case p1turn:
+            break;
+        case p2turn:
+            break;
+        case p1hs:
+            break;
+        case p2hs:
+            break;
+        case middle:
             break;
         case idleGame: {
             background.draw();
