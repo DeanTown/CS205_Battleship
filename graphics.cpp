@@ -363,6 +363,36 @@ void selectPosition() {
     fleet.getDestroyer().drawShip_destroyer();
 
 }
+
+void resetGame() {
+    board = Board();
+    hs = HitSelection();
+    hsp1 = HitSelection();
+    hsp2 = HitSelection();
+
+    pvc = Game();
+    pvp = Game();
+    userboard = UserBoard();
+    user2Board = UserBoard();
+
+    background=Background();
+
+    hovering=false;
+
+
+    moveSelected=false;
+    dragging=false;
+    numOfShipsPlaced=0;
+    fleet=Fleet();
+    user2fleet=Fleet();
+    screen = menu;
+    fleet.setCarrierStatus(unselected);
+    fleet.setBattleStatus(unselected);
+    fleet.setDestroyerStatus(unselected);
+    fleet.setSubStatus(unselected);
+    fleet.setCruiserStatus(unselected);
+}
+
 void selectPosition1() {
     pvp.getUserBoard().draw(300,300);
 
@@ -834,7 +864,8 @@ void mouse(int button, int state, int x, int y) {
         screen = menu;
     }
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 834 && x < 886 && y > 14 && y < 46 && screen == bye ){
-        screen = menu;
+        resetGame();
+//        screen = menu;
     }
 
 

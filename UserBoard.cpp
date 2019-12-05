@@ -208,12 +208,13 @@ bool UserBoard::compMove() {
     // Check to see if that square has already been clicked
     // if it has, then the move is invalid; return false
     position pos;
-
-    int index= rand()% possiblePositions.size();
-    pos= possiblePositions[index];
-    possiblePositions.erase(possiblePositions.begin()+index);
-    randRow=pos.row;
-    randCol=pos.col;
+    if (possiblePositions.size() > 0) {
+        int index= rand()% possiblePositions.size();
+        pos= possiblePositions[index];
+        possiblePositions.erase(possiblePositions.begin()+index);
+        randRow=pos.row;
+        randCol=pos.col;
+    }
 
     bool sunk=false;
 
