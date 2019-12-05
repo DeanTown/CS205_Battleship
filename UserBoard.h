@@ -25,6 +25,9 @@ public:
     bool humanMove(int row, int col);
     void square(int x, int y);
     void draw(int width, int height);
+    void move(int displace);
+
+    void drawP2game();
 
     bool compMove();
     bool alreadyHit(int row, int col);

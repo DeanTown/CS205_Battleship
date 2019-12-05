@@ -50,6 +50,10 @@ UserBoard Game::getUser2Board() {
     return user2Board;
 }
 
+void Game::setUser2Board(UserBoard temp) {
+    user2Board=temp;
+}
+
 bool Game::userMove(int row, int col){
     return compBoard.userMove(row,col);
 }

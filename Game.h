@@ -25,6 +25,7 @@ public:
     UserBoard getUserBoard();
     UserBoard getUser2Board();
     ComputerBoard getComputerBoard();
+    void setUser2Board(UserBoard temp);
     // Place ship method
     void placeShip(cellStatus ship, int x, int y, int direction);
     void placePlayer2(cellStatus ship, int x, int y, int direction);

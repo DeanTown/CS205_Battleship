@@ -87,6 +87,17 @@ bool UserBoard::humanMove(int row, int col){
     }
     return true;
 }
+
+void UserBoard::move(int displace){
+
+    int i=0;
+    for (vector<Tangle> row : cells) {
+        int j = 0;
+        for (Tangle cell : row) {
+            cell.move(displace,0);
+        }
+    }
+}
 void UserBoard::draw(int width, int height) {
     int i = 0;
     for (vector<Tangle> row : cells) {
@@ -135,6 +146,56 @@ void UserBoard::draw(int width, int height) {
         }
         i++;
     }
+}
+void UserBoard::drawP2game() {
+    int i = 0;
+    for (vector<Tangle> row : cells) {
+        int j = 0;
+        for (Tangle cell : row) {
+            if(board[i][j] == Carrier) {
+                cell.setFillColor({0.4, 0.4, 0.4});
+            }
+            if(board[i][j] == Cruiser) {
+                cell.setFillColor({0.4, 0.4, 0.4});
+            }
+            if(board[i][j] == Battleship) {
+                cell.setFillColor({0.4, 0.4, 0.4});
+            }
+            if(board[i][j] == Sub) {
+                cell.setFillColor({0.4, 0.4, 0.4});
+            }
+            if(board[i][j] == Destroyer) {
+                cell.setFillColor({0.4, 0.4, 0.4});
+            }
+            // if a ship is hit turn red
+            if(board[i][j] == CarrierHit) {
+                cell.setFillColor({1,0,0});
+            }
+            if(board[i][j] == CruiserHit) {
+                cell.setFillColor({1,0,0});
+            }
+            if(board[i][j] == BattleshipHit) {
+                cell.setFillColor({1,0,0});
+            }
+            if(board[i][j] == SubHit) {
+                cell.setFillColor({1,0,0});
+            }
+            if(board[i][j] == DestroyerHit) {
+                cell.setFillColor({1,0,0});
+            }
+            // if nothing is hit turn blue (water)
+            if(board[i][j] == NothingHit) {
+                cell.setFillColor({0,0,1});
+            }
+
+
+            cell.setCenter(cell.getCenter().x+500,cell.getCenter().y);
+            cell.draw();
+            j++;
+        }
+        i++;
+    }
+
 }
 
 

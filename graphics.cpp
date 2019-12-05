@@ -22,6 +22,9 @@ GLdouble width, height;
 int wd;
 Board board;
 HitSelection hs;
+HitSelection hsp1;
+HitSelection hsp2;
+
 Game pvc = Game();
 Game pvp = Game();
 Tangle startButton;
@@ -55,6 +58,7 @@ bool hovering;
 
 
 
+
 bool moveSelected;
 
 int numOfShipsPlaced, numOfShipsPlaced2;
@@ -69,6 +73,7 @@ void init() {
     background=Background();
 
     hovering=false;
+
 
     moveSelected=false;
     dragging=false;
@@ -418,6 +423,15 @@ void selectPosition2() {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12,c);
     }
 
+    string rotateString = "*to rotate a ship, select it then click 'r' on your keyboard.";
+
+    glColor3f(0, 255, 0);
+    glRasterPos2i(50, 415);
+    for (char r : rotateString) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, r);
+    }
+
+
     if(numOfShipsPlaced<5){
         string message="MUST PLACE ALL SHIPS BEFORE CONTINUING";
 
@@ -485,10 +499,17 @@ void display(){
             background.scroll(1);
             selectPosition();
             break;
-        case PVP:
-            pvp.getUserBoard().draw(900,600);
-            pvp.getUserBoard().draw(900,600);
+        case PVP: {
+
+
+            pvp.getUserBoard().draw(900, 600);
+
+            pvp.getUser2Board().drawP2game();
+
+
+
             break;
+        }
         case setPlayerOne:
             selectPosition1();
             break;
@@ -630,126 +651,126 @@ void kbd(unsigned char key, int x, int y)
 
     }
     if (key == 114 && dragging==true) {
-        cout<<"rotate"<<endl;
+        cout << "rotate" << endl;
 
-        if (fleet.getCarrierStatus() == selected) {
-            int w=fleet.getCarrier().carrierShipTang.getLength();
-            int l=fleet.getCarrier().carrierShipTang.getWidth();
-            Ship n= fleet.getCarrier();
-            n.carrierShipTang.setDimensions(l,w);
-            n.rotate();
+        if (screen == setPlayerOne || screen == shipPosition) {
+            if (fleet.getCarrierStatus() == selected) {
+                int w = fleet.getCarrier().carrierShipTang.getLength();
+                int l = fleet.getCarrier().carrierShipTang.getWidth();
+                Ship n = fleet.getCarrier();
+                n.carrierShipTang.setDimensions(l, w);
+                n.rotate();
 
-            fleet.setCarrier(n);
+                fleet.setCarrier(n);
+            }
+
+            if (fleet.getBattleStatus() == selected) {
+                int w = fleet.getBattle().battleShipTang.getLength();
+                int l = fleet.getBattle().battleShipTang.getWidth();
+
+                Ship n = fleet.getBattle();
+                n.battleShipTang.setDimensions(l, w);
+                n.rotate();
+
+                fleet.setBattle(n);
+            }
+
+            if (fleet.getCruiserStatus() == selected) {
+                int w = fleet.getCruiser().cruiserShipTang.getLength();
+                int l = fleet.getCruiser().cruiserShipTang.getWidth();
+
+                Ship n = fleet.getCruiser();
+                n.cruiserShipTang.setDimensions(l, w);
+                n.rotate();
+
+                fleet.setCruiser(n);
+            }
+
+            if (fleet.getSubStatus() == selected) {
+                int w = fleet.getSub().subShipTang.getLength();
+                int l = fleet.getSub().subShipTang.getWidth();
+
+                Ship n = fleet.getSub();
+                n.subShipTang.setDimensions(l, w);
+                n.rotate();
+
+                fleet.setSub(n);
+            }
+
+            if (fleet.getDestroyerStatus() == selected) {
+                int w = fleet.getDestroyer().destroyerShipTang.getLength();
+                int l = fleet.getDestroyer().destroyerShipTang.getWidth();
+
+                Ship n = fleet.getDestroyer();
+                n.destroyerShipTang.setDimensions(l, w);
+                n.rotate();
+
+                fleet.setDestroyer(n);
+            }
+
         }
-
-        if (fleet.getBattleStatus() == selected) {
-            int w=fleet.getBattle().battleShipTang.getLength();
-            int l=fleet.getBattle().battleShipTang.getWidth();
-
-            Ship n= fleet.getBattle();
-            n.battleShipTang.setDimensions(l,w);
-            n.rotate();
-
-            fleet.setBattle(n);
-        }
-
-        if (fleet.getCruiserStatus() == selected) {
-            int w=fleet.getCruiser().cruiserShipTang.getLength();
-            int l=fleet.getCruiser().cruiserShipTang.getWidth();
-
-            Ship n= fleet.getCruiser();
-            n.cruiserShipTang.setDimensions(l,w);
-            n.rotate();
-
-            fleet.setCruiser(n);
-        }
-
-        if (fleet.getSubStatus() == selected) {
-            int w=fleet.getSub().subShipTang.getLength();
-            int l=fleet.getSub().subShipTang.getWidth();
-
-            Ship n= fleet.getSub();
-            n.subShipTang.setDimensions(l,w);
-            n.rotate();
-
-            fleet.setSub(n);
-        }
-
-        if (fleet.getDestroyerStatus() == selected) {
-            int w=fleet.getDestroyer().destroyerShipTang.getLength();
-            int l=fleet.getDestroyer().destroyerShipTang.getWidth();
-
-            Ship n= fleet.getDestroyer();
-            n.destroyerShipTang.setDimensions(l,w);
-            n.rotate();
-
-            fleet.setDestroyer(n);
-        }
-
 
 
 
 //////////////////////////////////////////////
 
+        else if (screen == setPlayerTwo) {
+            if (user2fleet.getCarrierStatus() == selected) {
+                int w = user2fleet.getCarrier().carrierShipTang.getLength();
+                int l = user2fleet.getCarrier().carrierShipTang.getWidth();
+                Ship n = user2fleet.getCarrier();
+                n.carrierShipTang.setDimensions(l, w);
+                n.rotate();
 
+                user2fleet.setCarrier(n);
+            }
 
+            if (user2fleet.getBattleStatus() == selected) {
+                int w = user2fleet.getBattle().battleShipTang.getLength();
+                int l = user2fleet.getBattle().battleShipTang.getWidth();
 
-        if (user2fleet.getCarrierStatus() == selected) {
-            int w=user2fleet.getCarrier().carrierShipTang.getLength();
-            int l=user2fleet.getCarrier().carrierShipTang.getWidth();
-            Ship n= user2fleet.getCarrier();
-            n.carrierShipTang.setDimensions(l,w);
-            n.rotate();
+                Ship n = user2fleet.getBattle();
+                n.battleShipTang.setDimensions(l, w);
+                n.rotate();
 
-            user2fleet.setCarrier(n);
+                user2fleet.setBattle(n);
+            }
+
+            if (user2fleet.getCruiserStatus() == selected) {
+                int w = user2fleet.getCruiser().cruiserShipTang.getLength();
+                int l = user2fleet.getCruiser().cruiserShipTang.getWidth();
+
+                Ship n = user2fleet.getCruiser();
+                n.cruiserShipTang.setDimensions(l, w);
+                n.rotate();
+
+                user2fleet.setCruiser(n);
+            }
+
+            if (user2fleet.getSubStatus() == selected) {
+                int w = user2fleet.getSub().subShipTang.getLength();
+                int l = user2fleet.getSub().subShipTang.getWidth();
+
+                Ship n = user2fleet.getSub();
+                n.subShipTang.setDimensions(l, w);
+                n.rotate();
+
+                user2fleet.setSub(n);
+            }
+
+            if (user2fleet.getDestroyerStatus() == selected) {
+                int w = user2fleet.getDestroyer().destroyerShipTang.getLength();
+                int l = user2fleet.getDestroyer().destroyerShipTang.getWidth();
+
+                Ship n = user2fleet.getDestroyer();
+                n.destroyerShipTang.setDimensions(l, w);
+                n.rotate();
+
+                user2fleet.setDestroyer(n);
+            }
+
         }
-
-        if (user2fleet.getBattleStatus() == selected) {
-            int w=user2fleet.getBattle().battleShipTang.getLength();
-            int l=user2fleet.getBattle().battleShipTang.getWidth();
-
-            Ship n= user2fleet.getBattle();
-            n.battleShipTang.setDimensions(l,w);
-            n.rotate();
-
-            user2fleet.setBattle(n);
-        }
-
-        if (user2fleet.getCruiserStatus() == selected) {
-            int w=user2fleet.getCruiser().cruiserShipTang.getLength();
-            int l=user2fleet.getCruiser().cruiserShipTang.getWidth();
-
-            Ship n= user2fleet.getCruiser();
-            n.cruiserShipTang.setDimensions(l,w);
-            n.rotate();
-
-            user2fleet.setCruiser(n);
-        }
-
-        if (user2fleet.getSubStatus() == selected) {
-            int w=user2fleet.getSub().subShipTang.getLength();
-            int l=user2fleet.getSub().subShipTang.getWidth();
-
-            Ship n= user2fleet.getSub();
-            n.subShipTang.setDimensions(l,w);
-            n.rotate();
-
-            user2fleet.setSub(n);
-        }
-
-        if (user2fleet.getDestroyerStatus() == selected) {
-            int w=user2fleet.getDestroyer().destroyerShipTang.getLength();
-            int l=user2fleet.getDestroyer().destroyerShipTang.getWidth();
-
-            Ship n= user2fleet.getDestroyer();
-            n.destroyerShipTang.setDimensions(l,w);
-            n.rotate();
-
-            user2fleet.setDestroyer(n);
-        }
-
     }
-
     glutPostRedisplay();
 }
 
@@ -840,7 +861,7 @@ void mouse(int button, int state, int x, int y) {
     }
 
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 410 && x < 490 && y > 330 && y < 370 && screen == setPlayerTwo && numOfShipsPlaced2==5) {
-        pvp.placePiecesDebug();
+
         screen = PVP;
     }
 
@@ -953,7 +974,7 @@ void mouse(int button, int state, int x, int y) {
                                 Ship n= user2fleet.getCarrier();
                                 n.carrierShipTang.setDimensions(0,0);
                                 user2fleet.setCarrier(n);
-                                numOfShipsPlaced++;
+                                numOfShipsPlaced2++;
                             }
 
                         }
@@ -965,7 +986,7 @@ void mouse(int button, int state, int x, int y) {
                                 Ship n= user2fleet.getCarrier();
                                 n.carrierShipTang.setDimensions(0,0);
                                 user2fleet.setCarrier(n);
-                                numOfShipsPlaced++;
+                                numOfShipsPlaced2++;
                             }
                         }
                     }
@@ -1067,7 +1088,7 @@ void mouse(int button, int state, int x, int y) {
                                 Ship n= user2fleet.getBattle();
                                 n.battleShipTang.setDimensions(0,0);
                                 user2fleet.setBattle(n);
-                                numOfShipsPlaced++;
+                                numOfShipsPlaced2++;
                             }
 
                         }
@@ -1079,7 +1100,7 @@ void mouse(int button, int state, int x, int y) {
                                 Ship n= user2fleet.getBattle();
                                 n.battleShipTang.setDimensions(0,0);
                                 fleet.setBattle(n);
-                                numOfShipsPlaced++;
+                                numOfShipsPlaced2++;
                             }
 
                         }
@@ -1180,7 +1201,7 @@ void mouse(int button, int state, int x, int y) {
                                 Ship n= user2fleet.getCruiser();
                                 n.cruiserShipTang.setDimensions(0,0);
                                 user2fleet.setCruiser(n);
-                                numOfShipsPlaced++;
+                                numOfShipsPlaced2++;
                             }
 
                         }
@@ -1192,7 +1213,7 @@ void mouse(int button, int state, int x, int y) {
                                 Ship n= user2fleet.getCruiser();
                                 n.cruiserShipTang.setDimensions(0,0);
                                 user2fleet.setCruiser(n);
-                                numOfShipsPlaced++;
+                                numOfShipsPlaced2++;
                             }
 
                         }
@@ -1290,7 +1311,7 @@ void mouse(int button, int state, int x, int y) {
                                 Ship n= user2fleet.getSub();
                                 n.subShipTang.setDimensions(0,0);
                                 user2fleet.setSub(n);
-                                numOfShipsPlaced++;
+                                numOfShipsPlaced2++;
                             }
 
                         }
@@ -1302,7 +1323,7 @@ void mouse(int button, int state, int x, int y) {
                                 Ship n= user2fleet.getSub();
                                 n.subShipTang.setDimensions(0,0);
                                 user2fleet.setSub(n);
-                                numOfShipsPlaced++;
+                                numOfShipsPlaced2++;
                             }
                         }
                     }
@@ -1399,7 +1420,7 @@ void mouse(int button, int state, int x, int y) {
                                 Ship n= user2fleet.getDestroyer();
                                 n.destroyerShipTang.setDimensions(0,0);
                                 user2fleet.setDestroyer(n);
-                                numOfShipsPlaced++;
+                                numOfShipsPlaced2++;
                             }
 
                         }
@@ -1411,7 +1432,7 @@ void mouse(int button, int state, int x, int y) {
                                 Ship n= user2fleet.getDestroyer();
                                 n.destroyerShipTang.setDimensions(0,0);
                                 user2fleet.setDestroyer(n);
-                                numOfShipsPlaced++;
+                                numOfShipsPlaced2++;
                             }
                         }
                     }
