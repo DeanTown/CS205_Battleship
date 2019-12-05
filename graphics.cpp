@@ -11,6 +11,7 @@
 #include "UserBoard.h"
 #include "Ship.h"
 #include "Game.h"
+#include "Background.h"
 #include "HitSelection.h"
 #include <sstream>
 #include "UserBoard.h"
@@ -37,7 +38,7 @@ Tangle iMenu;
 Tangle square;
 Tangle playGame;
 Tangle b;
-
+Background background;
 
 Tangle nuke;
 Tangle nukeSelect;
@@ -45,6 +46,10 @@ Tangle nukeSelect;
 Tangle finishPlacing;
 
 Fleet fleet;
+
+bool hovering;
+
+
 
 
 bool moveSelected;
@@ -58,6 +63,10 @@ bool dragging;
 bool draggingD;
 
 void init() {
+    background=Background();
+
+    hovering=false;
+
     moveSelected=false;
     dragging=false;
     numOfShipsPlaced=0;
@@ -87,21 +96,27 @@ void startMenu(){
 
     startButton.setDimensions(100, 100);
     startButton.setFillColor(0, 0, 0);
-    startButton.setBorderColor(0,255,0);
+    if(!hovering){
+        startButton.setBorderColor(0,255,0);
+    }
     startButton.setCenter(450, 300);
 
     startButton.draw();
 
     helpButton.setDimensions(40, 40);
     helpButton.setFillColor(0, 0, 0);
-    helpButton.setBorderColor(0,255,0);
+    if(!hovering){
+        helpButton.setBorderColor(0,255,0);
+    }
     helpButton.setCenter(30, 30);
 
     helpButton.draw();
 
     infoButton.setDimensions(40, 40);
     infoButton.setFillColor(0, 0, 0);
-    infoButton.setBorderColor(0,255,0);
+    if(!hovering){
+        infoButton.setBorderColor(0,255,0);
+    }
     infoButton.setCenter(80, 30);
 
     infoButton.draw();
@@ -368,21 +383,31 @@ void display(){
 //            glVertex2d(90.0,90.0);
 //            glVertex2d(10.0,90.0);
 //            glEnd();
+            background.draw();
+            background.scroll(1);
             startMenu();
             break;
         case mode:
+            background.draw();
+            background.scroll(1);
             modeMenu();
             break;
         case hhGame:
+            background.draw();
+            background.scroll(1);
             humanStart();
             break;
         case shipPosition:
+            background.draw();
+            background.scroll(1);
             selectPosition();
 
 
 
             break;
         case idleGame: {
+            background.draw();
+            background.scroll(1);
             g.getUserBoard().draw(900, 600);
             g.getComputerBoard().draw();
 
@@ -412,6 +437,8 @@ void display(){
             break;
         }
         case hitSelection: {
+            background.draw();
+            background.scroll(1);
             //hs.draw(width, height);
             hs.draw(width, height);
 
@@ -433,6 +460,8 @@ void display(){
             break;
         }
         case bye:
+            background.draw();
+            background.scroll(1);
             if(g.getComputerBoard().getFleet().sunk()){
                 // print user won on screen
                 string ending = "USER WON!";
@@ -480,9 +509,13 @@ void display(){
             }
             break;
         case help:
+            background.draw();
+            background.scroll(1);
             helpMenu();
             break;
         case info:
+            background.draw();
+            background.scroll(1);
             infoMenu();
             break;
 
@@ -941,6 +974,30 @@ void cursor(int x, int y) {
 
     if (fleet.getDestroyerStatus() == selected) {
         fleet.dragDestroyer(x, y);
+    }
+
+
+    //HOVER FUNCTIONS
+    switch(screen){
+        case menu:
+            cout<<x<<y<<endl;
+
+            if (x > 399 && x < 501 && y > 249 && y < 351) {
+                startButton.setBorderColor(0, .5, .5);
+                hovering = true;
+            }else if (x > 9 && x < 51 && y > 9 && y < 51) {
+                helpButton.setBorderColor(0, .5, .5);
+                hovering = true;
+            }else if (x > 59 && x < 101 && y > 9 && y < 51){
+                infoButton.setBorderColor(0,.5,.5);
+                hovering=true;
+
+            }else{
+                hovering=false;
+            }
+
+
+            break;
     }
 
     glutPostRedisplay();
