@@ -1394,6 +1394,8 @@ void mouse(int button, int state, int x, int y) {
 
 void cursor(int x, int y) {
 
+    cout<<x<<"/"<<y<<endl;
+
     if (fleet.getCarrierStatus() == selected && (screen == shipPosition ||screen == setPlayerOne)) {
         fleet.dragCarrier(x, y);
     }

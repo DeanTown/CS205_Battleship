@@ -296,10 +296,10 @@ char Tangle::getType() const {
 }
 
 bool Tangle::isOverlapping(const point &p) const {
-    return (p.x >= center.x-(width/2.0) && // left side
-            p.x <= center.x+(width/2.0) && // right side
-            p.y >= center.y-(length/2.0) && // top
-            p.y <= center.y+(length/2.0)); // bottom
+    return (p.x > center.x-(width/2.0) && // left side
+            p.x < center.x+(width/2.0) && // right side
+            p.y > center.y-(length/2.0) && // top
+            p.y < center.y+(length/2.0)); // bottom
 }
 
 bool Tangle::isOverlappingTangle(const Tangle &rectangle) const {
