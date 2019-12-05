@@ -147,6 +147,35 @@ void UserBoard::draw(int width, int height) {
         i++;
     }
 }
+
+void UserBoard::drawHidden(){
+    int i = 0;
+    for (vector<Tangle> row : cells) {
+        int j = 0;
+        for (Tangle cell : row) {
+            if(board[i][j] == CarrierHit) {
+                cell.setFillColor({1,0,0});
+            }
+            if(board[i][j] == CruiserHit) {
+                cell.setFillColor({1,0,0});
+            }
+            if(board[i][j] == BattleshipHit) {
+                cell.setFillColor({1,0,0});
+            }
+            if(board[i][j] == SubHit) {
+                cell.setFillColor({1,0,0});
+            }
+            if(board[i][j] == DestroyerHit) {
+                cell.setFillColor({1,0,0});
+            }
+            cell.setCenter(cell.getCenter().x+500,cell.getCenter().y);
+            cell.draw();
+            j++;
+
+        }
+        i++;
+    }
+}
 void UserBoard::drawP2game() {
     int i = 0;
     for (vector<Tangle> row : cells) {

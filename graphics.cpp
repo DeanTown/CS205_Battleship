@@ -14,7 +14,6 @@
 #include "Background.h"
 #include "HitSelection.h"
 #include <sstream>
-#include "UserBoard.h"
 
 
 using namespace std;
@@ -25,8 +24,8 @@ HitSelection hs;
 HitSelection hsp1;
 HitSelection hsp2;
 
-Game pvc = Game();
-Game pvp = Game();
+Game pvc;
+Game pvp;
 Tangle startButton;
 Tangle helpButton;
 Tangle hhButton;
@@ -53,7 +52,18 @@ Tangle finishPlacing;
 Fleet fleet;
 Fleet user2fleet;
 
+
+
+Tangle switchTurns;
+Tangle nextTurn;
+
+bool turnP1;
+
 bool hovering;
+bool placing;
+
+bool p1MadeTurn;
+bool p2MadeTurn;
 
 
 
@@ -71,6 +81,8 @@ bool draggingD;
 
 void init() {
     background=Background();
+    pvp=Game();
+    pvc=Game();
 
     hovering=false;
 
@@ -80,6 +92,11 @@ void init() {
     numOfShipsPlaced=0;
     fleet=Fleet();
     user2fleet=Fleet();
+    placing=false;
+
+    turnP1=false;
+    p1MadeTurn=false;
+    p2MadeTurn=false;
 
     screen= menu;
     width = 900;
@@ -391,6 +408,8 @@ void resetGame() {
     fleet.setDestroyerStatus(unselected);
     fleet.setSubStatus(unselected);
     fleet.setCruiserStatus(unselected);
+
+    init();
 }
 
 void selectPosition1() {
@@ -546,16 +565,173 @@ void display(){
         case setPlayerTwo:
             selectPosition2();
             break;
-        case p1turn:
+        case p1turn: {
+            background.draw();
+            background.scroll(1);
+            pvp.getUserBoard().draw(900, 600);
+            pvp.getUser2Board().drawHidden();
+
+            if (pvp.getUser2Board().getFleet().sunk() or pvp.getUserBoard().getFleet().sunk()) {
+                screen = bye;
+                if (pvp.getUserBoard().getFleet().sunk()) {
+                    cout << "USER 1 WON" << endl;
+                } else {
+                    cout << "USER 2 WON" << endl;
+                }
+            }
+
+            nuke.setDimensions(40, 80);
+            nuke.setBorderColor({0, 255, 0});
+            nuke.setCenter({600, 500});
+
+            if(!p1MadeTurn){
+                nuke.draw();
+
+                string fin = "ATTACK";
+
+                glColor3f(0, 255, 0);
+                glRasterPos2i(570, 500);
+                for (char c : fin) {
+                    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+                }
+            }
+
+            nextTurn.setDimensions(40, 80);
+            nextTurn.setBorderColor({0, 255, 0});
+            nextTurn.setCenter({700, 500});
+
+            if(p1MadeTurn){
+                nextTurn.draw();
+
+                string next = "P2 TURN";
+
+                glColor3f(0, 255, 0);
+                glRasterPos2i(670, 500);
+                for (char c : next) {
+                    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+                }
+            }
+
             break;
-        case p2turn:
+        }
+        case p2turn: {
+            background.draw();
+            background.scroll(1);
+            pvp.getUser2Board().draw(900, 600);
+            pvp.getUserBoard().drawHidden();
+
+            if (pvp.getUser2Board().getFleet().sunk() or pvp.getUserBoard().getFleet().sunk()) {
+                screen = bye;
+                if (pvp.getUserBoard().getFleet().sunk()) {
+                    cout << "USER 1 WON" << endl;
+                } else {
+                    cout << "USER 2 WON" << endl;
+                }
+            }
+
+            nuke.setDimensions(40, 80);
+            nuke.setBorderColor({0, 255, 0});
+            nuke.setCenter({600, 500});
+
+            if(!p2MadeTurn){
+                nuke.draw();
+
+                string fin = "ATTACK";
+
+                glColor3f(0, 255, 0);
+                glRasterPos2i(570, 500);
+                for (char c : fin) {
+                    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+                }
+            }
+
+            nextTurn.setDimensions(40, 80);
+            nextTurn.setBorderColor({0, 255, 0});
+            nextTurn.setCenter({700, 500});
+            if(p2MadeTurn){
+                nextTurn.draw();
+
+                string next = "P2 TURN";
+
+                glColor3f(0, 255, 0);
+                glRasterPos2i(670, 500);
+                for (char c : next) {
+                    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+                }
+            }
+
             break;
-        case p1hs:
+        }
+        case p1hs: {
+            background.draw();
+            background.scroll(1);
+            //hs.draw(width, height);
+            hsp1.draw(width, height);
+
+            nukeSelect.setDimensions(40, 80);
+            nukeSelect.setBorderColor({0, 255, 0});
+            nukeSelect.setCenter({800, 300});
+            nukeSelect.draw();
+
+            string fin = "DONE";
+
+            glColor3f(0, 255, 0);
+            glRasterPos2i(780, 300);
+            for (char c : fin) {
+                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+            }
+            // get cell clicked
+            // update hitSelection board
+            //hs.update(g.getComputerBoard());
             break;
-        case p2hs:
+        }
+        case p2hs:{
+            background.draw();
+            background.scroll(1);
+            //hs.draw(width, height);
+            hsp2.draw(width, height);
+
+            nukeSelect.setDimensions(40, 80);
+            nukeSelect.setBorderColor({0, 255, 0});
+            nukeSelect.setCenter({800, 300});
+            nukeSelect.draw();
+
+            string fin = "DONE";
+
+            glColor3f(0, 255, 0);
+            glRasterPos2i(780, 300);
+            for (char c : fin) {
+                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+            }
+            // get cell clicked
+            // update hitSelection board
+            //hs.update(g.getComputerBoard());
             break;
-        case middle:
+        }
             break;
+        case middle: {
+            background.draw();
+            background.scroll(1);
+
+
+            switchTurns.setDimensions(200, 200);
+            switchTurns.setFillColor(0, 0, 0);
+            switchTurns.setBorderColor(0, 255, 0);
+            switchTurns.setCenter(450, 300);
+
+            switchTurns.draw();
+
+            string fin = "HIT ENTER";
+
+            glColor3f(0, 255, 0);
+            glRasterPos2i(400, 300);
+            for (char c : fin) {
+                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
+            }
+
+
+            break;
+        }
         case idleGame: {
             background.draw();
             background.scroll(1);
@@ -617,9 +793,9 @@ void display(){
                 // print user won on screen
                 string ending = "USER WON!";
                 glColor3f(0, 255, 0);
-                glRasterPos2i(400, 75);
+                glRasterPos2i(450, 300);
                 for (char r : ending) {
-                    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, r);
+                    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, r);
                 }
 
                 // exit button to return to main menu
@@ -636,13 +812,56 @@ void display(){
                 glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, exit);
 
 
-            }else{
+            }else if(pvc.getUserBoard().getFleet().sunk()){
                 // print computer won on screen
                 string ending = "COMPUTER WON!";
                 glColor3f(0, 255, 0);
-                glRasterPos2i(400, 75);
+                glRasterPos2i(450, 300);
                 for (char r : ending) {
-                    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, r);
+                    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, r);
+                }
+
+                // exit button to return to menu can start new game
+                exitButton3.setDimensions(30, 30);
+                exitButton3.setFillColor(0, 0, 0);
+                exitButton3.setBorderColor(0,255,0);
+                exitButton3.setCenter(850, 30);
+
+                exitButton3.draw();
+
+                char exit = 'X';
+                glColor3f(0, 255, 0);
+                glRasterPos2i(843, 35);
+                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, exit);
+            }else if(pvp.getUserBoard().getFleet().sunk()){
+                // print computer won on screen
+                string ending = "USER 2 WON!";
+                glColor3f(0, 255, 0);
+                glRasterPos2i(450, 300);
+                for (char r : ending) {
+                    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, r);
+                }
+
+                // exit button to return to menu can start new game
+                exitButton3.setDimensions(30, 30);
+                exitButton3.setFillColor(0, 0, 0);
+                exitButton3.setBorderColor(0,255,0);
+                exitButton3.setCenter(850, 30);
+
+                exitButton3.draw();
+
+                char exit = 'X';
+                glColor3f(0, 255, 0);
+                glRasterPos2i(843, 35);
+                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, exit);
+
+            }else if(pvp.getUser2Board().getFleet().sunk()){
+                // print computer won on screen
+                string ending = "USER 1 WON!";
+                glColor3f(0, 255, 0);
+                glRasterPos2i(450, 300);
+                for (char r : ending) {
+                    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, r);
                 }
 
                 // exit button to return to menu can start new game
@@ -658,6 +877,9 @@ void display(){
                 glRasterPos2i(843, 35);
                 glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, exit);
             }
+
+
+
             break;
         case help:
             background.draw();
@@ -690,6 +912,29 @@ void kbd(unsigned char key, int x, int y)
         pvc.placePiecesDebug();
 
     }
+
+    if(key==13){
+        if (screen == middle){
+
+            if(!placing) {
+                if (turnP1) {
+                    screen = p2turn;
+                    p2MadeTurn = false;
+                    turnP1 = false;
+                } else {
+                    screen = p1turn;
+                    p1MadeTurn = false;
+                    turnP1 = true;
+                }
+            }else{
+                cout<<"switching"<<endl;
+                screen=setPlayerTwo;
+            }
+        }
+
+    }
+
+
     if (key == 114 && dragging==true) {
         cout << "rotate" << endl;
 
@@ -852,9 +1097,26 @@ void mouse(int button, int state, int x, int y) {
             hs.update(pvc.getComputerBoard());
             moveSelected=true;
         }
-        //g.userMove(p.x,p.y);
-//        hs.update(g.getComputerBoard());
-//        moveSelected=true;
+
+    }
+
+    if(button==GLUT_LEFT_BUTTON && state== GLUT_DOWN && screen== p1hs && x> 175 && x<675 && y>50 && y<550 && !moveSelected){
+        point p=hsp1.getCell(x,y);
+
+        if(pvp.user1Move(p.x,p.y)){
+            hsp1.update(pvp.getUser2Board());
+            moveSelected=true;
+        }
+
+    }
+    if(button==GLUT_LEFT_BUTTON && state== GLUT_DOWN && screen== p2hs && x> 175 && x<675 && y>50 && y<550 && !moveSelected){
+        point p=hsp2.getCell(x,y);
+
+        if(pvp.user2Move(p.x,p.y)){
+            hsp2.update(pvp.getUserBoard());
+            moveSelected=true;
+        }
+
     }
 
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 399 && x < 501 && y > 249 && y < 351 && screen == menu ){
@@ -884,6 +1146,7 @@ void mouse(int button, int state, int x, int y) {
     }
 
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 121 && x < 219 && y > 251 && y < 349 && screen == mode ){
+        placing=true;
         screen = setPlayerOne;
     }
 
@@ -897,17 +1160,37 @@ void mouse(int button, int state, int x, int y) {
     }
 
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 410 && x < 490 && y > 330 && y < 370 && screen == setPlayerOne && numOfShipsPlaced==5) {
-        pvp.placePiecesDebug();
-        screen = setPlayerTwo;
+
+        screen = middle;
     }
 
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 410 && x < 490 && y > 330 && y < 370 && screen == setPlayerTwo && numOfShipsPlaced2==5) {
 
-        screen = PVP;
+        screen = p2turn;
+        placing =false;
     }
 
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 560 && x < 640 && y > 480 && y < 520 && screen == idleGame){
         screen = hitSelection;
+    }
+
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 660 && x < 740 && y > 480 && y < 520 && (screen == p1turn)){
+        if(p1MadeTurn){
+            screen=middle;
+        }
+    }
+
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 660 && x < 740 && y > 480 && y < 520 && (screen== p2turn)){
+        if(p2MadeTurn){
+            screen=middle;
+        }
+    }
+
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 560 && x < 640 && y > 480 && y < 520 && screen == p1turn && !p1MadeTurn){
+        screen = p1hs;
+    }
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 560 && x < 640 && y > 480 && y < 520 && screen == p2turn && !p2MadeTurn){
+        screen = p2hs;
     }
 
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 760 && x < 840 && y > 280 && y < 320 && screen == hitSelection && moveSelected){
@@ -915,6 +1198,23 @@ void mouse(int button, int state, int x, int y) {
         pvc.compMove();
         moveSelected=false;
     }
+
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 760 && x < 840 && y > 280 && y < 320 && screen == p1hs && moveSelected){
+        screen = p1turn;
+        p1MadeTurn=true;
+        moveSelected=false;
+    }
+
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 760 && x < 840 && y > 280 && y < 320 && screen == p2hs && moveSelected){
+        screen = p2turn;
+        p2MadeTurn=true;
+
+        moveSelected=false;
+    }
+
+
+
+
 
     // check if cursor is overlapping chip store bool
     // if it is store ship type
@@ -1489,7 +1789,7 @@ void mouse(int button, int state, int x, int y) {
 
 void cursor(int x, int y) {
 
-    //cout<<x<<"/"<<y<<endl;
+    cout<<x<<"/"<<y<<endl;
 
     if (fleet.getCarrierStatus() == selected && (screen == shipPosition ||screen == setPlayerOne)) {
         fleet.dragCarrier(x, y);

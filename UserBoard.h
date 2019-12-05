@@ -28,6 +28,7 @@ public:
     void move(int displace);
 
     void drawP2game();
+    void drawHidden();
 
     bool compMove();
     bool alreadyHit(int row, int col);

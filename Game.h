@@ -30,7 +30,11 @@ public:
     void placeShip(cellStatus ship, int x, int y, int direction);
     void placePlayer2(cellStatus ship, int x, int y, int direction);
     //To Begin and end games
+
     bool userMove(int row, int col);
+    bool user2Move(int row, int col);
+    bool user1Move(int row, int col);
+
     void compMove();
     void placePiecesDebug();
 //    bool startGame();

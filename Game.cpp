@@ -58,6 +58,14 @@ bool Game::userMove(int row, int col){
     return compBoard.userMove(row,col);
 }
 
+bool Game::user1Move(int row, int col){
+    return user2Board.humanMove(row,col);
+}
+
+bool Game::user2Move(int row, int col){
+    return userBoard.humanMove(row,col);
+}
+
 void Game::compMove(){
     userBoard.compMove();
 }

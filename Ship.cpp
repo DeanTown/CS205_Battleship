@@ -28,9 +28,11 @@ Ship::Ship(int size) {
     battleShipP2.setCenter(645,500);
 
     cruiserShipTang = Tangle(30*2,30);
-    cruiserShipTang.setCenter(190, 500);
+    cruiserShipTang.setCenter(280, 500);
+
     cruiserShipP2 = Tangle(30*2,30);
-    cruiserShipP2.setCenter(690,500);
+    cruiserShipP2.setCenter(780,500);
+
 
     subShipTang = Tangle(30*3,30);
     subShipTang.setCenter(235, 500);
@@ -38,9 +40,10 @@ Ship::Ship(int size) {
     subShipP2.setCenter(735,500);
 
     destroyerShipTang = Tangle(30*3,30);
-    destroyerShipTang.setCenter(280, 500);
+    destroyerShipTang.setCenter(190, 500);
+
     destroyerShipP2 = Tangle(30*3,30);
-    destroyerShipP2.setCenter(780,500);
+    destroyerShipP2.setCenter(690,500);
 }
 bool Ship::getVert(){
     return isVertical;
