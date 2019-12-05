@@ -9,7 +9,6 @@
 
 #include "ComputerBoard.h"
 #include "UserBoard.h"
-#include "User2Board.h"
 #include "Ship.h"
 #include "Game.h"
 #include "HitSelection.h"
@@ -22,7 +21,8 @@ GLdouble width, height;
 int wd;
 Board board;
 HitSelection hs;
-Game g = Game();
+Game pvc = Game();
+Game pvp = Game();
 Tangle startButton;
 Tangle helpButton;
 Tangle hhButton;
@@ -30,7 +30,7 @@ Tangle hcButton;
 Tangle hMenu;
 Tangle legend;
 UserBoard userboard;
-User2Board user2Board;
+UserBoard user2Board;
 Tangle exitButton;
 Tangle exitButton2;
 Tangle exitButton3;
@@ -47,11 +47,12 @@ Tangle nukeSelect;
 Tangle finishPlacing;
 
 Fleet fleet;
+Fleet user2fleet;
 
 
 bool moveSelected;
 
-int numOfShipsPlaced;
+int numOfShipsPlaced, numOfShipsPlaced2;
 
 enum gameState{menu,mode,hhGame,shipPosition,hitSelection,bye,help,info,idleGame,PVP,setPlayerOne, setPlayerTwo};
 
@@ -64,6 +65,7 @@ void init() {
     dragging=false;
     numOfShipsPlaced=0;
     fleet=Fleet();
+    user2fleet=Fleet();
 
     screen= menu;
     width = 900;
@@ -297,7 +299,7 @@ void infoMenu() {
 }
 
 void selectPosition() {
-    g.getUserBoard().draw(300,300);
+    pvc.getUserBoard().draw(300,300);
 
     finishPlacing.setDimensions(40,80);
     finishPlacing.setBorderColor({0,255,0});
@@ -342,7 +344,7 @@ void selectPosition() {
 
 }
 void selectPosition1() {
-    g.getUserBoard().draw(300,300);
+    pvp.getUserBoard().draw(300,300);
 
     finishPlacing.setDimensions(40,80);
     finishPlacing.setBorderColor({0,255,0});
@@ -375,10 +377,6 @@ void selectPosition1() {
             glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12,c);
         }
     }
-
-
-
-
     fleet.getCarrier().drawShip_car();
     fleet.getBattle().drawShip_battle();
     fleet.getCruiser().drawShip_cruiser();
@@ -389,8 +387,7 @@ void selectPosition1() {
 }
 
 void selectPosition2() {
-    numOfShipsPlaced = 0;
-    g.getUserBoard().draw(300,300);
+    pvp.getUser2Board().draw(300,300);
 
     finishPlacing.setDimensions(40,80);
     finishPlacing.setBorderColor({0,255,0});
@@ -417,14 +414,11 @@ void selectPosition2() {
         }
     }
 
-
-
-
-    fleet.getCarrier2().drawShip_car2();
-    fleet.getBattle2().drawShip_battle2();
-    fleet.getCruiser2().drawShip_cruiser2();
-    fleet.getSub2().drawShip_sub2();
-    fleet.getDestroyer2().drawShip_destroyer2();
+    user2fleet.getCarrier().drawShip_car();
+    user2fleet.getBattle().drawShip_battle();
+    user2fleet.getCruiser().drawShip_cruiser();
+    user2fleet.getSub().drawShip_sub();
+    user2fleet.getDestroyer().drawShip_destroyer();
 
 }
 
@@ -469,22 +463,22 @@ void display(){
             selectPosition();
             break;
         case PVP:
-            g.getUserBoard().draw(900,600);
-            g.getUser2Board().draw(900,600);
+            pvp.getUserBoard().draw(900,600);
+            pvp.getUserBoard().draw(900,600);
             break;
         case setPlayerOne:
-            selectPosition();
+            selectPosition1();
             break;
         case setPlayerTwo:
             selectPosition2();
             break;
         case idleGame: {
-            g.getUserBoard().draw(900, 600);
-            g.getComputerBoard().draw();
+            pvc.getUserBoard().draw(900, 600);
+            pvc.getComputerBoard().draw();
 
-            if(g.getComputerBoard().getFleet().sunk() or g.getUserBoard().getFleet().sunk()){
+            if(pvc.getComputerBoard().getFleet().sunk() or pvc.getUserBoard().getFleet().sunk()){
                 screen=bye;
-                if(g.getComputerBoard().getFleet().sunk()){
+                if(pvc.getComputerBoard().getFleet().sunk()){
                     cout<<"USER WON"<<endl;
                 }else{
                     cout<<"COMP WON"<<endl;
@@ -529,7 +523,7 @@ void display(){
             break;
         }
         case bye:
-            if(g.getComputerBoard().getFleet().sunk()){
+            if(pvc.getComputerBoard().getFleet().sunk()){
                 // print user won on screen
                 string ending = "USER WON!";
                 glColor3f(0, 255, 0);
@@ -599,7 +593,7 @@ void kbd(unsigned char key, int x, int y)
         exit(0);
     }
     if (key == 112) {
-        g.placePiecesDebug();
+        pvc.placePiecesDebug();
 
     }
     if (key == 114 && dragging==true) {
@@ -613,16 +607,6 @@ void kbd(unsigned char key, int x, int y)
             n.rotate();
 
             fleet.setCarrier(n);
-        }
-
-        if (fleet.getCarrierStatus() == selected) {
-            int w=fleet.getCarrier2().carrierShipP2.getLength();
-            int l=fleet.getCarrier2().carrierShipP2.getWidth();
-            Ship n= fleet.getCarrier2();
-            n.carrierShipP2.setDimensions(l,w);
-            n.rotate();
-
-            fleet.setCarrier2(n);
         }
 
         if (fleet.getBattleStatus() == selected) {
@@ -670,6 +654,67 @@ void kbd(unsigned char key, int x, int y)
         }
 
 
+
+
+//////////////////////////////////////////////
+
+
+
+
+        if (user2fleet.getCarrierStatus() == selected) {
+            int w=user2fleet.getCarrier().carrierShipTang.getLength();
+            int l=user2fleet.getCarrier().carrierShipTang.getWidth();
+            Ship n= user2fleet.getCarrier();
+            n.carrierShipTang.setDimensions(l,w);
+            n.rotate();
+
+            user2fleet.setCarrier(n);
+        }
+
+        if (user2fleet.getBattleStatus() == selected) {
+            int w=user2fleet.getBattle().battleShipTang.getLength();
+            int l=user2fleet.getBattle().battleShipTang.getWidth();
+
+            Ship n= user2fleet.getBattle();
+            n.battleShipTang.setDimensions(l,w);
+            n.rotate();
+
+            user2fleet.setBattle(n);
+        }
+
+        if (user2fleet.getCruiserStatus() == selected) {
+            int w=user2fleet.getCruiser().cruiserShipTang.getLength();
+            int l=user2fleet.getCruiser().cruiserShipTang.getWidth();
+
+            Ship n= user2fleet.getCruiser();
+            n.cruiserShipTang.setDimensions(l,w);
+            n.rotate();
+
+            user2fleet.setCruiser(n);
+        }
+
+        if (user2fleet.getSubStatus() == selected) {
+            int w=user2fleet.getSub().subShipTang.getLength();
+            int l=user2fleet.getSub().subShipTang.getWidth();
+
+            Ship n= user2fleet.getSub();
+            n.subShipTang.setDimensions(l,w);
+            n.rotate();
+
+            user2fleet.setSub(n);
+        }
+
+        if (user2fleet.getDestroyerStatus() == selected) {
+            int w=user2fleet.getDestroyer().destroyerShipTang.getLength();
+            int l=user2fleet.getDestroyer().destroyerShipTang.getWidth();
+
+            Ship n= user2fleet.getDestroyer();
+            n.destroyerShipTang.setDimensions(l,w);
+            n.rotate();
+
+            user2fleet.setDestroyer(n);
+        }
+
     }
 
     glutPostRedisplay();
@@ -709,8 +754,8 @@ void mouse(int button, int state, int x, int y) {
     if(button==GLUT_LEFT_BUTTON && state== GLUT_DOWN && screen== hitSelection && x> 175 && x<675 && y>50 && y<550 && !moveSelected){
         point p=hs.getCell(x,y);
 
-        if(g.userMove(p.x,p.y)){
-            hs.update(g.getComputerBoard());
+        if(pvc.userMove(p.x,p.y)){
+            hs.update(pvc.getComputerBoard());
             moveSelected=true;
         }
         //g.userMove(p.x,p.y);
@@ -752,17 +797,17 @@ void mouse(int button, int state, int x, int y) {
     }
 
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 410 && x < 490 && y > 330 && y < 370 && screen == shipPosition && numOfShipsPlaced==5) {
-        g.placePiecesDebug();
+        pvc.placePiecesDebug();
         screen = idleGame;
     }
 
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 410 && x < 490 && y > 330 && y < 370 && screen == setPlayerOne && numOfShipsPlaced==5) {
-        g.placePiecesDebug();
+        pvp.placePiecesDebug();
         screen = setPlayerTwo;
     }
 
-    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 410 && x < 490 && y > 330 && y < 370 && screen == setPlayerTwo && numOfShipsPlaced==5) {
-        g.placePiecesDebug();
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 410 && x < 490 && y > 330 && y < 370 && screen == setPlayerTwo && numOfShipsPlaced2==5) {
+        pvp.placePiecesDebug();
         screen = PVP;
     }
 
@@ -772,7 +817,7 @@ void mouse(int button, int state, int x, int y) {
 
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 760 && x < 840 && y > 280 && y < 320 && screen == hitSelection && moveSelected){
         screen = idleGame;
-        g.compMove();
+        pvc.compMove();
         moveSelected=false;
     }
 
@@ -784,47 +829,112 @@ void mouse(int button, int state, int x, int y) {
     // select unselect
 
     // for carrier
-    if (button == GLUT_LEFT_BUTTON && dragging==false &&state == GLUT_DOWN && fleet.getCarrier().carrierShipTang.isOverlapping({x,y})
-        && (screen == shipPosition || screen == setPlayerOne) && fleet.getCarrierStatus() == unselected){
+    if (button == GLUT_LEFT_BUTTON && dragging==false &&state == GLUT_DOWN && (fleet.getCarrier().carrierShipTang.isOverlapping({x,y}) || user2fleet.getCarrier().carrierShipTang.isOverlapping({x,y}))
+        && (screen == shipPosition ||screen == setPlayerOne || screen == setPlayerTwo) && (fleet.getCarrierStatus() == unselected || user2fleet.getCarrier2Status() == unselected)){
         cout << "DRAGGABLE carrier" << endl;
         fleet.setCarrierStatus(selected);
+        user2fleet.setCarrierStatus(selected);
         wait((int*)1);
         dragging=true;
-    } else if(button == GLUT_LEFT_BUTTON && dragging==true && state == GLUT_DOWN && fleet.getCarrier().carrierShipTang.isOverlapping({x,y})
-        && (screen == shipPosition || screen == setPlayerOne) && fleet.getCarrierStatus() == selected) {
+    } else if(button == GLUT_LEFT_BUTTON && dragging==true && state == GLUT_DOWN && (fleet.getCarrier().carrierShipTang.isOverlapping({x,y}) || user2fleet.getCarrier().carrierShipTang.isOverlapping({x,y}))
+              && (screen == shipPosition ||screen == setPlayerOne || screen == setPlayerTwo) && (fleet.getCarrierStatus() == selected || user2fleet.getCarrier2Status() == selected)) {
         cout << "UNSELECTED" << endl;
         fleet.setCarrierStatus(unselected);
+        user2fleet.setCarrierStatus(unselected);
         dragging=false;
 
         //get top or side pos
 
 
-        for (vector<Tangle> row : g.getUserBoard().cells) {
-            for (Tangle c : row) {
-                if(fleet.getCarrier().getVert()){
-                    if (c.isOverlapping({x,y-60})) {
-                        point p = c.getBoardCell();
+        if (screen == shipPosition) {
+            for (vector<Tangle> row : pvc.getUserBoard().cells) {
+                for (Tangle c : row) {
+                    if(fleet.getCarrier().getVert()){
+                        if (c.isOverlapping({x,y-60})) {
+                            point p = c.getBoardCell();
 
-                        if(g.getUserBoard().checkClear(p.x,p.y,5,2)){
-                            g.placeShip(Carrier, p.x, p.y,2);
-                            Ship n= fleet.getCarrier();
-                            n.carrierShipTang.setDimensions(0,0);
-                            fleet.setCarrier(n);
-                            numOfShipsPlaced++;
+                            if(pvc.getUserBoard().checkClear(p.x,p.y,5,2)){
+                                pvc.placeShip(Carrier, p.x, p.y,2);
+                                Ship n= fleet.getCarrier();
+                                n.carrierShipTang.setDimensions(0,0);
+                                fleet.setCarrier(n);
+                                numOfShipsPlaced++;
+                            }
+
                         }
+                    }else{
+                        if (c.isOverlapping({x+60,y})) {
+                            point p = c.getBoardCell();
+                            if(pvc.getUserBoard().checkClear(p.x,p.y,5,0)){
+                                pvc.placeShip(Carrier, p.x, p.y,0);
+                                Ship n= fleet.getCarrier();
+                                n.carrierShipTang.setDimensions(0,0);
+                                fleet.setCarrier(n);
+                                numOfShipsPlaced++;
+                            }
 
+                        }
                     }
-                }else{
-                    if (c.isOverlapping({x+60,y})) {
-                        point p = c.getBoardCell();
-                        if(g.getUserBoard().checkClear(p.x,p.y,5,0)){
-                            g.placeShip(Carrier, p.x, p.y,0);
-                            Ship n= fleet.getCarrier();
-                            n.carrierShipTang.setDimensions(0,0);
-                            fleet.setCarrier(n);
-                            numOfShipsPlaced++;
-                        }
+                }
+            }
+        } else if (screen == setPlayerOne) {
+            for (vector<Tangle> row : pvp.getUserBoard().cells) {
+                for (Tangle c : row) {
+                    if(fleet.getCarrier().getVert()){
+                        if (c.isOverlapping({x,y-60})) {
+                            point p = c.getBoardCell();
 
+                            if(pvp.getUserBoard().checkClear(p.x,p.y,5,2)){
+                                pvp.placeShip(Carrier, p.x, p.y,2);
+                                Ship n= fleet.getCarrier();
+                                n.carrierShipTang.setDimensions(0,0);
+                                fleet.setCarrier(n);
+                                numOfShipsPlaced++;
+                            }
+
+                        }
+                    }else{
+                        if (c.isOverlapping({x+60,y})) {
+                            point p = c.getBoardCell();
+                            if(pvp.getUserBoard().checkClear(p.x,p.y,5,0)){
+                                pvp.placeShip(Carrier, p.x, p.y,0);
+                                Ship n= fleet.getCarrier();
+                                n.carrierShipTang.setDimensions(0,0);
+                                fleet.setCarrier(n);
+                                numOfShipsPlaced++;
+                            }
+
+                        }
+                    }
+                }
+            }
+        } else if (screen == setPlayerTwo) {
+            for (vector<Tangle> row : pvp.getUser2Board().cells) {
+                for (Tangle c : row) {
+                    if(user2fleet.getCarrier().getVert()){
+                        if (c.isOverlapping({x,y-60})) {
+                            point p = c.getBoardCell();
+
+                            if(pvp.getUser2Board().checkClear(p.x,p.y,5,2)){
+                                pvp.placePlayer2(Carrier, p.x, p.y,2);
+                                Ship n= user2fleet.getCarrier();
+                                n.carrierShipTang.setDimensions(0,0);
+                                user2fleet.setCarrier(n);
+                                numOfShipsPlaced++;
+                            }
+
+                        }
+                    }else{
+                        if (c.isOverlapping({x+60,y})) {
+                            point p = c.getBoardCell();
+                            if(pvp.getUser2Board().checkClear(p.x,p.y,5,0)){
+                                pvp.placePlayer2(Carrier, p.x, p.y,0);
+                                Ship n= user2fleet.getCarrier();
+                                n.carrierShipTang.setDimensions(0,0);
+                                user2fleet.setCarrier(n);
+                                numOfShipsPlaced++;
+                            }
+                        }
                     }
                 }
             }
@@ -835,44 +945,111 @@ void mouse(int button, int state, int x, int y) {
     }
 
     // do if else for battle
-    if (button == GLUT_LEFT_BUTTON && dragging==false &&state == GLUT_DOWN && fleet.getBattle().battleShipTang.isOverlapping({x,y})
-        && (screen == shipPosition || screen == setPlayerOne) && fleet.getBattleStatus() == unselected){
+    if (button == GLUT_LEFT_BUTTON && dragging==false &&state == GLUT_DOWN && (fleet.getBattle().battleShipTang.isOverlapping({x,y}) || user2fleet.getBattle().battleShipTang.isOverlapping({x,y}))
+        && (screen == shipPosition ||screen == setPlayerOne || screen == setPlayerTwo) && (fleet.getBattleStatus() == unselected || user2fleet.getBattle2Status() == unselected)){
         cout << "DRAGGABLE sub" << endl;
         fleet.setBattleStatus(selected);
+        user2fleet.setBattleStatus(selected);
         wait((int*)1);
         dragging=true;
-    } else if(button == GLUT_LEFT_BUTTON && dragging==true && state == GLUT_DOWN && fleet.getBattle().battleShipTang.isOverlapping({x,y})
-              && (screen == shipPosition || screen == setPlayerOne) && fleet.getBattleStatus() == selected) {
+    } else if(button == GLUT_LEFT_BUTTON && dragging==true && state == GLUT_DOWN && (fleet.getBattle().battleShipTang.isOverlapping({x,y}) || user2fleet.getBattle().battleShipTang.isOverlapping({x,y}))
+              && (screen == shipPosition ||screen == setPlayerOne || screen == setPlayerTwo) && (fleet.getBattleStatus() == selected || user2fleet.getBattle2Status() == selected)) {
         cout << "UNSELECTED" << endl;
         fleet.setBattleStatus(unselected);
+        user2fleet.setBattleStatus(unselected);
+
         dragging=false;
 
-        for (vector<Tangle> row : g.getUserBoard().cells) {
-            for (Tangle c : row) {
-                if(fleet.getBattle().getVert()){
-                    if (c.isOverlapping({x,y-45})) {
-                        point p = c.getBoardCell();
+        if (screen == shipPosition) {
+            for (vector<Tangle> row : pvc.getUserBoard().cells) {
+                for (Tangle c : row) {
+                    if(fleet.getBattle().getVert()){
+                        if (c.isOverlapping({x,y-45})) {
+                            point p = c.getBoardCell();
 
-                        if(g.getUserBoard().checkClear(p.x,p.y,4,2)){
-                            g.placeShip(Battleship, p.x, p.y,2);
-                            Ship n= fleet.getBattle();
-                            n.battleShipTang.setDimensions(0,0);
-                            fleet.setBattle(n);
-                            numOfShipsPlaced++;
+                            if(pvc.getUserBoard().checkClear(p.x,p.y,4,2)){
+                                pvc.placeShip(Battleship, p.x, p.y,2);
+                                Ship n= fleet.getBattle();
+                                n.battleShipTang.setDimensions(0,0);
+                                fleet.setBattle(n);
+                                numOfShipsPlaced++;
+                            }
+
                         }
+                    }else{
+                        if (c.isOverlapping({x+45,y})) {
+                            point p = c.getBoardCell();
+                            if(pvc.getUserBoard().checkClear(p.x,p.y,4,0)){
+                                pvc.placeShip(Battleship, p.x, p.y,0);
+                                Ship n= fleet.getBattle();
+                                n.battleShipTang.setDimensions(0,0);
+                                fleet.setBattle(n);
+                                numOfShipsPlaced++;
+                            }
 
+                        }
                     }
-                }else{
-                    if (c.isOverlapping({x+45,y})) {
-                        point p = c.getBoardCell();
-                        if(g.getUserBoard().checkClear(p.x,p.y,4,0)){
-                            g.placeShip(Battleship, p.x, p.y,0);
-                            Ship n= fleet.getBattle();
-                            n.battleShipTang.setDimensions(0,0);
-                            fleet.setBattle(n);
-                            numOfShipsPlaced++;
-                        }
+                }
+            }
+        } else if (screen == setPlayerOne) {
+            for (vector<Tangle> row : pvp.getUserBoard().cells) {
+                for (Tangle c : row) {
+                    if(fleet.getBattle().getVert()){
+                        if (c.isOverlapping({x,y-45})) {
+                            point p = c.getBoardCell();
 
+                            if(pvp.getUserBoard().checkClear(p.x,p.y,4,2)){
+                                pvp.placeShip(Battleship, p.x, p.y,2);
+                                Ship n= fleet.getBattle();
+                                n.battleShipTang.setDimensions(0,0);
+                                fleet.setBattle(n);
+                                numOfShipsPlaced++;
+                            }
+
+                        }
+                    }else{
+                        if (c.isOverlapping({x+45,y})) {
+                            point p = c.getBoardCell();
+                            if(pvp.getUserBoard().checkClear(p.x,p.y,4,0)){
+                                pvp.placeShip(Battleship, p.x, p.y,0);
+                                Ship n= fleet.getBattle();
+                                n.battleShipTang.setDimensions(0,0);
+                                fleet.setBattle(n);
+                                numOfShipsPlaced++;
+                            }
+
+                        }
+                    }
+                }
+            }
+        }  else if (screen == setPlayerTwo) {
+            for (vector<Tangle> row : pvp.getUser2Board().cells) {
+                for (Tangle c : row) {
+                    if(user2fleet.getBattle().getVert()){
+                        if (c.isOverlapping({x,y-45})) {
+                            point p = c.getBoardCell();
+
+                            if(pvp.getUser2Board().checkClear(p.x,p.y,4,2)){
+                                pvp.placePlayer2(Battleship, p.x, p.y,2);
+                                Ship n= user2fleet.getBattle();
+                                n.battleShipTang.setDimensions(0,0);
+                                user2fleet.setBattle(n);
+                                numOfShipsPlaced++;
+                            }
+
+                        }
+                    }else{
+                        if (c.isOverlapping({x+45,y})) {
+                            point p = c.getBoardCell();
+                            if(pvp.getUser2Board().checkClear(p.x,p.y,4,0)){
+                                pvp.placePlayer2(Battleship, p.x, p.y,0);
+                                Ship n= user2fleet.getBattle();
+                                n.battleShipTang.setDimensions(0,0);
+                                fleet.setBattle(n);
+                                numOfShipsPlaced++;
+                            }
+
+                        }
                     }
                 }
             }
@@ -882,44 +1059,110 @@ void mouse(int button, int state, int x, int y) {
 
 
     // do if else for cruiser
-    if (button == GLUT_LEFT_BUTTON && dragging==false &&state == GLUT_DOWN && fleet.getCruiser().cruiserShipTang.isOverlapping({x,y})
-        && (screen == shipPosition || screen == setPlayerOne) && fleet.getCruiserStatus() == unselected){
+    if (button == GLUT_LEFT_BUTTON && dragging==false &&state == GLUT_DOWN && (fleet.getCruiser().cruiserShipTang.isOverlapping({x,y}) || user2fleet.getCruiser().cruiserShipTang.isOverlapping({x,y}))
+        && (screen == shipPosition ||screen == setPlayerOne || screen == setPlayerTwo) && (fleet.getCruiserStatus() == unselected || user2fleet.getCruiser2Status() == unselected)){
         cout << "DRAGGABLE sub" << endl;
         fleet.setCruiserStatus(selected);
+        user2fleet.setCruiserStatus(selected);
         wait((int*)1);
         dragging=true;
-    } else if(button == GLUT_LEFT_BUTTON && dragging==true && state == GLUT_DOWN && fleet.getCruiser().cruiserShipTang.isOverlapping({x,y})
-              && (screen == shipPosition || screen == setPlayerOne) && fleet.getCruiserStatus() == selected) {
+    } else if(button == GLUT_LEFT_BUTTON && dragging==true && state == GLUT_DOWN && (fleet.getCruiser().cruiserShipTang.isOverlapping({x,y}) || user2fleet.getCruiser().cruiserShipTang.isOverlapping({x,y}))
+              && (screen == shipPosition ||screen == setPlayerOne || screen == setPlayerTwo) && (fleet.getCruiserStatus() == selected || user2fleet.getCruiser2Status() == selected)) {
         cout << "UNSELECTED" << endl;
         fleet.setCruiserStatus(unselected);
+        user2fleet.setCruiserStatus(unselected);
         dragging=false;
 
-        for (vector<Tangle> row : g.getUserBoard().cells) {
-            for (Tangle c : row) {
-                if(fleet.getCruiser().getVert()){
-                    if (c.isOverlapping({x,y-15})) {
-                        point p = c.getBoardCell();
+        if (screen == shipPosition) {
+            for (vector<Tangle> row : pvc.getUserBoard().cells) {
+                for (Tangle c : row) {
+                    if(fleet.getCruiser().getVert()){
+                        if (c.isOverlapping({x,y-15})) {
+                            point p = c.getBoardCell();
 
-                        if(g.getUserBoard().checkClear(p.x,p.y,2,2)){
-                            g.placeShip(Cruiser, p.x, p.y,2);
-                            Ship n= fleet.getCruiser();
-                            n.cruiserShipTang.setDimensions(0,0);
-                            fleet.setCruiser(n);
-                            numOfShipsPlaced++;
+                            if(pvc.getUserBoard().checkClear(p.x,p.y,2,2)){
+                                pvc.placeShip(Cruiser, p.x, p.y,2);
+                                Ship n= fleet.getCruiser();
+                                n.cruiserShipTang.setDimensions(0,0);
+                                fleet.setCruiser(n);
+                                numOfShipsPlaced++;
+                            }
+
                         }
+                    }else{
+                        if (c.isOverlapping({x+15,y})) {
+                            point p = c.getBoardCell();
+                            if(pvc.getUserBoard().checkClear(p.x,p.y,2,0)){
+                                pvc.placeShip(Cruiser, p.x, p.y,0);
+                                Ship n= fleet.getCruiser();
+                                n.cruiserShipTang.setDimensions(0,0);
+                                fleet.setCruiser(n);
+                                numOfShipsPlaced++;
+                            }
 
+                        }
                     }
-                }else{
-                    if (c.isOverlapping({x+15,y})) {
-                        point p = c.getBoardCell();
-                        if(g.getUserBoard().checkClear(p.x,p.y,2,0)){
-                            g.placeShip(Cruiser, p.x, p.y,0);
-                            Ship n= fleet.getCruiser();
-                            n.cruiserShipTang.setDimensions(0,0);
-                            fleet.setCruiser(n);
-                            numOfShipsPlaced++;
-                        }
+                }
+            }
+        } else if (screen == setPlayerOne) {
+            for (vector<Tangle> row : pvp.getUserBoard().cells) {
+                for (Tangle c : row) {
+                    if(fleet.getCruiser().getVert()){
+                        if (c.isOverlapping({x,y-15})) {
+                            point p = c.getBoardCell();
 
+                            if(pvp.getUserBoard().checkClear(p.x,p.y,2,2)){
+                                pvp.placeShip(Cruiser, p.x, p.y,2);
+                                Ship n= fleet.getCruiser();
+                                n.cruiserShipTang.setDimensions(0,0);
+                                fleet.setCruiser(n);
+                                numOfShipsPlaced++;
+                            }
+
+                        }
+                    }else{
+                        if (c.isOverlapping({x+15,y})) {
+                            point p = c.getBoardCell();
+                            if(pvp.getUserBoard().checkClear(p.x,p.y,2,0)){
+                                pvp.placeShip(Cruiser, p.x, p.y,0);
+                                Ship n= fleet.getCruiser();
+                                n.cruiserShipTang.setDimensions(0,0);
+                                fleet.setCruiser(n);
+                                numOfShipsPlaced++;
+                            }
+
+                        }
+                    }
+                }
+            }
+        }  else if (screen == setPlayerTwo) {
+            for (vector<Tangle> row : pvp.getUser2Board().cells) {
+                for (Tangle c : row) {
+                    if(user2fleet.getCruiser().getVert()){
+                        if (c.isOverlapping({x,y-15})) {
+                            point p = c.getBoardCell();
+
+                            if(pvp.getUser2Board().checkClear(p.x,p.y,2,2)){
+                                pvp.placePlayer2(Cruiser, p.x, p.y,2);
+                                Ship n= user2fleet.getCruiser();
+                                n.cruiserShipTang.setDimensions(0,0);
+                                user2fleet.setCruiser(n);
+                                numOfShipsPlaced++;
+                            }
+
+                        }
+                    }else{
+                        if (c.isOverlapping({x+15,y})) {
+                            point p = c.getBoardCell();
+                            if(pvp.getUser2Board().checkClear(p.x,p.y,2,0)){
+                                pvp.placePlayer2(Cruiser, p.x, p.y,0);
+                                Ship n= user2fleet.getCruiser();
+                                n.cruiserShipTang.setDimensions(0,0);
+                                user2fleet.setCruiser(n);
+                                numOfShipsPlaced++;
+                            }
+
+                        }
                     }
                 }
             }
@@ -927,44 +1170,108 @@ void mouse(int button, int state, int x, int y) {
     }
 
     // do if else for sub
-    if (button == GLUT_LEFT_BUTTON && dragging==false &&state == GLUT_DOWN && fleet.getSub().subShipTang.isOverlapping({x,y})
-        && (screen == shipPosition || screen == setPlayerOne) && fleet.getSubStatus() == unselected){
+    if (button == GLUT_LEFT_BUTTON && dragging==false &&state == GLUT_DOWN && (fleet.getSub().subShipTang.isOverlapping({x,y}) || user2fleet.getSub().subShipTang.isOverlapping({x,y}))
+        && (screen == shipPosition ||screen == setPlayerOne || screen == setPlayerTwo) && (fleet.getSubStatus() == unselected || user2fleet.getSub2Status() == unselected)){
         cout << "DRAGGABLE sub" << endl;
         fleet.setSubStatus(selected);
+        user2fleet.setSubStatus(selected);
         wait((int*)1);
         dragging=true;
-    } else if(button == GLUT_LEFT_BUTTON && dragging==true && state == GLUT_DOWN && fleet.getSub().subShipTang.isOverlapping({x,y})
-              && (screen == shipPosition || screen == setPlayerOne) && fleet.getSubStatus() == selected) {
+    } else if(button == GLUT_LEFT_BUTTON && dragging==true && state == GLUT_DOWN && (fleet.getSub().subShipTang.isOverlapping({x,y}) || user2fleet.getSub().subShipTang.isOverlapping({x,y}))
+              && (screen == shipPosition ||screen == setPlayerOne || screen == setPlayerTwo) && (fleet.getSubStatus() == selected || user2fleet.getSub2Status() == selected)) {
         cout << "UNSELECTED" << endl;
         fleet.setSubStatus(unselected);
+        user2fleet.setSubStatus(unselected);
         dragging=false;
 
-        for (vector<Tangle> row : g.getUserBoard().cells) {
-            for (Tangle c : row) {
-                if(fleet.getSub().getVert()){
-                    if (c.isOverlapping({x,y-30})) {
-                        point p = c.getBoardCell();
+        if (screen == shipPosition) {
+            for (vector<Tangle> row : pvc.getUserBoard().cells) {
+                for (Tangle c : row) {
+                    if(fleet.getSub().getVert()){
+                        if (c.isOverlapping({x,y-30})) {
+                            point p = c.getBoardCell();
 
-                        if(g.getUserBoard().checkClear(p.x,p.y,3,2)){
-                            g.placeShip(Sub, p.x, p.y,2);
-                            Ship n= fleet.getSub();
-                            n.subShipTang.setDimensions(0,0);
-                            fleet.setSub(n);
-                            numOfShipsPlaced++;
+                            if(pvc.getUserBoard().checkClear(p.x,p.y,3,2)){
+                                pvc.placeShip(Sub, p.x, p.y,2);
+                                Ship n= fleet.getSub();
+                                n.subShipTang.setDimensions(0,0);
+                                fleet.setSub(n);
+                                numOfShipsPlaced++;
+                            }
+
                         }
+                    }else{
+                        if (c.isOverlapping({x+30,y})) {
+                            point p = c.getBoardCell();
+                            if(pvc.getUserBoard().checkClear(p.x,p.y,3,0)){
+                                pvc.placeShip(Sub, p.x, p.y,0);
+                                Ship n= fleet.getSub();
+                                n.subShipTang.setDimensions(0,0);
+                                fleet.setSub(n);
+                                numOfShipsPlaced++;
+                            }
 
+                        }
                     }
-                }else{
-                    if (c.isOverlapping({x+30,y})) {
-                        point p = c.getBoardCell();
-                        if(g.getUserBoard().checkClear(p.x,p.y,3,0)){
-                            g.placeShip(Sub, p.x, p.y,0);
-                            Ship n= fleet.getSub();
-                            n.subShipTang.setDimensions(0,0);
-                            fleet.setSub(n);
-                            numOfShipsPlaced++;
-                        }
+                }
+            }
+        } else if (screen == setPlayerOne) {
+            for (vector<Tangle> row : pvp.getUserBoard().cells) {
+                for (Tangle c : row) {
+                    if(fleet.getSub().getVert()){
+                        if (c.isOverlapping({x,y-30})) {
+                            point p = c.getBoardCell();
 
+                            if(pvp.getUserBoard().checkClear(p.x,p.y,3,2)){
+                                pvp.placeShip(Sub, p.x, p.y,2);
+                                Ship n= fleet.getSub();
+                                n.subShipTang.setDimensions(0,0);
+                                fleet.setSub(n);
+                                numOfShipsPlaced++;
+                            }
+
+                        }
+                    }else{
+                        if (c.isOverlapping({x+30,y})) {
+                            point p = c.getBoardCell();
+                            if(pvp.getUserBoard().checkClear(p.x,p.y,3,0)){
+                                pvp.placeShip(Sub, p.x, p.y,0);
+                                Ship n= fleet.getSub();
+                                n.subShipTang.setDimensions(0,0);
+                                fleet.setSub(n);
+                                numOfShipsPlaced++;
+                            }
+                        }
+                    }
+                }
+            }
+        }  else if (screen == setPlayerTwo) {
+            for (vector<Tangle> row : pvp.getUser2Board().cells) {
+                for (Tangle c : row) {
+                    if(user2fleet.getSub().getVert()){
+                        if (c.isOverlapping({x,y-30})) {
+                            point p = c.getBoardCell();
+
+                            if(pvp.getUser2Board().checkClear(p.x,p.y,3,2)){
+                                pvp.placePlayer2(Sub, p.x, p.y,2);
+                                Ship n= user2fleet.getSub();
+                                n.subShipTang.setDimensions(0,0);
+                                user2fleet.setSub(n);
+                                numOfShipsPlaced++;
+                            }
+
+                        }
+                    }else{
+                        if (c.isOverlapping({x+30,y})) {
+                            point p = c.getBoardCell();
+                            if(pvp.getUserBoard().checkClear(p.x,p.y,3,0)){
+                                pvp.placeShip(Sub, p.x, p.y,0);
+                                Ship n= user2fleet.getSub();
+                                n.subShipTang.setDimensions(0,0);
+                                user2fleet.setSub(n);
+                                numOfShipsPlaced++;
+                            }
+                        }
                     }
                 }
             }
@@ -972,43 +1279,108 @@ void mouse(int button, int state, int x, int y) {
     }
 
     // do if else for destroyer
-    if (button == GLUT_LEFT_BUTTON && dragging==false &&state == GLUT_DOWN && fleet.getDestroyer().destroyerShipTang.isOverlapping({x,y})
-        && (screen == shipPosition || screen == setPlayerOne) && fleet.getDestroyerStatus() == unselected){
+    if (button == GLUT_LEFT_BUTTON && dragging==false &&state == GLUT_DOWN && (fleet.getDestroyer().destroyerShipTang.isOverlapping({x,y}) || user2fleet.getDestroyer().destroyerShipTang.isOverlapping({x,y}))
+        && (screen == shipPosition ||screen == setPlayerOne || screen == setPlayerTwo) && (fleet.getDestroyerStatus() == unselected || user2fleet.getDestroyer2Status() == unselected)){
         cout << "DRAGGABLE destroyer" << endl;
         fleet.setDestroyerStatus(selected);
+        user2fleet.setDestroyerStatus(selected);
         wait((int*)1);
         dragging=true;
-    } else if(button == GLUT_LEFT_BUTTON && dragging==true && state == GLUT_DOWN && fleet.getDestroyer().destroyerShipTang.isOverlapping({x,y})
-              && (screen == shipPosition || screen == setPlayerOne) && fleet.getDestroyerStatus() == selected) {
+    } else if(button == GLUT_LEFT_BUTTON && dragging==true && state == GLUT_DOWN && (fleet.getDestroyer().destroyerShipTang.isOverlapping({x,y}) || user2fleet.getDestroyer().destroyerShipTang.isOverlapping({x,y}))
+              && (screen == shipPosition ||screen == setPlayerOne || screen == setPlayerTwo) && (fleet.getDestroyerStatus() == selected || user2fleet.getDestroyer2Status() == selected)) {
         cout << "UNSELECTED" << endl;
         fleet.setDestroyerStatus(unselected);
+        user2fleet.setDestroyerStatus(unselected);
         dragging=false;
-        for (vector<Tangle> row : g.getUserBoard().cells) {
-            for (Tangle c : row) {
-                if(fleet.getDestroyer().getVert()){
-                    if (c.isOverlapping({x,y-30})) {
-                        point p = c.getBoardCell();
+        if (screen == shipPosition) {
+            for (vector<Tangle> row : pvc.getUserBoard().cells) {
+                for (Tangle c : row) {
+                    if(fleet.getDestroyer().getVert()){
+                        if (c.isOverlapping({x,y-30})) {
+                            point p = c.getBoardCell();
 
-                        if(g.getUserBoard().checkClear(p.x,p.y,3,2)){
-                            g.placeShip(Destroyer, p.x, p.y,2);
-                            Ship n= fleet.getDestroyer();
-                            n.destroyerShipTang.setDimensions(0,0);
-                            fleet.setDestroyer(n);
-                            numOfShipsPlaced++;
+                            if(pvc.getUserBoard().checkClear(p.x,p.y,3,2)){
+                                pvc.placeShip(Destroyer, p.x, p.y,2);
+                                Ship n= fleet.getDestroyer();
+                                n.destroyerShipTang.setDimensions(0,0);
+                                fleet.setDestroyer(n);
+                                numOfShipsPlaced++;
+                            }
+
                         }
+                    }else{
+                        if (c.isOverlapping({x+30,y})) {
+                            point p = c.getBoardCell();
+                            if(pvc.getUserBoard().checkClear(p.x,p.y,3,0)){
+                                pvc.placeShip(Destroyer, p.x, p.y,0);
+                                Ship n= fleet.getDestroyer();
+                                n.destroyerShipTang.setDimensions(0,0);
+                                fleet.setDestroyer(n);
+                                numOfShipsPlaced++;
+                            }
 
+                        }
                     }
-                }else{
-                    if (c.isOverlapping({x+30,y})) {
-                        point p = c.getBoardCell();
-                        if(g.getUserBoard().checkClear(p.x,p.y,3,0)){
-                            g.placeShip(Destroyer, p.x, p.y,0);
-                            Ship n= fleet.getDestroyer();
-                            n.destroyerShipTang.setDimensions(0,0);
-                            fleet.setDestroyer(n);
-                            numOfShipsPlaced++;
-                        }
+                }
+            }
+        } else if (screen == setPlayerOne){
+            for (vector<Tangle> row : pvp.getUserBoard().cells) {
+                for (Tangle c : row) {
+                    if(fleet.getDestroyer().getVert()){
+                        if (c.isOverlapping({x,y-30})) {
+                            point p = c.getBoardCell();
 
+                            if(pvp.getUserBoard().checkClear(p.x,p.y,3,2)){
+                                pvp.placeShip(Destroyer, p.x, p.y,2);
+                                Ship n= fleet.getDestroyer();
+                                n.destroyerShipTang.setDimensions(0,0);
+                                fleet.setDestroyer(n);
+                                numOfShipsPlaced++;
+                            }
+
+                        }
+                    }else{
+                        if (c.isOverlapping({x+30,y})) {
+                            point p = c.getBoardCell();
+                            if(pvp.getUserBoard().checkClear(p.x,p.y,3,0)){
+                                pvp.placeShip(Destroyer, p.x, p.y,0);
+                                Ship n= fleet.getDestroyer();
+                                n.destroyerShipTang.setDimensions(0,0);
+                                fleet.setDestroyer(n);
+                                numOfShipsPlaced++;
+                            }
+
+                        }
+                    }
+                }
+            }
+        } else if (screen == setPlayerTwo){
+            for (vector<Tangle> row : pvp.getUser2Board().cells) {
+                for (Tangle c : row) {
+                    if(user2fleet.getDestroyer().getVert()){
+                        if (c.isOverlapping({x,y-30})) {
+                            point p = c.getBoardCell();
+
+                            if(pvp.getUser2Board().checkClear(p.x,p.y,3,2)){
+                                pvp.placePlayer2(Destroyer, p.x, p.y,2);
+                                Ship n= user2fleet.getDestroyer();
+                                n.destroyerShipTang.setDimensions(0,0);
+                                user2fleet.setDestroyer(n);
+                                numOfShipsPlaced++;
+                            }
+
+                        }
+                    }else{
+                        if (c.isOverlapping({x+30,y})) {
+                            point p = c.getBoardCell();
+                            if(pvp.getUser2Board().checkClear(p.x,p.y,3,0)){
+                                pvp.placePlayer2(Destroyer, p.x, p.y,0);
+                                Ship n= user2fleet.getDestroyer();
+                                n.destroyerShipTang.setDimensions(0,0);
+                                user2fleet.setDestroyer(n);
+                                numOfShipsPlaced++;
+                            }
+                        }
                     }
                 }
             }
@@ -1016,44 +1388,45 @@ void mouse(int button, int state, int x, int y) {
     }
 
 
-
-
-
-//    while (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && screen == shipPosition ){
-//        cout << x << endl;
-//        cout << y << endl;
-//        fleet.drag(x,y);
-//
-//    }
-//
-
     glutPostRedisplay();
 
 }
 
 void cursor(int x, int y) {
 
-    if (fleet.getCarrierStatus() == selected) {
+    if (fleet.getCarrierStatus() == selected && (screen == shipPosition ||screen == setPlayerOne)) {
         fleet.dragCarrier(x, y);
     }
-    if (fleet.getCarrier2Status() == selected) {
-        fleet.dragCarrier2(x, y);
+    if (user2fleet.getCarrierStatus() == selected && screen == setPlayerTwo) {
+        user2fleet.dragCarrier(x, y);
     }
 
-    if (fleet.getBattleStatus() == selected) {
+    if (fleet.getBattleStatus() == selected && (screen == shipPosition ||screen == setPlayerOne)) {
         fleet.dragBattle(x, y);
     }
+    if (user2fleet.getBattleStatus() == selected && screen == setPlayerTwo) {
+        user2fleet.dragBattle(x, y);
+    }
 
-    if (fleet.getCruiserStatus() == selected) {
+    if (fleet.getCruiserStatus() == selected && (screen == shipPosition ||screen == setPlayerOne)) {
         fleet.dragCruiser(x, y);
     }
-
-    if (fleet.getSubStatus() == selected) {
-        fleet.dragSub(x, y);
+    if (user2fleet.getCruiserStatus() == selected && screen == setPlayerTwo) {
+        user2fleet.dragCruiser(x, y);
     }
 
-    if (fleet.getDestroyerStatus() == selected) {
+    if (fleet.getSubStatus() == selected && (screen == shipPosition ||screen == setPlayerOne)) {
+        fleet.dragSub(x, y);
+    }
+    if (user2fleet.getSubStatus() == selected && screen == setPlayerTwo) {
+        user2fleet.dragSub(x, y);
+    }
+
+    if (fleet.getDestroyerStatus() == selected && (screen == shipPosition ||screen == setPlayerOne)) {
         fleet.dragDestroyer(x, y);
+    }
+    if (user2fleet.getDestroyerStatus() == selected && screen == setPlayerTwo) {
+        user2fleet.dragDestroyer(x, y);
     }
 
     glutPostRedisplay();

@@ -60,6 +60,11 @@ public:
     void setCenterCruiser(int x,int y);
     void setCenterSub(int x,int y);
     void setCenterBattle(int x,int y);
+    void setCenterCarrier2(int x,int y);
+    void setCenterDestroyer2(int x,int y);
+    void setCenterCruiser2(int x,int y);
+    void setCenterSub2(int x,int y);
+    void setCenterBattle2(int x,int y);
     void setCenterY(int y);
 
     void addHit();

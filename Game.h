@@ -6,7 +6,7 @@
 #define CS205_FINALPROJECT_GAME_H
 
 #include "UserBoard.h"
-#include "User2Board.h"
+
 #include "ComputerBoard.h"
 using namespace std;
 
@@ -14,15 +14,16 @@ class Game {
 private:
 
     UserBoard userBoard;
-    User2Board user2Board;
+    UserBoard user2Board;
     ComputerBoard compBoard;
 
 public:
     /* Constructor */
     Game();
+    Game(int i);
     // Get boards
     UserBoard getUserBoard();
-    User2Board getUser2Board();
+    UserBoard getUser2Board();
     ComputerBoard getComputerBoard();
     // Place ship method
     void placeShip(cellStatus ship, int x, int y, int direction);

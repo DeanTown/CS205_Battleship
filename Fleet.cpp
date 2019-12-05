@@ -244,28 +244,28 @@ void Fleet::dragCruiser(int x, int y){
 }
 
 void Fleet::dragCarrier2(int x, int y) {
-    carrier2.setCenterCarrier(x,y);
+    carrier2.setCenterCarrier2(x,y);
 //    carrier.setCenterY(y);
     carrier2.drawShip_car();
 }
 
 void Fleet::dragBattle2(int x, int y){
-    battleship2.setCenterBattle(x,y);
+    battleship2.setCenterBattle2(x,y);
     battleship2.drawShip_battle();
 }
 
 void Fleet::dragDestroyer2(int x, int y){
-    destroyer2.setCenterDestroyer(x,y);
+    destroyer2.setCenterDestroyer2(x,y);
 //    carrier.setCenterY(y);
     destroyer2.drawShip_destroyer();
 }
 
 void Fleet::dragSub2(int x, int y){
-    sub2.setCenterSub(x,y);
+    sub2.setCenterSub2(x,y);
     sub2.drawShip_sub();
 }
 
 void Fleet::dragCruiser2(int x, int y){
-    cruiser2.setCenterCruiser(x,y);
+    cruiser2.setCenterCruiser2(x,y);
     cruiser2.drawShip_cruiser();
 }

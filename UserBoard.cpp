@@ -39,6 +39,54 @@ UserBoard::UserBoard() : Board() {
     }
     lastHit=Nothing;
 }
+
+bool UserBoard::humanMove(int row, int col){
+    // get cell status
+    cellStatus c = board[row][col];
+    // cell contains destroyer
+    if (c == Destroyer) {
+        board[row][col] = DestroyerHit;
+        updateShip(Destroyer);
+        // go into ship class and increment hit
+    } else if (c == DestroyerHit) {
+        return false;
+    }
+    // cell contains sub
+    if (c == Sub) {
+        board[row][col] = SubHit;
+        updateShip(Sub);
+    } else if (c == SubHit) {
+        return false;
+    }
+    // cell contains carrier
+    if (c == Carrier) {
+        board[row][col] = CarrierHit;
+        updateShip(Carrier);
+    } else if (c == CarrierHit) {
+        return false;
+    }
+    // cell contains cruiser
+    if (c == Cruiser) {
+        board[row][col] = CruiserHit;
+        updateShip(Cruiser);
+    } else if (c == CruiserHit) {
+        return false;
+    }
+    // cell contains battleship
+    if (c == Battleship) {
+        board[row][col] = BattleshipHit;
+        updateShip(Battleship);
+    } else if (c == BattleshipHit) {
+        return false;
+    }
+    // cell contains nothing
+    if (c == Nothing) {
+        board[row][col] = NothingHit;
+    } else if (c == NothingHit) {
+        return false;
+    }
+    return true;
+}
 void UserBoard::draw(int width, int height) {
     int i = 0;
     for (vector<Tangle> row : cells) {

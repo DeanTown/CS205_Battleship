@@ -28,8 +28,15 @@ int getIntInput(string input){
 Game::Game(){
     compBoard= ComputerBoard();
     userBoard= UserBoard();
-    user2Board = User2Board();
 }
+
+Game::Game(int i) {
+    userBoard = UserBoard();
+    user2Board = UserBoard();
+
+}
+
+
 
 ComputerBoard Game::getComputerBoard() {
     return compBoard;
@@ -39,7 +46,7 @@ UserBoard Game::getUserBoard() {
     return userBoard;
 }
 
-User2Board Game::getUser2Board() {
+UserBoard Game::getUser2Board() {
     return user2Board;
 }
 

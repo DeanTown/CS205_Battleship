@@ -102,8 +102,25 @@ void Ship::setCenterBattle(int x,int y) {
     battleShipTang.setCenter(x,y);
 }
 
+void Ship::setCenterCarrier2(int x,int y) {
+    carrierShipP2.setCenter(x,y);
+}
 
+void Ship::setCenterDestroyer2(int x,int y) {
+    destroyerShipP2.setCenter(x,y);
+}
 
+void Ship::setCenterCruiser2(int x,int y) {
+    cruiserShipP2.setCenter(x,y);
+}
+
+void Ship::setCenterSub2(int x,int y) {
+    subShipP2.setCenter(x,y);
+}
+
+void Ship::setCenterBattle2(int x,int y) {
+    battleShipP2.setCenter(x,y);
+}
 
 void Ship::setCenterY(int y) {
     shipCenter.y = y;
@@ -120,7 +137,6 @@ void Ship::drawShip_car(){
 //    int yC = 470;
 //    carrierShip.setCenter(xC, yC);
     carrierShipTang.setFillColor(0.4, 0.4, 0.4);
-
     carrierShipTang.draw();
 }
 

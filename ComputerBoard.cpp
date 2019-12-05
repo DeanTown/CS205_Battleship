@@ -25,8 +25,23 @@ ComputerBoard::ComputerBoard(): Board(){
         cells.push_back(temp);
         temp.clear();
     }
-
 }
+
+ComputerBoard::ComputerBoard(int forPlayer2) {
+    Tangle cell;
+    vector<Tangle> temp;
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 10; j++) {
+            point p = {i,j};
+            cell = Tangle(30, 30, {i*30+75,j*30+115},p);
+            cell.setBorderColor(0,100,0);
+            temp.push_back(cell);
+        }
+        cells.push_back(temp);
+        temp.clear();
+    }
+}
+
 void ComputerBoard::draw() {
     int i = 0;
     for (vector<Tangle> row : cells) {
