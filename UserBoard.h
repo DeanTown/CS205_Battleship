@@ -22,6 +22,7 @@ private:
 public:
     vector<vector<Tangle>> cells;
     UserBoard();
+    bool humanMove(int row, int col);
     void square(int x, int y);
     void draw(int width, int height);
 

@@ -12,6 +12,7 @@ private:
 public:
     vector<vector<Tangle>> cells;
     ComputerBoard();
+    ComputerBoard(int forPlayer2);
     bool userMove(int row, int col);
     void placePieces();
     void draw();

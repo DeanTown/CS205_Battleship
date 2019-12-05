@@ -44,8 +44,8 @@ public:
     string cellStatusToString(cellStatus c);
     cellStatus cellStatusUpdater(cellStatus c);
     void updateShip(cellStatus c);
-    void printBoard();
-    void printHiddenBoard();
+//    void printBoard();
+//    void printHiddenBoard();
     cellStatus getCell(int row, int col);
 
     int getIntInput(string input);

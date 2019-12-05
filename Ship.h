@@ -31,6 +31,12 @@ public:
     Tangle cruiserShipTang;
     Tangle subShipTang;
 
+    Tangle carrierShipP2;
+    Tangle battleShipP2;
+    Tangle destroyerShipP2;
+    Tangle cruiserShipP2;
+    Tangle subShipP2;
+
 
     /* Constructor */
     Ship();
@@ -54,6 +60,11 @@ public:
     void setCenterCruiser(int x,int y);
     void setCenterSub(int x,int y);
     void setCenterBattle(int x,int y);
+    void setCenterCarrier2(int x,int y);
+    void setCenterDestroyer2(int x,int y);
+    void setCenterCruiser2(int x,int y);
+    void setCenterSub2(int x,int y);
+    void setCenterBattle2(int x,int y);
     void setCenterY(int y);
 
     void addHit();
@@ -62,6 +73,11 @@ public:
     void drawShip_destroyer();
     void drawShip_cruiser();
     void drawShip_sub();
+    void drawShip_car2();
+    void drawShip_battle2();
+    void drawShip_destroyer2();
+    void drawShip_cruiser2();
+    void drawShip_sub2();
 
 };
 

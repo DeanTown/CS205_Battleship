@@ -28,6 +28,18 @@ private:
     Ship sub;
     Ship cruiser;
 
+    status carrier2Status;
+    status battle2Status;
+    status cruiser2Status;
+    status sub2Status;
+    status destroyer2Status;
+
+    Ship carrier2;
+    Ship battleship2;
+    Ship destroyer2;
+    Ship sub2;
+    Ship cruiser2;
+
 public:
 
 
@@ -38,11 +50,23 @@ public:
     Ship getSub();
     Ship getCruiser();
 
+    Ship getCarrier2();
+    Ship getBattle2();
+    Ship getDestroyer2();
+    Ship getSub2();
+    Ship getCruiser2();
+
     void setCarrier(Ship sh);
     void setCruiser(Ship sh);
     void setSub(Ship sh);
     void setBattle(Ship sh);
     void setDestroyer(Ship sh);
+
+    void setCarrier2(Ship sh);
+    void setCruiser2(Ship sh);
+    void setSub2(Ship sh);
+    void setBattle2(Ship sh);
+    void setDestroyer2(Ship sh);
 
 
     void setCarrierStatus(status carrierStatus);
@@ -60,15 +84,38 @@ public:
     void setCruiserStatus(status cruiserStatus);
     status getCruiserStatus();
 
+    void setCarrier2Status(status carrierStatus);
+    status getCarrier2Status();
+
+    void setBattle2Status(status battleStatus);
+    status getBattle2Status();
+
+    void setDestroyer2Status(status destroyerStatus);
+    status getDestroyer2Status();
+
+    void setSub2Status(status subStatus);
+    status getSub2Status();
+
+    void setCruiser2Status(status cruiserStatus);
+    status getCruiser2Status();
+
     Fleet();
 
     void updateShip(int ship);
+    void updateShip2(int ship);
     bool sunk();
+    bool sunk2();
     void dragCarrier(int x, int y);
     void dragBattle(int x, int y);
     void dragDestroyer(int x, int y);
     void dragSub(int x, int y);
     void dragCruiser(int x, int y);
+
+    void dragCarrier2(int x, int y);
+    void dragBattle2(int x, int y);
+    void dragDestroyer2(int x, int y);
+    void dragSub2(int x, int y);
+    void dragCruiser2(int x, int y);
 };
 
 
