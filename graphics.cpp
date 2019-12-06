@@ -365,12 +365,21 @@ void selectPosition() {
     finishPlacing.draw();
 
     string fin="DONE";
-    string rotateString = "*to rotate a ship, select it then click 'r' on your keyboard.";
+    string rotateString = "To rotate a ship, select it then click 'r' on your keyboard.";
 
     glColor3f(0,255,0);
     glRasterPos2i(450,350);
 
     for(char c : fin){
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12,c);
+    }
+
+    string selectString = "Click once to select, then drag and click again to place it.";
+
+    glColor3f(0,255,0);
+    glRasterPos2i(50,90);
+
+    for(char c : selectString){
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12,c);
     }
 
@@ -459,12 +468,26 @@ void selectPosition1() {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, r);
     }
 
-    string p1S = "Player 1 Setting Ship";
 
-    glColor3f(1.0, 0.0, 0.0);
-    glRasterPos2i(110, 55);
-    for (char r : p1S) {
+    headerBox.setDimensions(45,100);
+    headerBox.setBorderColor({0,255,0});
+    headerBox.setCenter({460,50});
+    headerBox.draw();
+
+    string p1H = "Player 1";
+    glColor3f(0.0, 1.0, 0.0);
+    glRasterPos2i(420, 55);
+    for (char r : p1H) {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, r);
+    }
+
+    string selectString = "Click once to select, then drag and click again to place it.";
+
+    glColor3f(0,255,0);
+    glRasterPos2i(50,90);
+
+    for(char c : selectString){
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12,c);
     }
 
     if(numOfShipsPlaced<5){
@@ -513,12 +536,25 @@ void selectPosition2() {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, r);
     }
 
-    string p2S = "Player 2 Setting Ship";
+    headerBox.setDimensions(45,100);
+    headerBox.setBorderColor({0,255,0});
+    headerBox.setCenter({460,50});
+    headerBox.draw();
 
-    glColor3f(1.0, 0.0, 0.0);
-    glRasterPos2i(110, 55);
-    for (char r : p2S) {
+    string p1H = "Player 2";
+    glColor3f(0.0, 1.0, 0.0);
+    glRasterPos2i(420, 55);
+    for (char r : p1H) {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, r);
+    }
+
+    string selectString = "Click once to select, then drag and click again to place it.";
+
+    glColor3f(0,255,0);
+    glRasterPos2i(50,90);
+
+    for(char c : selectString){
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12,c);
     }
 
 
@@ -640,7 +676,7 @@ void display() {
             headerBox.draw();
 
             string p1H = "Player 1";
-            glColor3f(1.0, 0.0, 0.0);
+            glColor3f(0.0, 1.0, 0.0);
             glRasterPos2i(420, 55);
             for (char r : p1H) {
                 glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, r);
@@ -688,7 +724,7 @@ void display() {
             if (p2MadeTurn) {
                 nextTurn.draw();
 
-                string next = "P2 TURN";
+                string next = "P1 TURN";
 
                 glColor3f(0, 255, 0);
                 glRasterPos2i(670, 500);
@@ -704,7 +740,7 @@ void display() {
 
             string p2H = "Player 2";
 
-            glColor3f(1.0, 0.0, 0.0);
+            glColor3f(0.0, 1.0, 0.0);
             glRasterPos2i(420, 55);
             for (char r : p2H) {
                 glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, r);
@@ -727,7 +763,7 @@ void display() {
             nukeSelect.setCenter({800, 300});
             nukeSelect.draw();
 
-            string fin = "DONE";
+            string fin = "FIRE";
 
             glColor3f(0, 255, 0);
             glRasterPos2i(780, 300);
@@ -752,7 +788,7 @@ void display() {
             nukeSelect.setCenter({800, 300});
             nukeSelect.draw();
 
-            string fin = "DONE";
+            string fin = "FIRE";
 
             glColor3f(0, 255, 0);
             glRasterPos2i(780, 300);
@@ -814,13 +850,13 @@ void display() {
                 glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
             }
 
-            string p1B = "Player Board";
-
-            glColor3f(1.0, 0.0, 0.0);
-            glRasterPos2i(140, 55);
-            for (char r : p1B) {
-                glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, r);
-            }
+//            string p1B = "Player Board";
+//
+//            glColor3f(1.0, 0.0, 0.0);
+//            glRasterPos2i(140, 55);
+//            for (char r : p1B) {
+//                glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, r);
+//            }
 
             break;
         }
@@ -839,7 +875,7 @@ void display() {
             nukeSelect.setCenter({800, 300});
             nukeSelect.draw();
 
-            string fin = "DONE";
+            string fin = "FIRE";
 
             glColor3f(0, 255, 0);
             glRasterPos2i(780, 300);
