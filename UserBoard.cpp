@@ -275,11 +275,11 @@ bool UserBoard::compMove() {
     if(board[randRow][randCol]!=Nothing && hits.empty()){
         lastHit=board[randRow][randCol];
         updateBoard(randRow,randCol);
-        cout<<"COMPUTER HIT"<<endl;
+
         hits.push_back(pos);
         return true;
     }else if(hits.size()==1 && lastHit !=Nothing){
-        cout<<"hits has size one"<<endl;
+
         for(int i=0; i<10;i++){
             for(int j=0; j<10; j++){
                 if(board[i][j]==lastHit){
@@ -322,7 +322,7 @@ bool UserBoard::compMove() {
         return true;
     }else{
         updateBoard(randRow,randCol);
-        cout<<"COMPUTER MISSED"<<endl;
+
 
         return true;
     }
