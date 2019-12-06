@@ -62,7 +62,12 @@ void ComputerBoard::draw() {
             if(board[i][j] == DestroyerHit) {
                 cell.setFillColor({1,0,0});
             }
+            if(board[i][j] == NothingHit) {
+                cell.setFillColor({0,0,1});
+
+            }
             cell.draw();
+
             j++;
         }
         i++;
