@@ -421,7 +421,7 @@ void resetGame() {
     numOfShipsPlaced=0;
     fleet=Fleet();
     user2fleet=Fleet();
-    screen = menu;
+    screen = bye;
     fleet.setCarrierStatus(unselected);
     fleet.setBattleStatus(unselected);
     fleet.setDestroyerStatus(unselected);
@@ -455,6 +455,14 @@ void selectPosition1() {
     glRasterPos2i(50, 415);
     for (char r : rotateString) {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, r);
+    }
+
+    string p1S = "Player 1 Setting Ship";
+
+    glColor3f(1.0, 0.0, 0.0);
+    glRasterPos2i(110, 55);
+    for (char r : p1S) {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, r);
     }
 
     if(numOfShipsPlaced<5){
@@ -503,6 +511,14 @@ void selectPosition2() {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, r);
     }
 
+    string p2S = "Player 2 Setting Ship";
+
+    glColor3f(1.0, 0.0, 0.0);
+    glRasterPos2i(110, 55);
+    for (char r : p2S) {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, r);
+    }
+
 
     if(numOfShipsPlaced<5){
         string message="MUST PLACE ALL SHIPS BEFORE CONTINUING";
@@ -524,7 +540,7 @@ void selectPosition2() {
 }
 
 
-void display(){
+void display() {
     glViewport(0, 0, width, height);
     // do an orthographic parallel projection with the coordinate
     // system set to first quadrant, limited by screen/window size
@@ -535,7 +551,7 @@ void display(){
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-    switch(screen) {
+    switch (screen) {
 
         case menu:
 //            glColor3f(1.0,0.0,0.0);
@@ -594,14 +610,14 @@ void display(){
 
             nuke.setDimensions(40, 80);
 
-            if(!hovering){
+            if (!hovering) {
                 nuke.setBorderColor({0, 255, 0});
             }
 
 
             nuke.setCenter({600, 500});
 
-            if(!p1MadeTurn){
+            if (!p1MadeTurn) {
                 nuke.draw();
 
                 string fin = "ATTACK";
@@ -614,12 +630,12 @@ void display(){
             }
 
             nextTurn.setDimensions(40, 80);
-            if(!hovering){
+            if (!hovering) {
                 nextTurn.setBorderColor({0, 255, 0});
             }
             nextTurn.setCenter({700, 500});
 
-            if(p1MadeTurn){
+            if (p1MadeTurn) {
                 nextTurn.draw();
 
                 string next = "P2 TURN";
@@ -629,6 +645,13 @@ void display(){
                 for (char c : next) {
                     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
                 }
+            }
+
+            string p1H = "Player 1 Hitting Ship";
+            glColor3f(1.0, 0.0, 0.0);
+            glRasterPos2i(110, 55);
+            for (char r : p1H) {
+                glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, r);
             }
 
             break;
@@ -649,12 +672,12 @@ void display(){
             }
 
             nuke.setDimensions(40, 80);
-            if(!hovering){
+            if (!hovering) {
                 nuke.setBorderColor({0, 255, 0});
             }
             nuke.setCenter({600, 500});
 
-            if(!p2MadeTurn){
+            if (!p2MadeTurn) {
                 nuke.draw();
 
                 string fin = "ATTACK";
@@ -668,13 +691,13 @@ void display(){
 
             nextTurn.setDimensions(40, 80);
 
-            if(!hovering){
+            if (!hovering) {
                 nextTurn.setBorderColor({0, 255, 0});
             }
 
 
             nextTurn.setCenter({700, 500});
-            if(p2MadeTurn){
+            if (p2MadeTurn) {
                 nextTurn.draw();
 
                 string next = "P2 TURN";
@@ -684,6 +707,14 @@ void display(){
                 for (char c : next) {
                     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
                 }
+            }
+
+            string p2H = "Player 2 Hitting Ship";
+
+            glColor3f(1.0, 0.0, 0.0);
+            glRasterPos2i(110, 55);
+            for (char r : p2H) {
+                glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, r);
             }
 
             break;
@@ -696,7 +727,7 @@ void display(){
 
             nukeSelect.setDimensions(40, 80);
 
-            if(!hovering){
+            if (!hovering) {
                 nukeSelect.setBorderColor({0, 255, 0});
             }
 
@@ -715,14 +746,14 @@ void display(){
             //hs.update(g.getComputerBoard());
             break;
         }
-        case p2hs:{
+        case p2hs: {
             background.draw();
             background.scroll(1);
             //hs.draw(width, height);
             hsp2.draw(width, height);
 
             nukeSelect.setDimensions(40, 80);
-            if(!hovering){
+            if (!hovering) {
                 nukeSelect.setBorderColor({0, 255, 0});
             }
             nukeSelect.setCenter({800, 300});
@@ -740,7 +771,6 @@ void display(){
             //hs.update(g.getComputerBoard());
             break;
         }
-            break;
         case middle: {
             background.draw();
             background.scroll(1);
@@ -765,22 +795,23 @@ void display(){
             break;
         }
         case idleGame: {
+
             background.draw();
             background.scroll(1);
             pvc.getUserBoard().draw(900, 600);
             pvc.getComputerBoard().draw();
 
-            if(pvc.getComputerBoard().getFleet().sunk() or pvc.getUserBoard().getFleet().sunk()){
-                screen=bye;
-                if(pvc.getComputerBoard().getFleet().sunk()){
-                    cout<<"USER WON"<<endl;
-                }else{
-                    cout<<"COMP WON"<<endl;
+            if (pvc.getComputerBoard().getFleet().sunk() or pvc.getUserBoard().getFleet().sunk()) {
+                screen = bye;
+                if (pvc.getComputerBoard().getFleet().sunk()) {
+                    cout << "USER WON" << endl;
+                } else {
+                    cout << "COMP WON" << endl;
                 }
             }
 
             nuke.setDimensions(40, 80);
-            if(!hovering){
+            if (!hovering) {
                 nuke.setBorderColor({0, 255, 0});
             }
             nuke.setCenter({600, 500});
@@ -794,6 +825,13 @@ void display(){
                 glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
             }
 
+            string p1B = "Player Board";
+
+            glColor3f(1.0, 0.0, 0.0);
+            glRasterPos2i(140, 55);
+            for (char r : p1B) {
+                glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, r);
+            }
 
             break;
         }
@@ -1858,37 +1896,37 @@ void mouse(int button, int state, int x, int y) {
 
 void cursor(int x, int y) {
 
-    cout<<x<<"/"<<y<<endl;
+    cout << x << "/" << y << endl;
 
-    if (fleet.getCarrierStatus() == selected && (screen == shipPosition ||screen == setPlayerOne)) {
+    if (fleet.getCarrierStatus() == selected && (screen == shipPosition || screen == setPlayerOne)) {
         fleet.dragCarrier(x, y);
     }
     if (user2fleet.getCarrierStatus() == selected && screen == setPlayerTwo) {
         user2fleet.dragCarrier(x, y);
     }
 
-    if (fleet.getBattleStatus() == selected && (screen == shipPosition ||screen == setPlayerOne)) {
+    if (fleet.getBattleStatus() == selected && (screen == shipPosition || screen == setPlayerOne)) {
         fleet.dragBattle(x, y);
     }
     if (user2fleet.getBattleStatus() == selected && screen == setPlayerTwo) {
         user2fleet.dragBattle(x, y);
     }
 
-    if (fleet.getCruiserStatus() == selected && (screen == shipPosition ||screen == setPlayerOne)) {
+    if (fleet.getCruiserStatus() == selected && (screen == shipPosition || screen == setPlayerOne)) {
         fleet.dragCruiser(x, y);
     }
     if (user2fleet.getCruiserStatus() == selected && screen == setPlayerTwo) {
         user2fleet.dragCruiser(x, y);
     }
 
-    if (fleet.getSubStatus() == selected && (screen == shipPosition ||screen == setPlayerOne)) {
+    if (fleet.getSubStatus() == selected && (screen == shipPosition || screen == setPlayerOne)) {
         fleet.dragSub(x, y);
     }
     if (user2fleet.getSubStatus() == selected && screen == setPlayerTwo) {
         user2fleet.dragSub(x, y);
     }
 
-    if (fleet.getDestroyerStatus() == selected && (screen == shipPosition ||screen == setPlayerOne)) {
+    if (fleet.getDestroyerStatus() == selected && (screen == shipPosition || screen == setPlayerOne)) {
         fleet.dragDestroyer(x, y);
     }
     if (user2fleet.getDestroyerStatus() == selected && screen == setPlayerTwo) {
@@ -1897,160 +1935,158 @@ void cursor(int x, int y) {
 
 
     //HOVER FUNCTIONS
-    switch(screen){
+    switch (screen) {
         case menu:
             //cout<<x<<y<<endl;
 
             if (x > 399 && x < 501 && y > 249 && y < 351) {
                 startButton.setBorderColor(0, .5, .5);
                 hovering = true;
-            }else if (x > 9 && x < 51 && y > 9 && y < 51) {
+            } else if (x > 9 && x < 51 && y > 9 && y < 51) {
                 helpButton.setBorderColor(0, .5, .5);
                 hovering = true;
-            }else if (x > 59 && x < 101 && y > 9 && y < 51){
-                infoButton.setBorderColor(0,.5,.5);
-                hovering=true;
+            } else if (x > 59 && x < 101 && y > 9 && y < 51) {
+                infoButton.setBorderColor(0, .5, .5);
+                hovering = true;
 
-            }else{
-                hovering=false;
+            } else {
+                hovering = false;
             }
 
 
             break;
         case help:
-            if (x > 834 && x < 886 && y > 14 && y < 46 && screen == help ){
-                exitButton.setBorderColor(0,.5,.5);
-                hovering=true;
-            }else{
-                hovering=false;
+            if (x > 834 && x < 886 && y > 14 && y < 46 && screen == help) {
+                exitButton.setBorderColor(0, .5, .5);
+                hovering = true;
+            } else {
+                hovering = false;
             }
             break;
         case info:
-            if (x > 834 && x < 886 && y > 14 && y < 46 && screen == info ){
-                helpButton.setBorderColor(0,.5,.5);
-                hovering=true;
-            }else{
-                hovering=false;
+            if (x > 834 && x < 886 && y > 14 && y < 46 && screen == info) {
+                helpButton.setBorderColor(0, .5, .5);
+                hovering = true;
+            } else {
+                hovering = false;
             }
             break;
         case mode:
-            if (x > 299 && x < 601 && y > 124 && y < 176){
-                hhButton.setBorderColor(0,.5,.5);
-                hovering=true;
-            }else if (x > 299 && x < 601 && y > 424 && y < 476){
-                hcButton.setBorderColor(0,.5,.5);
-                hovering=true;
-            }else{
-                hovering=false;
+            if (x > 299 && x < 601 && y > 124 && y < 176) {
+                hhButton.setBorderColor(0, .5, .5);
+                hovering = true;
+            } else if (x > 299 && x < 601 && y > 424 && y < 476) {
+                hcButton.setBorderColor(0, .5, .5);
+                hovering = true;
+            } else {
+                hovering = false;
             }
             break;
         case hitSelection:
-            if(x > 760 && x < 840 && y > 280 && y < 320){
-                nukeSelect.setBorderColor(0,.5,.5);
-                hovering=true;
-            }else{
-                hovering=false;
+            if (x > 760 && x < 840 && y > 280 && y < 320) {
+                nukeSelect.setBorderColor(0, .5, .5);
+                hovering = true;
+            } else {
+                hovering = false;
             }
 
 
             break;
         case p1hs:
-            if(x > 760 && x < 840 && y > 280 && y < 320){
-                nukeSelect.setBorderColor(0,.5,.5);
-                hovering=true;
-            }else{
-                hovering=false;
+            if (x > 760 && x < 840 && y > 280 && y < 320) {
+                nukeSelect.setBorderColor(0, .5, .5);
+                hovering = true;
+            } else {
+                hovering = false;
             }
 
             break;
         case p2hs:
-            if(x > 760 && x < 840 && y > 280 && y < 320){
-                nukeSelect.setBorderColor(0,.5,.5);
-                hovering=true;
-            }else{
-                hovering=false;
+            if (x > 760 && x < 840 && y > 280 && y < 320) {
+                nukeSelect.setBorderColor(0, .5, .5);
+                hovering = true;
+            } else {
+                hovering = false;
             }
 
             break;
         case setPlayerOne:
-            if(x > 410 && x < 490 && y > 330 && y < 370){
-                finishPlacing.setBorderColor(0,.5,.5);
-                hovering=true;
+            if (x > 410 && x < 490 && y > 330 && y < 370) {
+                finishPlacing.setBorderColor(0, .5, .5);
+                hovering = true;
 
-            }else{
-                hovering=false;
+            } else {
+                hovering = false;
             }
-
 
 
             break;
         case setPlayerTwo:
-            if(x > 410 && x < 490 && y > 330 && y < 370){
-                finishPlacing.setBorderColor(0,.5,.5);
-                hovering=true;
+            if (x > 410 && x < 490 && y > 330 && y < 370) {
+                finishPlacing.setBorderColor(0, .5, .5);
+                hovering = true;
 
-            }else{
-                hovering=false;
+            } else {
+                hovering = false;
             }
             break;
         case shipPosition:
 
-            if(x > 410 && x < 490 && y > 330 && y < 370){
-                finishPlacing.setBorderColor(0,.5,.5);
-                hovering=true;
+            if (x > 410 && x < 490 && y > 330 && y < 370) {
+                finishPlacing.setBorderColor(0, .5, .5);
+                hovering = true;
 
-            }else{
-                hovering=false;
+            } else {
+                hovering = false;
             }
             break;
 
         case bye:
-            if(x > 834 && x < 886 && y > 14 && y < 46){
-                exitButton3.setBorderColor(0,.5,.5);
-                hovering=true;
-            }else{
-                hovering=false;
+            if (x > 834 && x < 886 && y > 14 && y < 46) {
+                exitButton3.setBorderColor(0, .5, .5);
+                hovering = true;
+            } else {
+                hovering = false;
             }
 
             break;
         case idleGame:
-            if(x > 560 && x < 640 && y > 480 && y < 520){
-                nuke.setBorderColor(0,.5,.5);
-                hovering=true;
-            }else{
-                hovering=false;
+            if (x > 560 && x < 640 && y > 480 && y < 520) {
+                nuke.setBorderColor(0, .5, .5);
+                hovering = true;
+            } else {
+                hovering = false;
             }
             break;
-        case p1turn:
-            if(x > 560 && x < 640 && y > 480 && y < 520){
-                nuke.setBorderColor(0,.5,.5);
-                hovering=true;
-            }else if (x > 660 && x < 740 && y > 480 && y < 520 ){
-                nextTurn.setBorderColor(0,.5,.5);
-                hovering=true;
-
-
-            }else{
-                hovering=false;
+        case p1turn: {
+            if (x > 560 && x < 640 && y > 480 && y < 520) {
+                nuke.setBorderColor(0, .5, .5);
+                hovering = true;
+            } else if (x > 660 && x < 740 && y > 480 && y < 520) {
+                nextTurn.setBorderColor(0, .5, .5);
+                hovering = true;
+            } else {
+                hovering = false;
             }
             break;
-        case p2turn:
-            if(x > 560 && x < 640 && y > 480 && y < 520){
-                nuke.setBorderColor(0,.5,.5);
-                hovering=true;
-            }else if (x > 660 && x < 740 && y > 480 && y < 520 ){
-                nextTurn.setBorderColor(0,.5,.5);
-                hovering=true;
+        }
+        case p2turn: {
+            if (x > 560 && x < 640 && y > 480 && y < 520) {
+                nuke.setBorderColor(0, .5, .5);
+                hovering = true;
+            } else if (x > 660 && x < 740 && y > 480 && y < 520) {
+                nextTurn.setBorderColor(0, .5, .5);
+                hovering = true;
 
-            }else{
-                hovering=false;
+            } else {
+                hovering = false;
             }
-            break;
+
+        }
+
+            glutPostRedisplay();
 
     }
-
-    glutPostRedisplay();
-
 }
 void timer(int dummy) {
 
