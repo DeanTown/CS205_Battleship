@@ -47,15 +47,16 @@ void HitSelection::update(Board b) {
     cellStatus c;
     for (int i = 0; i < 10; i++) {
         for (int j = 0; j < 10; j++) {
-            c = b.getCell(i,j);
+            c = b.getCell(i, j);
             if (c == DestroyerHit || c == SubHit || c == CarrierHit
                 || c == CruiserHit || c == BattleshipHit) {
-                hitOptions[i][j].setFillColor({100,0,0});
-             
+                hitOptions[i][j].setFillColor({100, 0, 0});
+
             } else if (c == NothingHit) {
-                hitOptions[i][j].setFillColor({0,0,100});
+                hitOptions[i][j].setFillColor({0, 0, 100});
 
             }
+
         }
     }
     
