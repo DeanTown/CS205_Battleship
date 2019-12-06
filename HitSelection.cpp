@@ -3,16 +3,13 @@
 //
 
 #include "HitSelection.h"
-
+/*
+ * This method is similar to the way the userBoard and ComputerBoards are constructed.
+ * They are made of rectangles with their colors representing the state that any give cell is in
+ */
 HitSelection::HitSelection() {
-    // TODO: draw board cells according to whether they're hits, misses or untouched
-    // draw background
-
-    // create each cell for hit options
     Tangle cell;
     vector<Tangle> temp;
-
-
     for (int i = 0; i < 10; i++) {
         for (int j = 0; j < 10; j++) {
             point p = {i,j};
@@ -24,7 +21,7 @@ HitSelection::HitSelection() {
         temp.clear();
     }
 }
-
+// method to draw the hitSelection board
 void HitSelection::draw(int width, int height) {
 
     for (vector<Tangle> row : hitOptions) {
@@ -33,7 +30,7 @@ void HitSelection::draw(int width, int height) {
         }
     }
 }
-
+// method to get the cell clicked
 point HitSelection::getCell(int x, int y) {
     for (vector<Tangle> row : hitOptions) {
         for (Tangle t : row) {
@@ -44,7 +41,7 @@ point HitSelection::getCell(int x, int y) {
     }
     return {-1,-1};
 }
-
+// method to update the board so it properly displays state of the board
 void HitSelection::update(Board b) {
     cellStatus c;
     for (int i = 0; i < 10; i++) {

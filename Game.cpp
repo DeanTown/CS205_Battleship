@@ -53,7 +53,7 @@ UserBoard Game::getUser2Board() {
 void Game::setUser2Board(UserBoard temp) {
     user2Board=temp;
 }
-
+// Helper functions that call the real userMove method from within the compBoard object
 bool Game::userMove(int row, int col){
     return compBoard.userMove(row,col);
 }
@@ -65,16 +65,18 @@ bool Game::user1Move(int row, int col){
 bool Game::user2Move(int row, int col){
     return userBoard.humanMove(row,col);
 }
-
+// Helper function that calls the real compMove method from within the userBoard object
 void Game::compMove(){
     userBoard.compMove();
 }
+// Helper function that calls the method to place pieces on the computer board
 void Game::placePiecesDebug(){
     compBoard.placePieces();
 }
 
 
-
+// Method to for user to place ship on their board.
+// Checks the direction and makes sure those spaces are clear before placing
 void Game::placeShip(cellStatus ship, int x, int y, int direction) {
     switch(ship) {
         case Destroyer:

@@ -25,7 +25,7 @@ Board::Board() {
 Fleet Board::getFleet() {
     return fleet;
 }
-
+// enum toString helper method
 string Board::cellStatusToString(cellStatus c) {
     switch(c) {
         case Destroyer: return "Destroyer";
@@ -37,7 +37,7 @@ string Board::cellStatusToString(cellStatus c) {
     }
     return "";
 }
-
+// updates cell statuses of the board to reflect hits
 cellStatus Board::cellStatusUpdater(cellStatus c) {
     switch(c) {
         case Destroyer: return DestroyerHit;
@@ -49,7 +49,7 @@ cellStatus Board::cellStatusUpdater(cellStatus c) {
     }
     return Nothing;
 }
-
+// updates ship so it knows how many times it's been hit
 void Board::updateShip(cellStatus c) {
     switch(c) {
         case Destroyer:

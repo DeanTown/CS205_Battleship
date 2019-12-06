@@ -122,7 +122,7 @@ void Fleet::setCruiser2Status(status cruiserStatus){
 status Fleet::getCruiser2Status(){
     return cruiser2Status;
 }
-
+// This method takes in the ship and increments a hit on it
 void Fleet::updateShip(int ship) {
     switch(ship) {
         case 1:
@@ -142,7 +142,7 @@ void Fleet::updateShip(int ship) {
             break;
     }
 }
-
+// this method does the same as above for the alternate fleet
 void Fleet::updateShip2(int ship) {
     switch(ship) {
         case 1:

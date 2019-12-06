@@ -9,7 +9,7 @@
 #include <vector>
 using namespace std;
 
-
+// Class to draw the background splash image on the starting screen.
 
 class Background {
 private:

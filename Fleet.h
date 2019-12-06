@@ -43,7 +43,7 @@ private:
 public:
 
 
-
+    // GETTERS
     Ship getCarrier();
     Ship getBattle();
     Ship getDestroyer();
@@ -55,7 +55,7 @@ public:
     Ship getDestroyer2();
     Ship getSub2();
     Ship getCruiser2();
-
+    // SETTERS
     void setCarrier(Ship sh);
     void setCruiser(Ship sh);
     void setSub(Ship sh);
@@ -100,11 +100,13 @@ public:
     status getCruiser2Status();
 
     Fleet();
-
+    // updates ship with correct number of hits
     void updateShip(int ship);
     void updateShip2(int ship);
+    // methods to check if fleet is sunk (win condition)
     bool sunk();
     bool sunk2();
+    // methods to handle dragging for the GUI
     void dragCarrier(int x, int y);
     void dragBattle(int x, int y);
     void dragDestroyer(int x, int y);

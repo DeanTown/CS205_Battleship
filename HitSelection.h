@@ -15,9 +15,13 @@ private:
     vector<vector<Tangle>> hitOptions;
 
 public:
+    // constructor
     HitSelection();
+    // draw method
     void draw(int width, int height);
+    // method to get the cell on the board that was clicked
     point getCell(int x, int y);
+    // method to update the board to reflect the cell chosen
     void update(Board b);
 };
 

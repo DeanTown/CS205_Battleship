@@ -8,6 +8,10 @@
 #include <vector>
 #include "Shapes.h"
 
+/*
+ * This class holds the ships object, which a user places and can attack.
+ */
+
 struct Point {
     int x;
     int y;
@@ -20,9 +24,7 @@ private:
     int hits;
     bool destroyed;
     Point shipCenter;
-
     bool isVertical;
-
 
 public:
     Tangle carrierShipTang;
@@ -47,14 +49,15 @@ public:
     /* Setters */
     void setSize(int s);
     void setDestroyed(bool d);
-
+    // gets vertical state of a ship when placing
     bool getVert();
     void setVert(bool vert);
+    // allows the user to rotate a ship when placing
     void rotate();
 
     int getCenterX_car() const;
     int getCenterY_car() const;
-
+    // methods to cet the center of each ship (used for dragging)
     void setCenterCarrier(int x,int y);
     void setCenterDestroyer(int x,int y);
     void setCenterCruiser(int x,int y);
@@ -66,8 +69,9 @@ public:
     void setCenterSub2(int x,int y);
     void setCenterBattle2(int x,int y);
     void setCenterY(int y);
-
+    // adds a hit to the ship
     void addHit();
+    // methods to draw each type of ship
     void drawShip_car();
     void drawShip_battle();
     void drawShip_destroyer();

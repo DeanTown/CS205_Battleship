@@ -47,7 +47,7 @@ Background::Background() {
         }
 
 }
-
+// draw the background
 void Background::draw() {
     for(int i=0; i<height; i++){
         for(int j=0; j<width; j++){
@@ -56,7 +56,7 @@ void Background::draw() {
     }
 
 }
-
+// function to handle scrolling on the background
 void Background::scroll(int velocity) {
     for(int i=0; i<height; i++){
         for(int j=0; j<width; j++){

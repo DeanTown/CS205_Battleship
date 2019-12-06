@@ -7,6 +7,9 @@
 #include <iostream>
 
 using namespace std;
+// Constructor. Created the same way as the HitSelection and ComputerBoard constructors.
+// Each board is made up of rectangles which allows them to change color to reflect the status
+// of the board as well as detect which cell was targeted.
 UserBoard::UserBoard() : Board() {
     Tangle cell;
     vector<Tangle> temp;
