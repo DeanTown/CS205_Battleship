@@ -538,20 +538,6 @@ void display(){
     switch(screen) {
 
         case menu:
-//            glColor3f(1.0,0.0,0.0);
-//            glBegin(GL_QUADS);
-//            glVertex2d(0.0,0.0);
-//            glVertex2d(100.0,0.0);
-//            glVertex2d(100.0,100.0);
-//            glVertex2d(0.0,100.0);
-//            glEnd();
-//            glColor3f(0.0,1.0,0.0);
-//            glBegin(GL_QUADS);
-//            glVertex2d(10.0,10.0);
-//            glVertex2d(90.0,10.0);
-//            glVertex2d(90.0,90.0);
-//            glVertex2d(10.0,90.0);
-//            glEnd();
             background.draw();
             background.scroll(1);
             startMenu();
@@ -572,9 +558,13 @@ void display(){
             selectPosition();
             break;
         case setPlayerOne:
+            background.draw();
+            background.scroll(1);
             selectPosition1();
             break;
         case setPlayerTwo:
+            background.draw();
+            background.scroll(1);
             selectPosition2();
             break;
         case p1turn: {
