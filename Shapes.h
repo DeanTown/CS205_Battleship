@@ -156,6 +156,7 @@ public:
 
     void draw() const override;
 
+
     char getType() const override;
 
     bool isOverlapping(const point &p) const override;

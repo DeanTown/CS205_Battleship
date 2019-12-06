@@ -45,12 +45,14 @@ Ship::Ship(int size) {
     destroyerShipP2 = Tangle(30*3,30);
     destroyerShipP2.setCenter(690,500);
 }
+
 bool Ship::getVert(){
     return isVertical;
 }
 void Ship::setVert(bool vert){
     isVertical=vert;
 }
+
 void Ship::rotate(){
     if(isVertical){
         isVertical=false;

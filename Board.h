@@ -13,6 +13,11 @@
 using namespace std;
 
 /*
+ * Main Board class which is inherited by UserBoard and ComputerBoard. This class provides the base for
+ * functionality on the whole game.
+ */
+
+/*
  * Carrier size: 5
  * Battleship size: 4
  * Destroyer size: 3
@@ -41,13 +46,17 @@ public:
     /* Constructor */
     Board();
     Fleet getFleet();
+    // enum helper method
     string cellStatusToString(cellStatus c);
+    // method to update the cellStatus for a particular board cell
     cellStatus cellStatusUpdater(cellStatus c);
+    // method to update ship to contain correct number of hits
     void updateShip(cellStatus c);
 //    void printBoard();
 //    void printHiddenBoard();
+    // method to get a specific board cell
     cellStatus getCell(int row, int col);
-
+    // method for getting input (deprecated now that we have a GUI)
     int getIntInput(string input);
 
 };

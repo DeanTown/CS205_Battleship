@@ -15,6 +15,11 @@
 ComputerBoard::ComputerBoard(): Board(){
     Tangle cell;
     vector<Tangle> temp;
+    /*
+     * runs through each cell in the board and creates a rectangle object which is how
+     * we display the boards in the GUI. This also allows us to know which cell the person
+     * has clicked on when attacking and helps with handling that.
+     */
     for (int i = 0; i < 10; i++) {
         for (int j = 0; j < 10; j++) {
             point p = {i,j};
@@ -26,7 +31,7 @@ ComputerBoard::ComputerBoard(): Board(){
         temp.clear();
     }
 }
-
+// Alternate constructor that does the same things as above
 ComputerBoard::ComputerBoard(int forPlayer2) {
     Tangle cell;
     vector<Tangle> temp;
@@ -41,7 +46,7 @@ ComputerBoard::ComputerBoard(int forPlayer2) {
         temp.clear();
     }
 }
-
+// Draws out the board with color variations depending on the status of the cell
 void ComputerBoard::draw() {
     int i = 0;
     for (vector<Tangle> row : cells) {
@@ -62,7 +67,12 @@ void ComputerBoard::draw() {
             if(board[i][j] == DestroyerHit) {
                 cell.setFillColor({1,0,0});
             }
+            if(board[i][j] == NothingHit) {
+                cell.setFillColor({0,0,1});
+
+            }
             cell.draw();
+
             j++;
         }
         i++;
@@ -184,7 +194,9 @@ void ComputerBoard::placePieces() {
         placed++;
     }
 }
-
+/*
+ * This method takes in a ship and sets it on the board
+ */
 void ComputerBoard::setBoardValues(cellStatus shipType,position pos, int size, int direction){
     int row=pos.row;
     int col=pos.col;
