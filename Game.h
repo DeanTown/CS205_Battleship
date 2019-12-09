@@ -35,7 +35,7 @@ public:
     bool user2Move(int row, int col);
     bool user1Move(int row, int col);
 
-    void compMove();
+    bool compMove();
     void placePiecesDebug();
 //    bool startGame();
 //    void resetGame();

@@ -296,6 +296,26 @@ bool UserBoard::compMove() {
                 }
             }
         }
+
+
+//        if(rand()%3==1){
+//            int index= rand()% possibleHits.size();
+//            position temp2= possibleHits[index];
+//            possibleHits.erase(possibleHits.begin()+index);
+//            updateBoard(temp2.row,temp2.col);
+//            hits.push_back(temp2);
+//            possiblePositions.push_back(pos);
+//            for(int i=0; i<possiblePositions.size();i++){
+//                if(possiblePositions[i].col==temp2.col && possiblePositions[i].row==temp2.row){
+//                    possiblePositions.erase(possiblePositions.begin()+i);
+//                }
+//
+//            }
+//
+//        }else{
+//            updateBoard(randRow,randCol);
+//        }
+
         int index= rand()% possibleHits.size();
         position temp2= possibleHits[index];
         possibleHits.erase(possibleHits.begin()+index);
@@ -312,6 +332,27 @@ bool UserBoard::compMove() {
         return true;
 
     }else if(hits.size()>=2 && lastHit !=Nothing) {
+
+//        if(rand()%3==1){
+//            int index= rand()% possibleHits.size();
+//            position temp2= possibleHits[index];
+//            possibleHits.erase(possibleHits.begin()+index);
+//            updateBoard(temp2.row,temp2.col);
+//            hits.push_back(temp2);
+//            possiblePositions.push_back(pos);
+//            for(int i=0; i<possiblePositions.size();i++){
+//                if(possiblePositions[i].col==temp2.col && possiblePositions[i].row==temp2.row){
+//                    possiblePositions.erase(possiblePositions.begin()+i);
+//                }
+//
+//            }
+//
+//        }else{
+//            updateBoard(randRow,randCol);
+//        }
+
+
+
         int index= rand()% possibleHits.size();
         position temp2= possibleHits[index];
         possibleHits.erase(possibleHits.begin()+index);

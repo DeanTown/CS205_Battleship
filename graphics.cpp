@@ -1404,7 +1404,9 @@ void mouse(int button, int state, int x, int y) {
 
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && x > 760 && x < 840 && y > 280 && y < 320 && screen == hitSelection && moveSelected){
         screen = idleGame;
-        pvc.compMove();
+
+        while(!pvc.compMove()){
+        }
         moveSelected=false;
         hovering=false;
     }

@@ -66,8 +66,8 @@ bool Game::user2Move(int row, int col){
     return userBoard.humanMove(row,col);
 }
 // Helper function that calls the real compMove method from within the userBoard object
-void Game::compMove(){
-    userBoard.compMove();
+bool Game::compMove(){
+    return userBoard.compMove();
 }
 // Helper function that calls the method to place pieces on the computer board
 void Game::placePiecesDebug(){
