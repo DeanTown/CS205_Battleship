@@ -6,7 +6,6 @@
 #include "cstdlib"
 #include "ctime"
 
-
 #include "ComputerBoard.h"
 #include "UserBoard.h"
 #include "Ship.h"
@@ -1786,7 +1785,7 @@ void mouse(int button, int state, int x, int y) {
                         if (c.isOverlapping({x+30,y})) {
                             point p = c.getBoardCell();
                             if(pvp.getUser2Board().checkClear(p.x,p.y,3,0)){
-                                pvp.placeShip(Sub, p.x, p.y,0);
+                                pvp.placePlayer2(Sub, p.x, p.y,0);
                                 Ship n= user2fleet.getSub();
                                 n.subShipTang.setDimensions(0,0);
                                 user2fleet.setSub(n);
@@ -1913,6 +1912,7 @@ void mouse(int button, int state, int x, int y) {
 
 void cursor(int x, int y) {
 
+    cout << x << ", " << y << endl;
 
     if (fleet.getCarrierStatus() == selected && (screen == shipPosition || screen == setPlayerOne)) {
         fleet.dragCarrier(x, y);

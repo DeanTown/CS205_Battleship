@@ -171,6 +171,9 @@ void UserBoard::drawHidden(){
             if(board[i][j] == DestroyerHit) {
                 cell.setFillColor({1,0,0});
             }
+            if(board[i][j] == NothingHit) {
+                cell.setFillColor({0,0,1});
+            }
             cell.setCenter(cell.getCenter().x+500,cell.getCenter().y);
             cell.draw();
             j++;
