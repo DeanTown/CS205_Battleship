@@ -70,6 +70,8 @@ bool p2MadeTurn;
 
 
 
+
+
 bool moveSelected;
 
 int numOfShipsPlaced, numOfShipsPlaced2;
@@ -215,6 +217,78 @@ void modeMenu(){
     glRasterPos2i(390, 457);
     for (char c : hcTitle) {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
+    }
+
+}
+
+void displaySunken(Fleet f){
+    Tangle t= Tangle(100,200,{0,1,0},{0,0,0},{200,500});
+    t.draw();
+
+    string title = "Comp Ships Sunken";
+
+    glColor3f(0, 1.0, 0);
+    glRasterPos2i(146, 467);
+    for (char c : title) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+    }
+
+    string bar = "-------------------------";
+
+    glColor3f(0, 1.0, 0);
+    glRasterPos2i(101, 477);
+    for (char c : bar) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+    }
+
+    if(f.getCarrier().getDestroyed()){
+        string ship = "o Carrier";
+
+        glColor3f(0, 1.0, 0);
+        glRasterPos2i(115, 493);
+        for (char c : ship) {
+            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+        }
+
+    }
+    if(f.getBattle().getDestroyed()){
+        string ship = "o BattleShip";
+
+        glColor3f(0, 1.0, 0);
+        glRasterPos2i(115, 513);
+        for (char c : ship) {
+            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+        }
+
+    }
+    if(f.getSub().getDestroyed()){
+        string ship = "o Submarine";
+
+        glColor3f(0, 1.0, 0);
+        glRasterPos2i(115, 537);
+        for (char c : ship) {
+            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+        }
+    }
+    if(f.getDestroyer().getDestroyed()){
+        string ship = "o Destroyer";
+
+        glColor3f(0, 1.0, 0);
+        glRasterPos2i(200, 493);
+        for (char c : ship) {
+            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+        }
+
+    }
+    if(f.getCruiser().getDestroyed()){
+        string ship = "o Cruiser";
+
+        glColor3f(0, 1.0, 0);
+        glRasterPos2i(200, 513);
+        for (char c : ship) {
+            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+        }
+
     }
 
 }
@@ -636,6 +710,9 @@ void display() {
                 nuke.setBorderColor({0, 255, 0});
             }
 
+            displaySunken(pvp.getUser2Board().getFleet());
+
+
 
             nuke.setCenter({600, 500});
 
@@ -711,6 +788,8 @@ void display() {
                     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
                 }
             }
+
+            displaySunken(pvp.getUserBoard().getFleet());
 
             nextTurn.setDimensions(40, 80);
 
@@ -848,6 +927,8 @@ void display() {
             for (char c : fin) {
                 glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
             }
+
+            displaySunken(pvc.getComputerBoard().getFleet());
 
 //            string p1B = "Player Board";
 //
@@ -1912,7 +1993,6 @@ void mouse(int button, int state, int x, int y) {
 
 void cursor(int x, int y) {
 
-    cout << x << ", " << y << endl;
 
     if (fleet.getCarrierStatus() == selected && (screen == shipPosition || screen == setPlayerOne)) {
         fleet.dragCarrier(x, y);
