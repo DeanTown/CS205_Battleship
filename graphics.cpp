@@ -1785,7 +1785,7 @@ void mouse(int button, int state, int x, int y) {
                     }else{
                         if (c.isOverlapping({x+30,y})) {
                             point p = c.getBoardCell();
-                            if(pvp.getUserBoard().checkClear(p.x,p.y,3,0)){
+                            if(pvp.getUser2Board().checkClear(p.x,p.y,3,0)){
                                 pvp.placeShip(Sub, p.x, p.y,0);
                                 Ship n= user2fleet.getSub();
                                 n.subShipTang.setDimensions(0,0);

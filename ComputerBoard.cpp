@@ -333,3 +333,5 @@ int ComputerBoard::getDirection(int row, int col, int size){
     return direction;
 }
 
+//455,50
+
