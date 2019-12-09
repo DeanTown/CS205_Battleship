@@ -667,6 +667,8 @@ void display() {
         case menu:
             background.draw();
             background.scroll(1);
+            background.drawShips();
+            background.scrollShips(1);
             startMenu();
             break;
         case mode:
@@ -970,6 +972,8 @@ void display() {
         case bye:
             background.draw();
             background.scroll(1);
+            background.drawShips();
+            background.scrollShips(1);
             if(pvc.getComputerBoard().getFleet().sunk()){
                 // print user won on screen
                 string ending = "USER WON!";

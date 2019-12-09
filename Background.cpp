@@ -48,6 +48,7 @@ Background::Background() {
         }
 
 
+
         }
 
     body.setCenter(150,75);
@@ -177,7 +178,6 @@ void Background::draw() {
         }
     }
 
-    drawShips();
 
 }
 // function to handle scrolling on the background
@@ -195,6 +195,5 @@ void Background::scroll(int velocity) {
 
         }
     }
-    scrollShips(velocity);
 
 }
